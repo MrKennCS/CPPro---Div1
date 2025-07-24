@@ -43,7 +43,7 @@ void solve(){
     cnt_cp -= 1;
 
     while(cnt_cp){
-        res += 1LL * pow(2, cnt_not_cp, m) + 1LL * m;
+        res += 1LL * pow(2, cnt_not_cp, m) 1LL * m;
         res %= m;
         cnt_cp -= 1;
     }
