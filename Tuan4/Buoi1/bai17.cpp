@@ -1,42 +1,27 @@
 #include<iostream>
+#include<algorithm>
 
 using namespace std;
 
 int rev(int n){
-    int n_ = 0;
+    int ans = 0;
     while(n){
-        n_ = n_*10 + n%10;
+        ans = ans * 10 + n % 10;
         n /= 10;
     }
-    return n_;
+    return ans;
 }
-
-int gcd(int a, int b){
-    while(b){
-        int tmp = b;
-        b = a % b;
-        a = tmp;
-    }
-    return a;
-}
-
-int l, r;
-int res;
 
 void solve(){
-    cin >> l >> r;
-    for(int i=l; i<=r; ++i){
-        int daonguoc = rev(i);
-        if(gcd(i, daonguoc) == 1){
-            if(daonguoc > r)    cout << i << '\n';
-            else                cout << i << " " << daonguoc << '\n';
-            res += (daonguoc <= r ? 2 : 1);
-        }
+    int a, b;   cin >> a >> b;
+    int res = 0;
+    for(int i=a; i<=b; ++i){
+        if(__gcd(i, rev(i)) == 1)   res += 1;
     }
     cout << res;
 }
 
 int main(){
-    ios_base::sync_with_stdio(false);   cin.tie(0);
+    ios_base::sync_with_stdio(false);    cin.tie(0);
     solve();
 }

@@ -26,7 +26,24 @@ void solve(){
     cout << res;
 }
 
+int f[1000009];
+
+void start(){
+    for(int i=1; i<=1000000; ++i){
+        for(int j=i; j<=1000000; j+=i){
+            f[j] += 1;
+        }
+    }
+}
+
+void solve1(){
+    cin >> n;
+    cout << f[n] << '\n';
+}
+
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
-    solve();
+    start();
+    int q;  cin >> q;
+    while(q--)  solve1();
 }

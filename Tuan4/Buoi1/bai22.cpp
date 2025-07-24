@@ -46,12 +46,11 @@ void solve(){
     }
 
     while(cnt--){
-        ans += (pow(2, c, m) + m);
+        ans += (pow(2, c, m) + 1LL * m);
         ans %= m;
     }
 
     cout << ans % m;
-
 }
 
 int main(){
