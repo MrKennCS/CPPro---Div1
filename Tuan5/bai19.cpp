@@ -28,10 +28,12 @@ void solve(){
     
     sort(pre + 1, pre + n + 1, cmp);
     sort(a + 1, a + n + 1, cmp);
+
     for(int i=1; i<=n; ++i){
         if(pre[i] == 0) break;
         res += 1LL * pre[i] * a[i];
     }
+    
     cout << res;
 }
 
