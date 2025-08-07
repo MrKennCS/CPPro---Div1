@@ -1,57 +1,37 @@
 #include<iostream>
-#include<cmath>
+#include<vector>
 
 using namespace std;
 
-int n, m;
-int cnt_cp;
-int cnt_not_cp;
-long long res;
 
-long long mul(long long a, long long b, long long mod){
-    long long ans = 0;
-    while(b){
-        if(b & 1)   ans = (ans + a) % mod;
-        a = (a + a) % mod;
-        b /= 2;
+const int lim = 1e6;
+int n, k;
+int minPrime[lim + 6];
+vector<bool> isPrime(lim + 6, true);
+
+void sieve(){
+    isPrime[0] = isPrime[1] = false;
+    for(int i=2; i*i<=lim; ++i){
+        if(minPrime[i] == 0){
+            for(int j=i*i; j<=lim; j+=i){
+                isPrime[j] = false;
+                if(minPrime[j] == 0){
+                    minPrime[j] = i;                }
+            }
+        }
     }
-    return ans;
-}
-
-long long pow(long long a, long long b, long long mod){
-    long long ans = 1;
-    while(b){
-        if(b & 1)   ans = mul(ans, a, mod);
-        a = mul(a, a, mod);
-        b /= 2;
-    }
-    return ans;
-}
-
-bool cp(int x){
-    return ((int)sqrt(x) == sqrt(x));
+    for(int i=1; i<=lim; ++i)   if(minPrime[i] == 0)    minPrime[i] = i;
 }
 
 void solve(){
-    cin >> n >> m;
-
-    for(int i=1; i<=n; ++i) if(cp(i))   cnt_cp += 1;
-    cnt_not_cp = n - cnt_cp;
-
-    res += 1LL * pow(2, cnt_not_cp + 1, m) + 1LL * m;
-    res %= m;
-    cnt_cp -= 1;
-
-    while(cnt_cp){
-        res += 1LL * pow(2, cnt_not_cp, m) + 1LL * m;
-        res %= m;
-        cnt_cp -= 1;
-    }
-
-    cout << res;
+    cin >> n >> k;
+    for(int i=1; i<=lim; ++i)   if(isPrime[i])  cout << i << " ";
 }
-
+/*
+    snt lon nhat tu 1 -> 1e6 la: 999983
+*/
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
+    sieve();
     solve();
 }
