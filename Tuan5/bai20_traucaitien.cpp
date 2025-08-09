@@ -7,7 +7,7 @@ int val[1005][1005];
 
 void solve(){
     cin >> n >> m >> a >> b;
-
+    
 }
 
 int main(){
