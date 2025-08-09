@@ -2,6 +2,7 @@
 #include<cmath>
 #include<vector>
 #define int long long
+
 using namespace std;
 
 const int lim = 1e7;
