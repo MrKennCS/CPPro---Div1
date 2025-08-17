@@ -4,19 +4,21 @@
 using namespace std;
 
 int n, k;
-int   a[1000006];
-unordered_map<int, int> cnt;
+int a[1000009];
 long long res;
+unordered_map<int, int> cnt;
+unordered_map<int, bool> mark;
 
 void solve(){
     cin >> n >> k;
+    for(int i=1; i<=n; ++i){    cin >> a[i];    cnt[a[i]] += 1; }
     for(int i=1; i<=n; ++i){
-        cin >> a[i];
-        if(a[i] > k)   break;
-        res += (cnt[k - a[i]]);
-        cnt[a[i]] += 1;
+        if(a[i]*2 == k){
+            res += (cnt[2*a[i]]*(cnt[2*a[i]]-1)/2);
+            mark[a[i]] =
+        }else   
+
     }
-    cout << res;
 }
 
 int main(){
