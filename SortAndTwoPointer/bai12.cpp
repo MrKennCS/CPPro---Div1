@@ -24,7 +24,6 @@ void solve(){
         l -= 1;
         cout << r-l+1 << " ";
         res = min(res, r-l+1);
-        //cout << res << " ";
     }
 
 
