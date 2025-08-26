@@ -3,10 +3,10 @@
 using namespace std;
 
 int n;
+unsigned long long s;
 int a[400009];
-long long s;
-long long pre[400009];
-int res = 400010;
+unsigned long long pre[400009];
+int res = 2000000;
 
 void solve(){
     cin >> n >> s;
@@ -14,19 +14,16 @@ void solve(){
         cin >> a[i];
         a[i+n] = a[i];
     }
-    for(int i=1; i<=2*n; ++i){
-        pre[i] = pre[i-1] + a[i];
-    }
-
-    int l = 1;
-    for(int r=2; r<=2*n; ++r){
+    for(int i=1; i<=2*n; ++i)   pre[i] = pre[i-1] + a[i];
+    
+    int l=1;
+    for(int r=1; r<=2*n; ++r){
         while(pre[r] - pre[l-1] >= s)   l += 1;
-        l -= 1;
-        cout << r-l+1 << " ";
-        res = min(res, r-l+1);
-        //cout << res << " ";
+        int cur_l = (l == 1 ? 1 : l-1);
+        if(pre[r] - pre[cur_l-1] >= s)  res = min(res, r-cur_l+1);
+        //cout << cur_l << " " << r << " " << pre[r] - pre[cur_l-1] << '\n';
     }
-
+    cout << (res <= n ? res : -1);
 
 }
 

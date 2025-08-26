@@ -23,10 +23,10 @@ void solve(){
             cnt[a[r]] -= 1;
             l += 1;
         }
-        res = max(res, r - l + 1);
+        res = max(res, r - l + 1);  
     }
+    
     cout << res;
-
 }
 
 int main(){
