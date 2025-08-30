@@ -2,34 +2,36 @@
 #define ll long long
 using namespace std;
 
-ll n, m, k;
-ll ans;
+int n, m;
+ll k;
+ll l, r, mid, ans;
+ll cnt;
 
-ll cnt(ll x){
-    ll res = 0;
-    for(int i=1; i<=m; ++i){
-        res += min(n, x / i);
+ll kt(ll x){
+    cnt = 0;
+    for(int i=1; i<=n; ++i){
+        cnt += min(1LL*m, x/i);
     }
-    return res;
+    return cnt;
 }
 
 void solve(){
     cin >> n >> m >> k;
 
-    ll l = 1;
-    ll r = 1e12;
-    ll mid;
+    l = 1;
+    r = 1e12;
 
+    // tim vi tri cua phan tu lon nhat <= k
+    
     while(l <= r){
         mid = (l + r) >> 1;
-        //cout << cnt(mid) << " ";
-        if(cnt(mid) >= k){
+        if(kt(mid) <= k){
             ans = mid;
-            r = mid - 1;
-        }else   l = mid + 1;
+            l = mid + 1;
+        }else   r = mid - 1;
     }
-    cout << ans << '\n';
 
+    cout << ans;
 }
 
 int main(){
