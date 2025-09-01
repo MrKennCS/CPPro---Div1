@@ -1,28 +1,26 @@
 #include<iostream>
 #define ll long long
-
 using namespace std;
 
-ll n, k;
-ll res;
+int n, k, t;
+ll l, r, mid, res;
 
-bool kt(ll x){
-    return (x - x/n >= k);
+ll cnt(ll x){
+    return x - x/n - (x % n != 0 ? 1 : 0);
 }
 
 void solve(){
     cin >> n >> k;
 
-    ll l = 1;
-    ll r = 1e18;
-    ll mid;
+    l = 0;
+    r = 1e18;
 
     while(l <= r){
-        mid = (r + l) >> 1;
-        if(kt(mid)){
+        mid = (l + r) >> 1;
+        if(cnt(mid) < k){
             res = mid;
-            r = mid - 1;
-        }else   l = mid + 1;
+            l = mid + 1;
+        }else   r = mid - 1;
     }
 
     cout << res << '\n';
@@ -30,6 +28,12 @@ void solve(){
 
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
-    int q;  cin >> q;
-    while(q--)  solve();
+    cin >> t;
+    while(t--)  solve();
 }
+/*
+3   
+2 9 5
+3 5 3
+4 5 6
+*/

@@ -1,68 +1,58 @@
 #include<iostream>
-#include<algorithm>
 
 using namespace std;
 
-int n, m, q;
+int n, m, q, x;
+int L, R;
 int a[100009];
+int cnt[100009];
 int pre[100009];
-int l, r, mid, x;
-int res;
-
+int l, r, mid, res;
+// dung counting sort
 void solve(){
     cin >> n >> m;
     for(int i=1; i<=m; ++i){
-        cin >> l >> r;
-        pre[l] += 1;
-        pre[r + 1] -= 1;
+        cin >> L >> R;
+        pre[L]++;
+        pre[R+1]--;
     }
-    for(int i=1; i<=n; ++i) pre[i] += pre[i-1];
-    
-    sort(pre + 1, pre + n + 1);
-    //for(int i=1; i<=n; ++i) cout << pre[i] << " ";
+
+    for(int i=1; i<=n; ++i){
+        pre[i] += pre[i-1];
+        cnt[pre[i]]++;
+    }
+
+    int id = 1;
+    for(int i=0; i<=100000; ++i){
+        for(int j=0; j<cnt[i]; ++j){
+            pre[id] = i;
+            id += 1;
+        }
+    }
+    // 0 1 1 2 2 3 3
+
+    //for(int i=1; i<=n; ++i) cout << pre[i] << " ";  cout << '\n';
 
     cin >> q;
     while(q--){
         cin >> x;
-
+        // tim vi tri mid sao cho pre[mid] >= x
         l = 1;
         r = n;
 
-        res = 0;
-
         while(l <= r){
             mid = (l + r) >> 1;
-            if(pre[mid] < x){
+            if(x <= pre[mid]){
                 res = mid;
-                l = mid + 1;
-            }else   r = mid - 1;
+                r = mid - 1;
+            }else   l = mid + 1;
         }
+        if(pre[res] < x)   res = n + 1; 
 
-        cout << n - res << '\n';
-
+        cout << n - res + 1 << '\n';
     }
-    /*
-    7 4
-    1 3
-    2 5
-    1 2
-    5 6
-    4
-    1
-    7
-    4
-    2
 
-    0  0  0  0  0  0  0
-    1    -1
-    1  1 -1       -1
-    1    -1
-                1    -1
-
-->  2  3  2  1  2  1  0
-
-    */
-}
+}  
 
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);

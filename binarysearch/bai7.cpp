@@ -1,107 +1,70 @@
 #include<iostream>
-#include<vector>
 #include<algorithm>
 
 using namespace std;
 
-int n, x;
-int h[200009];
-int pre[200009];
-int l, r, mid, mid_id1, mid_id2;
-
-vector<int> odd(100009, 0);
-vector<int> even(100009, 0);
-int id1 = 1;
-int id2 = 1;
-int res1 = 200009;
-int res2;
-
-void solve1(){
-    cin >> n >> x;
+int n, h;
+int a[500009];
+int b[250009];
+int c[250009];
+int sz_b, sz_c;
+int l, r, mid, res1, res2;
+int ans1 = 200009, ans2;
+void solve(){
+    cin >> n >> h;
 
     for(int i=1; i<=n; ++i){
-        if(i & 1){  cin >> odd[id1];    id1 += 1;   }
-        else     {  cin >> even[id2];   id2 += 1;   }
+        if(i & 1)   cin >> b[sz_b + 1], sz_b += 1;
+        else        cin >> c[sz_c + 1], sz_c += 1;
     }
 
-    id1 -= 1;
-    id2 -= 1;
+    sort(b + 1, b + sz_b + 1);
+    sort(c + 1, c + sz_c + 1);
 
-    /*
-    14 5
-    1 3 4 2 2 4 3 4 3 3 3 2 3 3
+    for(int i=1; i<=sz_b; ++i)  cout << b[i] << " ";    cout << '\n';
+    for(int i=1; i<=sz_c; ++i)  cout << c[i] << " ";    cout << '\n';
 
-
-    14 5
-
-    1   4   2   3   3   3   3 
-      3   2   4   4   3   2   3
-    */
-
-    //cout << id1 << " " << id2 << '\n';
-
-    sort(odd.begin() + 1, odd.begin() + id1 + 1);
-    sort(even.begin()+ 1, even.begin()+ id2 + 1);
-    
-
-    // truong hop odd
-    for(int i=1; i<=x; ++i){
-        // tim vi tri odd[i] be nhat ma >= i
+    for(int i=1; i<=h; ++i){
+        // tim vi tri mid be nhat ma b[mid] >= i
         l = 1;
-        r = id1;
-        while(l <= r){
-            mid = (l + r) >> 1;
-            if(odd[mid] >= i){
-                mid_id1 = mid;
-                r = mid - 1;
-            }else   l = mid + 1;
-        }
-        // khi nay thi id1 - mid_id1 + 1 se la so chuong ngai vat con ong phai di qua
-        if(i > odd[id1])    mid_id1 = mid + 1;
-        if(i == odd[id1] && mid_id1 == id1) mid_id1 = id1;
-        //cout << mid_id1 << " " << id1 - mid_id1 + 1 << '\n';
-
-        l = 1;
-        r = id2;
-
-        int j = x - i + 1;
+        r = sz_b;
 
         while(l <= r){
             mid = (l + r) >> 1;
-            if(even[mid] >= j){
-                mid_id2 = mid;
+            if(i <= b[mid]){
+                r = mid - 1;
+                res1 = mid;
+            }else   l = mid + 1;
+        }
+        if(b[res1] < i)  res1 += 1;
+        //cout << sz_b - res + 1 << " ";
+        int j = h - i + 1;
+        l = 1;
+        r = sz_c;
+        // 2 2 3 3 3 4 4
+        // tim vi tri be nhat ma >= j
+        while(l <= r){
+            mid = (l + r) >> 1;
+            if(c[mid] >= j){
+                res2 = mid;
                 r = mid - 1;
             }else   l = mid + 1;
         }
-        if(j > even[id2])    mid_id2 = mid + 1;
-        if(j == even[id2] && mid_id2 == id2) mid_id2 = id2;
-        //cout << mid_id2 << " " << id2 - mid_id2 + 1 << '\n';
-        
-        //cout << id1 - mid_id1 + 1 << " " << id2 - mid_id2 + 1 << '\n';
-        if(res1 >= id1 - mid_id1 + id2 - mid_id2 + 2){
-            if(res1 == id1 - mid_id1 + id2 - mid_id2 + 2)   res2 += 1;
+        if(c[res2] < j)  res2 = sz_c + 1;
+        //cout << sz_c - res + 1 << " ";
+
+        if(ans1 >= sz_b - res1 + sz_c - res2 + 2){
+            if(ans1 == sz_b - res1 + sz_c - res2 + 2)   ans2 += 1;
             else{
-                res1 = id1 - mid_id1 + id2 - mid_id2 + 2;
-                res2 = 1;
+                ans2 = 1;
+                ans1 = sz_b - res1 + sz_c - res2 + 2;
             }
         }
-
-
     }
-    cout << res1 << " " << res2;
-
-    /*
-    1 2 3 3 3 4 
-    2 2 3 3 4 4
-    */
-    /*
-    for(int i=1; i<=id1; ++i)   cout << odd[i] << " ";  cout << '\n';
-    for(int i=1; i<=id2; ++i)   cout << even[i]<< " ";  cout << '\n';
-    */
-
+    cout << ans1 << " " << ans2;
 }
 
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
-    solve1();
+    solve();
 }
