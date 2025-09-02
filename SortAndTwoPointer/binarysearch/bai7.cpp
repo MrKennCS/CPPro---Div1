@@ -7,6 +7,8 @@ using namespace std;
 int n, x;
 int h[200009];
 int pre[200009];
+int l, r, mid;
+int res;
 
 vector<int> odd(100009, 0);
 vector<int> even(100009, 0);
