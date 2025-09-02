@@ -1,46 +1,42 @@
 #include<iostream>
+#include<algorithm>
 #define ll long long
 using namespace std;
 
 int n, k;
 int a[1000009];
+ll l, r, mid, res;
 
-int check(ll x){
-    ll res = 0;
-    for(int i=1; i<=n; ++i) res = res + x / a[i];
-    return res >= k;
+ll cnt(ll x){
+    ll ans = 0;
+    for(int i=1; i<=n; ++i){
+        ans += x / a[i];
+    }
+    return ans;
 }
 
 void solve(){
     cin >> n >> k;
     for(int i=1; i<=n; ++i) cin >> a[i];
+    sort(a + 1, a + n + 1);
 
-    /*
-    5 9
-    4 6 3 9 10
-
-    3  4  6  9 10
-
-
-    */
-
-    ll l = 0;
-    ll r = 1e18;
-    ll mid;
-    ll res;
+    l = 0;
+    r = 1e18;
 
     while(l <= r){
         mid = (l + r) >> 1;
-        if(check(mid)){
+        //cout << cnt(mid) << " ";
+        if(cnt(mid) >= k){
             res = mid;
             r = mid - 1;
         }else   l = mid + 1;
     }
 
     cout << res;
+
 }
 
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
-    solve();   
+    solve();
 }

@@ -1,36 +1,37 @@
 #include<iostream>
+#include<cmath>
 #define ll long long
 using namespace std;
 
-ll n, m, k;
-ll ans;
+int n, m;
+int a[1000009];
+int l, r, mid, res;
 
-ll cnt(ll x){
-    ll res = 0;
+ll cnt(int x){
+    ll ans = 0;
     for(int i=1; i<=m; ++i){
-        res += min(n, x / i);
+        ans += ceil(1.0 * a[i] / x);
     }
-    return res;
+    return ans;
 }
 
 void solve(){
-    cin >> n >> m >> k;
+    cin >> n >> m;
+    for(int i=1; i<=m; ++i) cin >> a[i];
 
-    ll l = 1;
-    ll r = 1e12;
-    ll mid;
+    l = 1;
+    r = 1e9;
 
     while(l <= r){
         mid = (l + r) >> 1;
-        //cout << cnt(mid) << " ";
-        if(cnt(mid) >= k){
-            ans = mid;
+        if(cnt(mid) <= n){
             r = mid - 1;
+            res = mid;
         }else   l = mid + 1;
     }
-    cout << ans << '\n';
 
-}
+    cout << res;
+}  
 
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
