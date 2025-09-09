@@ -4,7 +4,7 @@
 using namespace std;
 
 int n, len, d;
-set<int> st;
+multiset<int> st;
 int a[1000009];
 int l, r;
 long long res;
@@ -16,12 +16,12 @@ void solve(){
     for(r=1; r<=n; ++r){
         st.insert(a[r]);
 
-        while(l < r && (*st.rbegin() - *st.begin()) > d){
+        while((*st.rbegin() - *st.begin()) > d){
             st.erase(st.find(a[l]));
             l += 1;
         }
-
-        res += (max(0LL, 1LL*r - l + 1));
+        //cout << max(0LL, 1LL*r - l - len + 1) << " ";
+        res += (max(0LL, 1LL*r - l - len + 1));
     }
 
     cout << res;
