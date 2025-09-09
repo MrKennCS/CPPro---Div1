@@ -1,35 +1,41 @@
 #include<iostream>
-#include<queue>
-
+#include<set>
+#define sz(a) (int)a.size()
 using namespace std;
 
-int n, l, d;
-int a[100009];
-int mn = 1e9;
-int ans;
-priority_queue<int> qu;
+int n, len, d;
+set<int> st;
+int a[1000009];
+int l, r;
+
 void solve(){
-    cin >> n >> l >> d;
-    for(int i=1; i<=n; ++i){
-        cin >> a[i];
+    cin >> n >> len >> d;
+    for(int i=1; i<=n; ++i) cin >> a[i];
+
+    l = 1;
+    r = 1;
+
+    while(st.empty() || sz(st) <= len){
+        cout << a[r] << " ";
+        st.insert(a[r]);
+        r += 1;
     }
+    cout << "sz: " << sz(st) << '\n';
 
-    int l=1;
-    int r=l;
-
-    for(int i=l; i<=r; ++i) qu.push(a[i]),  mn = min(mn, a[i]);
-
+    for(set<int>::iterator it=st.begin(); it!=st.end(); ++it){
+        cout << *it << " ";
+    }
+    /*
     while(r <= n){
-
-        while(qu.top() - mn <= d){
-            r++;
-            qu.push(a[r]);
-            mn = min(mn, a[r]);
-            ans += 1;
+        
+        while(st.empty() || sz(st) < len){
+            st.insert(a[r]);
+            r += 1;
         }
-        cout << l << " " << r << " " << ans << '\n';
 
     }
+    */
+
 
 }
 
