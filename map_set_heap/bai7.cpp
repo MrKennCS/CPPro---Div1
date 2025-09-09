@@ -7,34 +7,25 @@ int n, len, d;
 set<int> st;
 int a[1000009];
 int l, r;
-
+long long res;
 void solve(){
     cin >> n >> len >> d;
     for(int i=1; i<=n; ++i) cin >> a[i];
 
-    l = 1;
-    r = 1;
-
-    while(st.empty() || sz(st) <= len){
-        cout << a[r] << " ";
+    l=1;
+    for(r=1; r<=n; ++r){
         st.insert(a[r]);
-        r += 1;
-    }
-    cout << "sz: " << sz(st) << '\n';
 
-    for(set<int>::iterator it=st.begin(); it!=st.end(); ++it){
-        cout << *it << " ";
-    }
-    /*
-    while(r <= n){
-        
-        while(st.empty() || sz(st) < len){
-            st.insert(a[r]);
-            r += 1;
+        while(l < r && (*st.rbegin() - *st.begin()) > d){
+            st.erase(st.find(a[l]));
+            l += 1;
         }
 
+        res += (max(0LL, 1LL*r - l + 1));
     }
-    */
+
+    cout << res;
+    
 
 
 }
