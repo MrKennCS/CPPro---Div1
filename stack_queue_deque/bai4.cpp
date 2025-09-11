@@ -12,6 +12,7 @@ stack<char> res;
 void solve(){
     cin >> s;
     n = sz(s);
+
     for(int i=0; i<n; ++i){
         if(s[i] == '<'){
             if(!le.empty()){
@@ -29,6 +30,7 @@ void solve(){
             le.push(s[i]);
         }
     }
+
     while(!le.empty()){
         res.push(le.top());
         le.pop();
@@ -37,6 +39,17 @@ void solve(){
         cout << res.top();
         res.pop();
     }
+    cout << '\n';
+    while(!ri.empty()){
+        res.push(ri.top());
+        ri.pop();
+    }
+    while(!res.empty()){
+        cout << res.top();
+        res.pop();
+    }
+
+
 }
 
 int main(){
