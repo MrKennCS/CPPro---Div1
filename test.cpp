@@ -1,10 +1,15 @@
 #include<iostream>
 #include<vector>
 #include<algorithm>
+#include<bits/stdc++.h>
 
 using namespace std;
 
 int a[100][100];
+vector<int> vec;
+stack<int> st;
+set<int> arr;
+priority_queue<int, vector<int>, greater<vector<int>>> qu;
 
 void solve(){
     int n, m;    cin >> n >> m;

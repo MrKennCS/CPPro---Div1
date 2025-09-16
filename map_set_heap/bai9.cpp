@@ -1,35 +1,71 @@
 #include<iostream>
-#include<queue>
-#include<set>
+#include<stack>
 
-#define sz(a) (int)a.size()
 using namespace std;
 
-priority_queue<int> qu;
+int n, m;
+int a[1005][1005];
+int hi[1005];
+int l[1005], r[1005];
+long long res;
 
-int main(){
-    string s;
-    while(cin >> s){
-        if(s[0] == '-'){
-            if(!qu.empty()){
-                int tmp = qu.top();
-                while(!qu.empty() && qu.top() == tmp)  qu.pop();
-            }
-        }else{
-            int num = 0;
-            for(int i=1; i<sz(s); ++i){
-                num = num*10 + (s[i] - '0');
-            }
-            if(sz(qu) < 15000)  qu.push(num);
+/*
+11 13
+0 0 0 0 0 1 0 0 0 0 0 0 0
+0 0 0 0 1 1 1 0 0 0 0 0 0
+0 0 1 1 1 1 1 1 1 0 0 0 0
+0 0 1 1 1 1 1 1 1 0 0 0 0
+0 1 1 1 1 1 1 1 1 1 0 0 0
+1 1 1 1 1 1 1 1 1 1 1 0 0
+0 1 1 1 1 1 1 1 1 1 0 0 0
+0 0 1 1 1 1 1 1 1 0 0 0 0
+0 0 1 1 1 1 1 1 1 0 0 0 0
+0 0 0 0 1 1 1 0 0 0 0 1 1
+0 0 0 0 0 1 0 0 0 0 0 1 1
+
+*/
+void solve(){
+    cin >> n >> m;
+    for(int i=1; i<=n; ++i){
+        for(int j=1; j<=m; ++j){
+            cin >> a[i][j];
         }
     }
 
-    set<int> st;
-    while(!qu.empty())  st.insert(qu.top()),    qu.pop();
-    cout << sz(st) << '\n';
-    while(!st.empty()){
-        cout << *st.rbegin() << '\n';
-        st.erase(prev(st.end()));
+    for(int i=1; i<=n; ++i){
+        for(int j=1; j<=m; ++j){
+            if(a[i][j] == 0)    hi[j] = 0;
+            else                hi[j] += 1;
+            //cout << hi[j] << " ";
+        }
+
+        stack<int> st;
+        for(int j=1; j<=m; ++j){
+            while(!st.empty() && hi[j] <= hi[st.top()])    st.pop();
+            //st.top la thang dau tien < hi[j]
+            if(!st.empty()) l[j] = st.top() + 1;
+            else            l[j] = 1;
+            st.push(j);
+        }
+        while(!st.empty())  st.pop();
+        for(int j=m; j>=1; --j){
+            while(!st.empty() && hi[j] <= hi[st.top()])    st.pop();
+            //st.top la thang dau tien < hi[j]
+            if(!st.empty()) r[j] = st.top() - 1;
+            else            r[j] = m;
+            st.push(j);
+        }
+        //cout << '\n';
+        for(int j=1; j<=m; ++j){
+            res = max(res, 1LL * (r[j] - l[j] + 1) * hi[j]);
+        }
+
     }
-    
+
+    cout << res;
+}
+
+int main(){
+    ios_base::sync_with_stdio(false);   cin.tie(0);
+    solve();
 }

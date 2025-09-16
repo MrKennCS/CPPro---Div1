@@ -39,14 +39,9 @@ void solve(){
         cout << res.top();
         res.pop();
     }
-    cout << '\n';
     while(!ri.empty()){
-        res.push(ri.top());
+        cout << ri.top();
         ri.pop();
-    }
-    while(!res.empty()){
-        cout << res.top();
-        res.pop();
     }
 
 
