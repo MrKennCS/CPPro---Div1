@@ -51,7 +51,7 @@ void solve(){
     }
 
     //for(int i=1; i<=n; ++i) cout << lmax[i] << " " << rmax[i] << '\n';
-    for(int i=1; i<=n; ++i) cout << lmin[i] << " " << rmin[i] << '\n';
+    //for(int i=1; i<=n; ++i) cout << lmin[i] << " " << rmin[i] << '\n';
 
     cout << res;
 
