@@ -9,7 +9,6 @@ using namespace std;
 
 int q, m, n;
 int l, r, mid, res;
-int cnt[50009];
 vector<pair<int, int>> a;
 
 bool check(int x){
@@ -30,8 +29,6 @@ bool check(int x){
             if(tmp < i) return 0;
             qu.pop();
         }
-        
-        
     }
 
     if(!qu.empty()) return 0;
@@ -60,7 +57,7 @@ void solve(){
     l = 1;
     r = n;
     res = 0;
-    
+
     while(l <= r){
         mid = (l + r) >> 1;
         if(check(mid)){
@@ -69,7 +66,7 @@ void solve(){
         }else   r = mid - 1;
     }
 
-    cout << res;
+    cout << res << '\n';
 }
 
 int main(){
