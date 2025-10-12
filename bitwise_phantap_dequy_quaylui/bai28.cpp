@@ -1,45 +1,45 @@
 #include<iostream>
-#define ll long long
-#define get_bit(x, y) (((x) >> (y)) & 1)
+#include<vector>
+
 using namespace std;
 
 int n;
+int sum_a, sum_b;
 int a[25];
-ll sum;
-ll check;
+int pos;
+int ans[25];
+int ok;
+
+void backtrack(int pos){
+    for(int i=1; i<=2; ++i){
+        ans[pos] = i;
+        if(i == 1)  sum_a += a[pos];
+        else        sum_b += a[pos];
+
+        if(pos == n){
+            if(sum_a == sum_b){
+                for(int j=1; j<=n; ++j){
+                    cout << ans[j];
+                }
+                cout << '\n';
+                ok++;
+            }
+        }else   backtrack(pos+1);
+
+        if(i == 1)  sum_a -= a[pos];
+        else        sum_b -= a[pos];
+    }
+}
 
 void solve(){
     cin >> n;
-    for(int i=1; i<=n; ++i){
-        cin >> a[i];
-        sum += a[i];
-    }
+    for(int i=1; i<=n; ++i) cin >> a[i];
 
-    if(sum & 1){
+    backtrack(1);
+
+    if(ok == 0){
         cout << -1;
-        return ;
     }
-
-    // 2097153 ~ 2e6
-
-    check = sum / 2;
-    sum = 0;
-
-    int end = (1 << (n+1)) + 1;
-
-    for(int i=0; i<=end; ++i){
-        for(int j=0; j<n; ++j){
-            if(get_bit(i, j) == 1)  sum += (a[j]);
-        }
-        if(sum == check){
-            for(int j=0; j<n; ++j){
-                cout << get_bit(i, j);
-            }
-            cout << '\n';        
-        }
-    }
-
-
 }
 
 int main(){
