@@ -1,41 +1,43 @@
 #include<iostream>
+#include<cstring>
 
 using namespace std;
 
 int k, n;
-int hu[100009];
-int res[100009];
 const int mod = 14062008;
+int dp[100009];
 
 void solve(){
     cin >> n >> k;
-
-    res[1] = 1;
-    res[2] = 1;
-
-    for(int i=1; i<=k; ++i){
-        cin >> hu[i];
-        res[hu[i]] = -1;
-    }
+    
     /*
-    =  =  =  =  =
+    Goi dp[i] la so cach de Lucky leo den bac thang thu i
 
-    f[1] = 1
-    f[2] = 1
-    f[3] = 2
-    f[4] = 3
-    f[5] = 5
+    TH1: dp[i] bi hu
+->  dp[i] = 0
+
+    TH2: dp[i] khong bi hu
+->  dp[i] = dp[i-1] + dp[i-2];
+
+    * Luu y:
+    dp[i-1] xac dinh khi khong hu && i >= 1
+    dp[i-2] xac dinh khi khong hu && i >= 2
+
     */
-    for(int i=3; i<=n; ++i){
-        if(res[i] != -1){
-            int cong1 = (res[i-1] == -1 ? 0 : res[i-1]);
-            int cong2 = (res[i-2] == -1 ? 0 : res[i-2]);
-            //cout << cong1 << " " << cong2 << '\n';
-            res[i] = cong1 + cong2;
-            res[i] %= mod;
-        }
+    memset(dp, -1, sizeof(dp));
+    for(int i=1; i<=k; ++i){
+        int hu; cin >> hu;
+        dp[hu] = 0;
     }
-    cout << res[n];
+    dp[0] = 0;
+    dp[1] = 1;
+    for(int i=2; i<=n; ++i){
+        if(dp[i] == 0)  continue;
+        dp[i] = dp[i-1] % mod + dp[i-2] % mod;
+        dp[i] %= mod;
+    }
+
+    cout << dp[n];
 }
 
 int main(){

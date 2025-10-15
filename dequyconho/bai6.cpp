@@ -3,37 +3,33 @@
 using namespace std;
 
 int n;
-const int mod = 1e9 + 7;
-int f[100009];
+int a[1000009];
+int dp[1000009];
 
 void solve(){
     cin >> n;
-
-    
-    /*
-    i le:
-
-    f[i] = f[i-1] + 1;
-
-    i chan:
-
-    f[i] = f[i-1] * 2;
-
-    f[1] = 1
-    f[2] = 2
-    f[3] = 3
-    f[4] = 5
-    f[5] = 8
-    f[6] = 13
-
-    */
-    f[0] = 1;
-    f[1] = 1;
-    for(int i=2; i<=n; ++i){
-        f[i] = (f[i-1] % mod + f[i-2] % mod) % mod;
+    for(int i=1; i<=n; ++i) cin >> a[i];
+    dp[0] = 0;
+    for(int i=1; i<=n; ++i){
+        dp[i] = max(dp[i-1], dp[i-2]);
+        if(i >= 2){
+            dp[i] = max(dp[i-1], dp[i-2]) + a[i];
+        }
     }
-    cout << f[n];
+    cout << dp[n];
+    /*
+    Goi dp[i] la diem lon nhat khi xet den vi tri phong i
 
+    Khi xet den dp[i], ta co 2 trang thai
+
+    TH1: dp[i] la vi tri duoc nem
+->  dp[i] = dp[i-1] + a[i];
+    dp[i] = dp[i-2] + a[i];
+    Vay ta xet max cua dp[i-1] va dp[i-2] roi sau do + a[i]
+
+    TH2: dp[i] la vi tri khong duoc nem
+->  dp[i] = dp[i-1];
+    */
 }
 
 int main(){

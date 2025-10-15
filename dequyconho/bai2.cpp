@@ -1,63 +1,41 @@
 #include<iostream>
-#include<vector>
-#include<unordered_map>
-#define sz(a)
-#define pb push_back
-#define ii pair<int, int>
-#define fi first
-#define se second
-#define sz(a) (int)a.size()
-#define get_bit(x, y) (((x) >> (y)) & 1)
 
 using namespace std;
 
-int n, m;
-vector<ii> a, b;
-unordered_map<int, int> cnt;
-int res;
-int id;
+int n;
+int t[60006];
+int r[60006];
+int dp[60006];
 
 void solve(){
-    cin >> n >> m;
+    cin >> n;
+    for(int i=1; i<=n; ++i)     cin >> t[i];
+    for(int i=1; i<=n-1; ++i)   cin >> r[i];
 
+    /*
+    goi dp[i] la thoi gian mua be nhat khi xet  den nguoi thu i
+
+    Khi xet dep dp[i], ta co 2 trang thai:
+
+    TH1: nguoi thu i mua mot minh
+
+    dp[i] = dp[i-1] + t[i]
+
+    TH2: nguoi thu i da duoc nguoi thu i-1 mua cho
+
+    dp[i] = dp[i-2] + r[i-1]
+
+    * Chu y o day khi xet truong hop 2, i phai >= 2 moi duoc xet 
+
+    -> Moi lan xet dp[i], ta chi can lay min cua 2 truong hop tren
+    */
+    dp[0] = 0;
     for(int i=1; i<=n; ++i){
-        ii tmp; cin >> tmp.fi >> tmp.se;
-        if(i <= n/2)    a.pb(tmp);
-        else            b.pb(tmp);
+        dp[i] = dp[i-1] + t[i];
+        if(i >= 2)  dp[i] = min(dp[i], dp[i-2] + r[i-1]);
     }
 
-    for(int mask=0; mask<(1LL<<sz(a)); ++mask){
-        ii sum = {0, 0};
-        for(int i=0; i<sz(a); ++i){
-            if(get_bit(mask, i) == 1){
-                sum.fi += a[i].fi;
-                sum.se += a[i].se;
-            }
-        }
-        if(sum.fi <= m) res = max(res, sum.se);
-        cnt[sum.fi] = sum.se;
-        /*
-        cnt[id] = sum;
-        id++;
-        */
-    }
-
-    for(int mask=0; mask<(1LL<<sz(b)); ++mask){
-        ii sum = {0, 0};
-        for(int i=0; i<sz(b); ++i){
-            if(get_bit(mask, i) == 1){
-                sum.fi += b[i].fi;
-                sum.se += b[i].se;
-            }
-        }
-        if(sum.fi <= m) res = max(res, sum.se);
-        for(unordered_map<int, int>::iterator it=cnt.begin(); it!=cnt.end(); ++it){
-            if(sum.fi + (*it).fi <= m)    res = max(sum.se + (*it).se, res);
-        }
-
-    }
-
-    cout << res;
+    cout << dp[n];
 }
 
 int main(){

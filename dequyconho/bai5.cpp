@@ -1,63 +1,71 @@
 #include<iostream>
-#include<vector>
-#define sz(a) (int)a.size()
-#define pb push_back
 
 using namespace std;
 
 int n;
 const int mod = 1e9 + 7;
-int res;
+int dp[1000009];
 
-/*
-f[i] =
+int cnt;
 
-f[1] = 1
-f[2] = 2
-f[3] = 4
-f[4] = 8
-f[5] =
+void backtrack(int target, int sum){
+    if(sum >= target){
+        if(sum == target)   cnt++;
+        return ;
+    }
 
-1 1 1 1
-1 1 2
-1 2 1
-2 1 1
-2 2
-1 3
-3 1
-4
-
-*/
-vector<int> state;
-int sum;
-
-void backtrack(int target){
     for(int i=1; i<=6; ++i){
-        sum += i;
-        state.pb(i);
-
-        if(sum >= target){
-            if(sum == target){
-                res++;
-                /*
-                for(int i=0; i<sz(state); ++i){
-                    cout << state[i] << " ";
-                }
-                cout << '\n';
-                */
-            }
-        }else   backtrack(target);
-
-        sum -= i;
-        state.pop_back();
+        backtrack(target, sum + i);
     }
 }
 
 void solve(){
     cin >> n;
 
-    backtrack(10);
-    cout << '\n' << res;
+    dp[0] = 1;
+    dp[1] = 1;
+    dp[2] = 2;
+    dp[3] = 4;
+    dp[4] = 8;
+    dp[5] = 16;
+    dp[6] = 32;
+    
+    for(int i=6; i<=n; ++i){
+        dp[i] = dp[i-1] % mod;
+        dp[i] = (dp[i] % mod + dp[i-2] % mod) % mod;
+        dp[i] = (dp[i] % mod + dp[i-3] % mod) % mod;
+        dp[i] = (dp[i] % mod + dp[i-4] % mod) % mod;
+        dp[i] = (dp[i] % mod + dp[i-5] % mod) % mod;
+        dp[i] = (dp[i] % mod + dp[i-6] % mod) % mod;
+        /*
+        */
+        //dp[i] = dp[i-1] % mod + dp[i-2] + dp[i-3] + dp[i-4] + dp[i-5] + dp[i-6];
+    }
+    cout << dp[n];
+    //for(int i=1; i<=n; ++i) cout << dp[i] << '\n';
+    /*
+    Goi dp[i] la so cach tao ra tong i
+
+    Ta co cong thuc truy hoi nhu sau:
+
+    dp[i] = dp[i-1] + dp[i-2] + dp[i-3] + dp[i-4] + d[i-5] + dp[i-6], voi moi i >= 6
+
+    1   1
+    2   2
+    3   4
+    4   8
+    5   16
+    6   32
+    7   63
+    8   125
+
+    for(int i=1; i<=8; ++i){
+        cnt = 0;
+        backtrack(i, 0);
+        cout << cnt << '\n';
+    }
+    */
+
 }
 
 int main(){
