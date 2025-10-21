@@ -1,22 +1,31 @@
 #include<iostream>
+#include<unordered_map>
+
+#define ull unsigned long long
 
 using namespace std;
 
+ull n;
+unordered_map<ull, ull> dp;
+
+ull dequy(ull pos){
+    if(dp[pos] != 0)  return dp[pos];
+
+    ull &res = dp[pos];
+
+    res = dequy(pos/2) + dequy(pos/3);
+
+    return res;
+}
+
 void solve(){
-    int n;
     cin >> n;
 
-    int f[n + 5];
-    f[0] = 1;
-
-    for(int i=1; i<=n; ++i){
-        f[i] = f[i/2] + f[i/3];
-    }
-
-    cout << f[n];
+    dp[0] = 1;
+    cout << dequy(n);
 }
 
 int main(){
-    ios_base::sync_with_stdio(false);  cin.tie(0);
+    ios_base::sync_with_stdio(false);   cin.tie(0);
     solve();
 }

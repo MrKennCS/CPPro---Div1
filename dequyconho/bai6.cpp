@@ -1,35 +1,50 @@
 #include<iostream>
+#include<cstring>
 
 using namespace std;
 
 int n;
-int a[1000009];
-int dp[1000009];
+const int mod = 1e9 + 7;
+int res;
+int cal[100006];
+int dp[100009];
+
+void backtrack(int pos){
+    if(pos == n + 1){
+        res++;
+        return ;
+    }
+    backtrack(pos + 1);
+    if(pos + 1 <= n)backtrack(pos + 2);
+}
+
+/*
+Voi moi vi tri i
+
+dp[i] = 
+*/
+
+int dequyconho(int pos){
+    if(dp[pos] != -1)   return dp[pos];
+
+    int &ans = dp[pos];
+    ans = 0;
+
+    if(pos >= 3)    ans = dequyconho(pos-1) % mod + dequyconho(pos-2) % mod;
+    else            ans = dequyconho(pos-1);
+
+    return ans % mod;
+}
 
 void solve(){
     cin >> n;
-    for(int i=1; i<=n; ++i) cin >> a[i];
-    dp[0] = 0;
-    for(int i=1; i<=n; ++i){
-        dp[i] = max(dp[i-1], dp[i-2]);
-        if(i >= 2){
-            dp[i] = max(dp[i-1], dp[i-2]) + a[i];
-        }
-    }
-    cout << dp[n];
-    /*
-    Goi dp[i] la diem lon nhat khi xet den vi tri phong i
+    //backtrack(1);
 
-    Khi xet den dp[i], ta co 2 trang thai
+    memset(dp, -1, sizeof(dp));
+    dp[1] = 1;
+    dp[2] = 1;
 
-    TH1: dp[i] la vi tri duoc nem
-->  dp[i] = dp[i-1] + a[i];
-    dp[i] = dp[i-2] + a[i];
-    Vay ta xet max cua dp[i-1] va dp[i-2] roi sau do + a[i]
-
-    TH2: dp[i] la vi tri khong duoc nem
-->  dp[i] = dp[i-1];
-    */
+    cout << dequyconho(n+1);
 }
 
 int main(){
