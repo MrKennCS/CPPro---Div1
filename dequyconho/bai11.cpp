@@ -11,23 +11,19 @@ using namespace std;
 int n;
 string s;
 int sum;
-int res;
+int l, r;
+const int mod = 1e9 + 7;
+
+void add(int &x, int y){
+    x += y;
+    if(x >= mod)    x -= mod;
+}
 
 void solve(){
     cin >> s;
     n = sz(s);
-
-    for(int mask=0; mask<(1<<n); ++mask){
-        for(int i=0; i<n; ++i){
-            sum = 0;
-            if(get_bit(mask, i) == 1){
-                sum += (s[i] == 'R' ? 1 : -1);
-            }
-        }
-        res += abs(sum);
-    }
-
-    cout << res;
+    
+    
 }
 
 int main(){

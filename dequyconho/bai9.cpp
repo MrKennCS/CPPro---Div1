@@ -1,28 +1,31 @@
 #include<iostream>
 #include<unordered_map>
-
-#define ull unsigned long long
-
+#include<cstring>
+#define ll long long
 using namespace std;
 
-ull n;
-unordered_map<ull, ull> dp;
+ll n;
+unordered_map<ll, ll> dp;
 
-ull dequy(ull pos){
-    if(dp[pos] != 0)  return dp[pos];
+ll trau(ll x){
+    if(dp[x] != 0) return dp[x];
 
-    ull &res = dp[pos];
+    ll &res = dp[x];
+    res = 0;
 
-    res = dequy(pos/2) + dequy(pos/3);
+    res += trau(x/2);
+    res += trau(x/3);
 
     return res;
 }
 
 void solve(){
     cin >> n;
-
+    
+    //memset(dp, {}, sizeof(dp));
     dp[0] = 1;
-    cout << dequy(n);
+    
+    cout << trau(n);
 }
 
 int main(){
