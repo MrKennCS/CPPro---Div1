@@ -1,4 +1,6 @@
 #include<iostream>
+#pragma GCC optimize(O2)
+#pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
 
 using namespace std;
 
@@ -66,22 +68,27 @@ void sub_1_va_2(){
 void solve(){
     cin >> n >> k;
 
-    //for(int val=1; val<=n; ++val)   dp[1][val] = 1;
+    for(int val=1; val<=k; ++val)   dp[val][0] = val;
     for(int i=1; i<=k; ++i){
         for(int j=1; j<=n; ++j){
             if(i == 1)  dp[i][j] = 1;
             else{
-                for(int k=1; k*k<=j; ++k){
-                    if(j % k == 0){
-                        //dp[i][j] += dp[i-1][k];
-                        add(dp[i][j], dp[i-1][k]);
-                        //if(j / k != k)  dp[i][j] += dp[i-1][j/k];
-                        if(j / k != k)  add(dp[i][j], dp[i-1][j/k]);
-                    }
+                for(int num=j; num<=n; num += j){
+                    add(dp[i][num], dp[i-1][j]);
+                    //dp[i][num] += dp[i-1][j];
                 }
             }
         }
     }
+    /*
+    for(int j=0; j<=n; ++j){
+        cout << j << " ";
+        for(int i=1; i<=k; ++i){
+            cout << dp[i][j] << " ";
+        }
+        cout << '\n';
+    }
+    */
 
     for(int i=1; i<=n; ++i) add(res, dp[k][i]);
     cout << res;
@@ -103,9 +110,68 @@ void solve(){
     dp[i][j] = dp[i-1][num] với num là mọi ước của j mà <= n
 */
 
+/**/
+
+void review(){
+    cin >> n >> k;
+    /*
+    Goi dp[k][n] la trang thai day co do dai k va phan tu cuoi cung la n
+
+    Với mỗi bài toán ở vị trí k, ta có thể cập nhật lên các bài toán k+1 bằng cách cộng dồn lên cho các trạng thái là bội của bài toán k
+
+    dp[k][n] -> dp[k+1][bội của n]
+
+=>  dp[k+1][Bội của n] += dp[k][n]
+
+    Ta có:
+
+    BASE:
+    dp[1][1] = 1
+    for(int i=1; i<k; ++i){
+        for(int j=1; j<=n; ++j){
+            for(int boi=j; boi<=n; boi+=j){
+                dp[i+1][boi] += dp[i][j];
+            }
+        }
+    }
+    */
+    //dp[1][1] = 1;
+    for(int i=1; i<=n; ++i) dp[1][i] = 1;
+    for(int i=1; i<=n; ++i) dp[0][i] = i;
+    for(int i=1; i<=k; ++i) dp[i][0] = i;
+    /*
+    */
+
+    for(int i=1; i<k; ++i){
+        for(int j=1; j<=n; ++j){
+            for(int boi=j; boi<=n; boi+=j){
+                add(dp[i+1][boi], dp[i][j]);
+                //dp[i+1][boi] += dp[i][j];
+            }
+            /*
+            cout << "CASE: " << i << " " << j << '\n';
+            for(int i=0; i<=k; ++i){
+                for(int j=0; j<=n; ++j){
+                    cout << dp[i][j] << " ";
+                }
+                cout << '\n';
+            }
+            */
+        }
+    }
+    /*
+    for(int i=0; i<=k; ++i){
+        for(int j=0; j<=n; ++j){
+            cout << dp[i][j] << " ";
+        }
+        cout << '\n';
+    }
+    */
+    for(int  i=1; i<=n; ++i) add(res, dp[k][i]);
+    cout << res;
+}
+
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
-    freopen("test.INP", "r", stdin);
-    freopen("test.ANS", "w", stdout);
-    solve();
+    review();
 }

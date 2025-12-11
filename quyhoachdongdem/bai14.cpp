@@ -101,7 +101,7 @@ void topdown(){
 
     Với s, do sum - x[i] có thể âm nên ta lưu ý một chút
 
-    for(int i=1; i<=n; ++i) dp[i][0] = 1; 
+    for(int i=1; i<=n; ++i) dp[i][0] = 1
     for(int i=1; i<=n; ++i){
         for(int s=x[i]; s<=tong; ++s){
             dp[i][s] = max(dp[i-1][s], dp[i-1][s-x[i]])

@@ -2,6 +2,7 @@
 
 using namespace std;
 
+/*
 int n, k;
 const int mod = 1e9 + 7;
 const int N = 1e5 + 5;
@@ -12,6 +13,7 @@ void add(int &x, int y){
     x += y;
     if(x >= mod)    x -= mod;
 }
+*/
 
 void solve(){
     /*
@@ -38,6 +40,9 @@ void solve(){
 
     dp[i + h[j]] += dp[i]
     */
+
+    /*
+    ### SOLVE
     cin >> n >> k;
     for(int i=1; i<=k; ++i) cin >> h[i];
 
@@ -49,9 +54,26 @@ void solve(){
     }
 
     cout << dp[n];
+    */
+}
+
+int n, k;
+int a[1005];
+int dp[100005];
+
+void review(){
+    cin >> n >> k;
+    for(int i=1; i<=k; ++i) cin >> a[i];
+
+    dp[0] = 1;
+    for(int s=1; s<=n; ++s){
+        for(int i=1; i<=k; ++i){
+            
+        }
+    }
 }
 
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
-    solve();
+    review();
 }

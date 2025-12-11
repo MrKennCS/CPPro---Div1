@@ -21,8 +21,9 @@ int main()
     {
         ofstream inp((NAME + ".INP").c_str());
 
-        int n = Rand(1, 100);
-        inp << n << '\n';
+        int n = Rand(1, 2000);
+        int k = Rand(1, 2000);
+        inp << n << " " << k;
 
         inp.close();
 

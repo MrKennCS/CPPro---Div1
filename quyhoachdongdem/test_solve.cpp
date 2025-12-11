@@ -1,107 +1,116 @@
 #include<iostream>
-#include<cstring>
 
 using namespace std;
 
-/*
-Bài toán yêu cầu đếm số cách chia dãy {1, 2, 3, ..., n} thành 2 tập hợp có tống bằng nhau
-
-Nx1: Tổng từ 1 -> n lẻ
-=> Ans = 0
-
-Nếu chẵn rồi ta sẽ xét tiếp, thử nghĩ theo hướng QHĐ đếm, ta tư duy như sau:
-
-Ta cần thêm hai chiều để quản lý sum của tập hợp A và B khi xét tới i
-
--> ta có dp[i][sum_1][sum_2]
-
-Cho chiều [i] quản lý phần tử đang xét
-
-Với mỗi i, ta 2 trường hợp:
-
-    TH1: i vào nhóm A
-->  (i, sum_1, sum_2) -> (i + 1, sum_1 + i, sum_2)
-
-    TH2: i vào nhóm B
-->  (i, sum_1, sum_2) -> (2 + 1, sum_1, sum_2 + i)
-
-    Nhận xét một chút, nếu dp[i][sum_1][sum_2] thì sẽ RTE, n*(n*(n+1)/2)^2 = ~7x10^12 -> TLE + RTE
-
-    Ta để trạng thái thỏa mãn, ta có thể lượt bỏ chiều sum_2
-
-->  dp[i][sum] là ổn
-
-Với mỗi i, ta có 2 trường hợp:
-
-    TH1: i vào nhóm A
-->  (i, sum) -> (i + 1, sum + i)
-=>  dp[i + 1][sum + i] += dp[i][sum];
-
-    TH2: i vào nhóm B
-->  (i, sum) -> (i + 1, sum)
-=>  dp[i + 1][sum] += dp[i][sum]
-    */
-
-int tong;
-int dp[505][125755];
 const int mod = 1e9 + 7;
+int n, k;
+int a[2003];
+int dp[2003][2003];
+int res;
 
 void add(int &x, int y){
     x += y;
-    if(x >= mod)    x -= mod;
+    if(x >= mod) x -= mod;
 }
 
-void bottomup(int n){
-    //cin >> n;
-    tong = (n + 1) * n / 2;
+void sub_1_va_2(){
+    cin >> n >> k;
 
-    if(tong & 1){
-        cout << 0 << '\n';
-        return ;
+    if(k == 2){
+        for(int i=1; i<=n; ++i){
+            for(int j=i; j<=n; ++j){
+                if(j % i == 0)  res++;
+            }
+        }
+    }else if(k == 3){
+        for(int i=1; i<=n; ++i){
+            for(int j=i; j<=n; ++j){
+                for(int k=j; k<=n; ++k){
+                    if(j % i == 0 && k % j == 0)    res++;
+                }
+            }
+        }
     }
+    cout << res;
+}
 
-    tong /= 2;
-    //memset(dp, 0, sizeof(dp));
+/*
+    Đề bài yêu cầu tìm số dãy số có độ dài k và dãy thỏa điều kiện a[i] % a[i-1] == 0 với mọi i>=2
 
-    dp[0][0] = 1;
-    for(int i=0; i<n; ++i){
-        for(int sum=0; sum<=tong; ++sum){
-            add(dp[i + 1][sum + i + 1], dp[i][sum]);
-            add(dp[i + 1][sum], dp[i][sum]);
-            //dp[i + 1][sum + i + 1] += dp[i][sum];
-            //dp[i + 1][sum] += dp[i][sum];
+    * ĐỀ BÀI YÊU CẦU ĐẾM SỐ DÃY THỎA MÃN
+
+    Như vậy ta sẽ đếm số trạng thái thảo mãn, ta cần quản lý những điều sau:
+        + Trạng thái hiện tại [i]
+        + Giá trị ở vị trí i
+
+    Với mỗi i, ta có các trạng thái:
+
+    TH1: val = 1
+->  (i, 1) -> (i + 1, [1 -> n]); 
+
+    TH2: val = 2
+->  (i, 2) -> (i + 1, 2)
+
+    TH3: val = 3
+->  (i, 3) -> (i + 1, 3)
+
+    ...
+
+    THn: val = n
+->  (i, n) -> (i + 1, [x % n == 0, n < x <= lim])
+
+    BASE:
+    dp[1][val: 1 -> n] = 1
+*/
+
+void solve(){
+    cin >> n >> k;
+
+    for(int val=1; val<=k; ++val)   dp[val][0] = val;
+    for(int i=1; i<=k; ++i){
+        for(int j=1; j<=n; ++j){
+            if(i == 1)  dp[i][j] = 1;
+            else{
+                for(int num=j; num<=n; num += j){
+                    add(dp[i][num], dp[i-1][j]);
+                    //dp[i][num] += dp[i-1][j];
+                }
+            }
         }
     }
     /*
-    for(int i=1; i<=n; ++i)     dp[i][0] = i;
-    for(int i=1; i<=tong; ++i)  dp[0][i] = i;
-    dp[0][0] = 1;
-    for(int sum = 0; sum <= tong; ++sum){
-        for(int i = 0; i <= n; ++i){
-            cout << dp[i][sum] << " ";
+    for(int j=0; j<=n; ++j){
+        cout << j << " ";
+        for(int i=1; i<=k; ++i){
+            cout << dp[i][j] << " ";
         }
         cout << '\n';
     }
     */
 
-    //if(dp[n][tong] & 1) cout << "n = " << n << ": " << dp[n][tong] << " | " << dp[n][tong] / 2 << '\n';
-    cout << dp[n][tong] / 2 << '\n';
+    for(int i=1; i<=n; ++i) add(res, dp[k][i]);
+    cout << res;
 }
 
-void solve(){
+/*
+    XÂY MẢNG THÌ CẦN YẾU TỐ ĐỘ DÀI, HƠN NỮA ĐỀ CŨNG YÊU CẦU ĐIỀU KIỆN ĐỘ DÀI K
+->  dp phải có một chiều cho độ dài [i]
 
-}
+->  Với để xây dự dãy ở độ dài thứ i, ta phải biết được phần tử thứ i-1
+=>  dp phải có thêm một chiều cho giá trị thứ i-1
+
+    Gọi dp[i][j] là số dãy có độ dài bằng i và phần tử cuối cùng bằng j
+
+    BASE: dp[1][x: 1->n] = 1
+
+    Công thức:
+
+    dp[i][j] = dp[i-1][num] với num là mọi ước của j mà <= n
+*/
 
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
     freopen("test.INP", "r", stdin);
     freopen("test.OUT", "w", stdout);
-    //solve();
-    /*
-    
-    */
-    int n;  cin >> n;
-    //for(int i=1; i<=100; ++i){
-        bottomup(n);
-    //}
+    solve();
 }
