@@ -1,54 +1,76 @@
 #include<iostream>
 #include<vector>
-#include<algorithm>
+
+#define pb push_back
+#define sz(a) (int)a.size()
 
 using namespace std;
+/*
+*/
+vector<int> a, b;
 
-void solve(){
-    int n, q;  cin >> n >> q;
-    vector<vector<int>> a(n+3, vector<int>(n+3, 0));
+void solve(int n){
 
-    for(int i=1; i<=n; ++i){
-        for(int j=1; j<=n; ++j){
-            cin >> a[i][j];
-        }
+    a.clear();
+    b.clear();
+
+    a.pb(0);
+    b.pb(0);
+
+    for(int i=1; i<=n; ++i) a.pb(i);
+
+    while(sz(a) > 2){
+        //for(int i=1; i<sz(a); ++i)     cout << a[i] << " ";    cout << '\n';
+        for(int i=2; i<=sz(a); i+=3)    b.pb(a[i]);
+        a = b;
+        b.clear();
+        b.pb(0);
     }
-
-    
-
-    while(q--){
-        int quay;   cin >> quay;
-        if(quay > 0){
-            vector<vector<int>> update(n+3, vector<int>(n+3, 0));
-            for(int j=1; j<=n; ++j){
-                for(int i=1; i<=n; ++i){
-                    update[i][n+1-j] = a[j][i];
-                    //cout << i << "," << n+1-j << " = " << j << "," << i << '\n';
-                }
-            }
-            a = update;
-        }else{
-            vector<vector<int>> update(n+3, vector<int>(n+3, 0));
-            for(int j=1; j<=n; ++j){
-                for(int i=1; i<=n; ++i){
-                    //update[i][n+1-j] = a[j][i];
-                    update[j][i] = a[i][n+1-j];
-                    //cout << i << "," << n+1-j << " = " << j << "," << i << '\n';
-                }
-            }
-            a = update;
-        }
-    }
-
-    for(int i=1; i<=n; ++i){
-        for(int j=1; j<=n; ++j){
-            cout << a[i][j] << " ";
-        }
-        cout << '\n';
-    }
-
+    cout << n << " " << a[1] << '\n';
 }
+
+int binpow(int a, int b){
+    int ans = 1;
+    while(b){
+        if(b & 1)   ans *= a;
+        a *= a;
+        b /= 2;
+    }
+    return ans;
+}
+
+void ac(){
+    int n;  cin >> n;
+    int res = 2;
+    int mu = 1;
+    while(res + binpow(3, mu) < n){
+        res += binpow(3, mu);
+        mu++;
+    }
+    cout << res << '\n';
+}
+
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
-    solve();
+    ac();
 }
+/*
+1 3 9
+
+
+1 2 3 4
+
+2
+
+1 2 3 4 5 6 7 8 9 10 11 12 13
+2 5 8 11
+5
+
+2
+
+3
+9
+27
+81
+...
+*/
