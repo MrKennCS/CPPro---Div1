@@ -3,18 +3,7 @@
 
 using namespace std;
 
-const int mod = 1e9 + 7;    
-const int N = 606;
-int n, t, a, b;
-int dp[2][N][N];
-
-void add(int &x, int y){
-    x += y;
-    if(x >= mod)    x -= mod;
-    //if(x < mod)     x += mod;
-}
-
-void solve(){
+// GIAI THICH
     /*
     Cac trang thai ta dang co la:
 
@@ -50,6 +39,22 @@ void solve(){
     dp[t+1][a-1][b+1]   += dp[t][a][b]*a        , a >= 1
     dp[t+1][a][b-1]     += dp[t][a][b]*b        , b >= 1
     */
+
+// SOLUTION
+/*
+const int mod = 1e9 + 7;    
+const int N = 606;
+int n, t, a, b;
+int dp[2][N][N];
+
+void add(int &x, int y){
+    x += y;
+    if(x >= mod)    x -= mod;
+    //if(x < mod)     x += mod;
+}
+
+void solve(){
+
     cin >> n >> t >> a >> b;
     dp[0][0][0] = 1;
     for(int i=0; i<t; ++i){
@@ -68,8 +73,14 @@ void solve(){
 
     cout << dp[t&1][a][b];
 }
+*/
+
+void review(){
+    
+}
 
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
-    solve();
+    //solve();
+    review();
 }

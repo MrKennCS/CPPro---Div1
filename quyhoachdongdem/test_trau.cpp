@@ -2,105 +2,118 @@
 
 using namespace std;
 
-const int mod = 1e9 + 7;
-int n, k;
-int a[2003];
-int dp[2003][2003];
-int res;
-
-void add(int &x, int y){
-    x += y;
-    if(x >= mod) x -= mod;
-}
-
-void sub_1_va_2(){
-    cin >> n >> k;
-
-    if(k == 2){
-        for(int i=1; i<=n; ++i){
-            for(int j=i; j<=n; ++j){
-                if(j % i == 0)  res++;
-            }
-        }
-    }else if(k == 3){
-        for(int i=1; i<=n; ++i){
-            for(int j=i; j<=n; ++j){
-                for(int k=j; k<=n; ++k){
-                    if(j % i == 0 && k % j == 0)    res++;
-                }
-            }
-        }
-    }
-    cout << res;
-}
-
+// KHAI BAO
 /*
-    Đề bài yêu cầu tìm số dãy số có độ dài k và dãy thỏa điều kiện a[i] % a[i-1] == 0 với mọi i>=2
+*/
+int n, x;
+int c[105];
+int dp[1000009];
 
-    * ĐỀ BÀI YÊU CẦU ĐẾM SỐ DÃY THỎA MÃN
+const int mod = 1e9 + 7;
 
-    Như vậy ta sẽ đếm số trạng thái thảo mãn, ta cần quản lý những điều sau:
-        + Trạng thái hiện tại [i]
-        + Giá trị ở vị trí i
+// GIAI THICH
+/*
+Ta co, trang thai cua DP voi moi i la:
 
-    Với mỗi i, ta có các trạng thái:
+x: tong cua cac phan tu bang x
 
-    TH1: val = 1
-->  (i, 1) -> (i + 1, [1 -> n]); 
+Ta goi dp[x] la so cach tao thanh day CO CAC PHAN TU GIONG NHAU
+O GAN NHAU voi tong bang x
 
-    TH2: val = 2
-->  (i, 2) -> (i + 1, 2)
+Neu nhu de chon ra cac phan tu giong nhau co vi tri sat nhau,
+ta chi viec duyet moi phan tu roi sau do duyet x
 
-    TH3: val = 3
-->  (i, 3) -> (i + 1, 3)
+BASE: dp[0] = 1;
 
-    ...
+Voi moi i, ta co cac truong hop:
 
-    THn: val = n
-->  (i, n) -> (i + 1, [x % n == 0, n < x <= lim])
-
-    BASE:
-    dp[1][val: 1 -> n] = 1
+if(x-c[j] >= 0) dp[x] += dp[x-c[j]]
 */
 
+// SOLUTION
+void add(int &x, int y){
+    x += y;
+    if(x >= mod)    x -= mod;
+    //if(x < mod)     x += mod;
+}
 void solve(){
-    cin >> n >> k;
+    cin >> n >> x;
+    for(int i=1; i<=n; ++i) cin >> c[i];
 
-    //for(int val=1; val<=n; ++val)   dp[1][val] = 1;
-    for(int i=1; i<=k; ++i){
-        for(int j=1; j<=n; ++j){
-            if(i == 1)  dp[i][j] = 1;
-            else{
-                for(int k=1; k*k<=j; ++k){
-                    if(j % k == 0){
-                        //dp[i][j] += dp[i-1][k];
-                        add(dp[i][j], dp[i-1][k]);
-                        //if(j / k != k)  dp[i][j] += dp[i-1][j/k];
-                        if(j / k != k)  add(dp[i][j], dp[i-1][j/k]);
-                    }
-                }
-            }
+    dp[0] = 1;
+    for(int i=1; i<=n; ++i){
+        for(int j=1; j<=x; ++j){
+            if(j-c[i] >= 0)  add(dp[j], dp[j-c[i]]);
+        }
+    }
+    //add(dp[x], 0);
+    cout << dp[x] % mod;
+}
+/*
+*/
+
+
+
+/*
+    Đề cho n đồng xu, yêu cầu chọn ra các đồng xu sao cho có tổng là x
+    LƯU Ý: Ta chỉ đếm những trường hợp các đồng xu được sắp xếp 'gọn gàng'
+
+    *Nhìn vào các cách đề cho, ta có một ý tưởng đếm (dp) như sau:
+
+    Với mỗi đồng xu i, ta chọn liên tục nó cho đến x, như vậy ta sẽ đảm bảo được các đồng xu có giá trị như nhau sẽ luôn đứng gần nhau:
+
+    Ta sẽ dùng dp như sau
+
+    Ta cần quản lý:
+        + Số các đồng xu
+        + Tổng các đồng xu
+
+->  dp[i][sum]
+
+    BASE:
+    dp[0][0] = 1
+
+    Vỡi môi i, ta sẽ cộng liên tục tổng như sau:
+
+    dp[i + k*i] += dp[i]
+*/
+
+/*
+const int mod = 1e9 + 7;
+int n, x;
+int c[1000005];
+int dp[105][100005];
+void add(int &x, int y){
+    x += y;
+    if(x >= mod)    x -= mod;
+}
+
+void review(){
+    cin >> n >> x;
+    for(int i=1; i<=n; ++i) cin >> c[i];
+
+    for(int i=1; i<=n; ++i) dp[i][0] = 1;
+
+    for(int i=1; i<=n; ++i){
+        for(int j=1; j<=x; ++j){
+            dp[i][j] = dp[i-1][j];
+            if(j - c[i] >= 0)   add(dp[i][j], dp[i][j - c[i]]);
+            //dp[i][j] += dp[i][j - c[i]];
         }
     }
 
-    for(int i=1; i<=n; ++i) add(res, dp[k][i]);
-    cout << res;
+    for(int i=1; i<=n; ++i) dp[i][0] = i;
+    for(int i=1; i<=x; ++i) dp[0][i] = i;
+
+    for(int i=0; i<=n; ++i){
+        for(int j=0; j<=x; ++j){
+            cout << dp[i][j] << " ";
+        }
+        cout << '\n';
+    }
+
+    cout << dp[n][x];
 }
-
-/*
-    XÂY MẢNG THÌ CẦN YẾU TỐ ĐỘ DÀI, HƠN NỮA ĐỀ CŨNG YÊU CẦU ĐIỀU KIỆN ĐỘ DÀI K
-->  dp phải có một chiều cho độ dài [i]
-
-->  Với để xây dự dãy ở độ dài thứ i, ta phải biết được phần tử thứ i-1
-=>  dp phải có thêm một chiều cho giá trị thứ i-1
-
-    Gọi dp[i][j] là số dãy có độ dài bằng i và phần tử cuối cùng bằng j
-
-    BASE: dp[1][x: 1->n] = 1
-
-    Công thức:
-
-    dp[i][j] = dp[i-1][num] với num là mọi ước của j mà <= n
 */
 
 int main(){
@@ -108,4 +121,5 @@ int main(){
     freopen("test.INP", "r", stdin);
     freopen("test.ANS", "w", stdout);
     solve();
+    //review();
 }

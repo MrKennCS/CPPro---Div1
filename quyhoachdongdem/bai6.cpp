@@ -15,7 +15,7 @@ void add(int &x, int y){
 }
 */
 
-void solve(){
+//void solve(){
     /*
     Ta co cac trang thai:
     
@@ -54,23 +54,34 @@ void solve(){
     }
 
     cout << dp[n];
-    */
 }
+    */
 
+const int mod = 1e9 + 7;
 int n, k;
-int a[1005];
+int h[1005];
 int dp[100005];
+
+void add(int &x, int y){
+    x += y;
+    if(x >= mod)    x -= mod;
+}
 
 void review(){
     cin >> n >> k;
-    for(int i=1; i<=k; ++i) cin >> a[i];
+    for(int i=1; i<=k; ++i) cin >> h[i];
 
     dp[0] = 1;
-    for(int s=1; s<=n; ++s){
-        for(int i=1; i<=k; ++i){
-            
+    for(int i=1; i<=n; ++i){
+        for(int j=1; j<=k; ++j){
+            if(i - h[j] >= 0){
+                //dp[i] += dp[i - h[j]];
+                add(dp[i], dp[i - h[j]]);
+            }
         }
     }
+
+    cout << dp[n];
 }
 
 int main(){

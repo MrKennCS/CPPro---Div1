@@ -2,6 +2,8 @@
 
 using namespace std;
 
+// SOLVE
+/*
 int h, w;
 int a[1005][1005];
 int dp[1005][1005];
@@ -28,8 +30,54 @@ void solve(){
 
     cout << dp[h][w];
 }
+*/
+
+const int mod = 1e9 + 7;
+int h, w;
+int a[1005][1005];
+int dp[1005][1005];
+
+void add(int &x, int y){
+    x += y;
+    if(x >= mod)    x -= mod;
+}
+
+void review(){
+    cin >> h >> w;
+    for(int i=1; i<=h; ++i){
+        for(int j=1; j<=w; ++j){
+            char c; cin >> c;
+            a[i][j] = (c == '.' ? 0 : 1);
+        }
+    }
+
+    dp[1][1] = 1;
+    for(int i=1; i<=h; ++i){
+        for(int j=1; j<=w; ++j){
+            if(a[i][j] == 1)    continue;
+            add(dp[i][j + 1], dp[i][j]);
+            add(dp[i + 1][j], dp[i][j]);
+        }
+    }
+    /*
+    for(int i=1; i<=h; ++i) dp[i][0] = i;
+    for(int i=1; i<=w; ++i) dp[0][i] = i; 
+    for(int i=0; i<=h; ++i){
+        for(int j=0; j<=w; ++j){
+            cout << dp[i][j] << " ";
+        }
+        cout << '\n';
+    }
+    */
+
+    cout << dp[h][w];
+    /*
+    */
+
+}
 
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
-    solve();
+    //solve();
+    review();
 }
