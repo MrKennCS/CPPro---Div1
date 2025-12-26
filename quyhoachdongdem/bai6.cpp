@@ -57,10 +57,29 @@ void add(int &x, int y){
 }
     */
 
+/*
+    Cho k loại khối gỗ, không hạn chế số lượng và chiều cao là h1, h2, h3, ... hk
+
+    Tìm số cách xếp từ các khối gỗ đẻ đạt độ cao N
+
+    Ta sẽ có những dữ kiện cần quản lý cho mỗi trạng thái (mỗi cách)
+        + Độ cao hiện tại
+
+->  dp[sum]
+
+    Với mỗi dp[sum: 1 -> n]
+
+    dp[sum] += dp[sum - a[i]] voi a[i] la khoi go thu i
+
+
+*/
+
 const int mod = 1e9 + 7;
+const int N = 100005;
+const int K = 1005;
 int n, k;
-int h[1005];
-int dp[100005];
+int h[K];
+int dp[N];
 
 void add(int &x, int y){
     x += y;
@@ -72,14 +91,11 @@ void review(){
     for(int i=1; i<=k; ++i) cin >> h[i];
 
     dp[0] = 1;
-    for(int i=1; i<=n; ++i){
-        for(int j=1; j<=k; ++j){
-            if(i - h[j] >= 0){
-                //dp[i] += dp[i - h[j]];
-                add(dp[i], dp[i - h[j]]);
-            }
+    for(int sum=1; sum<=n; ++sum){
+        for(int i=1; i<=k; ++i){
+            if(sum - h[i] >= 0) add(dp[sum], dp[sum - h[i]]);
         }
-    }
+    }    
 
     cout << dp[n];
 }

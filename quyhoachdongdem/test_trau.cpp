@@ -1,125 +1,100 @@
-#include<iostream>
+#pragma GCC optimize("Ofast,unroll-loops")
+#pragma GCC target("sse,sse2,sse3,ssse3,sse4,avx,avx2,fma")
+#include <iostream>
+#include <string>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <vector>
+#include <set>
+#include <map>
+#include <deque>
+#include <stack>
+#include <queue>
+#include <algorithm>
+#include <cassert>
+#include <random>
+#include <chrono>
+#include <iomanip>
+#include <cmath>
+#include <bitset>
+#include <functional>
+#include <numeric>
+
+#define double long double
+#define ii pair<int,int>
+#define iii pair<int, ii >
+#define fi first
+#define se second
+#define getbit(x,y) (((x)>>(y))&1ll)
+#define turnon(x,y) ((x)|(1ll<<y))
+#define turnof(x,y) ((x)^(1ll<<y))
+#define oo 1e18
+#define pb push_back
+#define all(x) x.begin(),x.end()
+#define con(mask) mask=(mask-1)&mask
+#define Unique(val) val.erase(unique(val.begin(),val.end()),val.end())
+#define ll long long
+#define rand_int mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
+#define rand_ll mt19937_64 rnd(chrono::steady_clock::now().time_since_epoch().count());
+
+const int mod = 1e9 + 7;
+const double pi = acos(-1);
+const double esp = 1e-6;
+int base = 100000;
 
 using namespace std;
 
-// KHAI BAO
-/*
-*/
-int n, x;
+int n;
 int c[105];
-int dp[1000009];
+int dp[500*500+5];
+int sum;
 
-const int mod = 1e9 + 7;
-
-// GIAI THICH
-/*
-Ta co, trang thai cua DP voi moi i la:
-
-x: tong cua cac phan tu bang x
-
-Ta goi dp[x] la so cach tao thanh day CO CAC PHAN TU GIONG NHAU
-O GAN NHAU voi tong bang x
-
-Neu nhu de chon ra cac phan tu giong nhau co vi tri sat nhau,
-ta chi viec duyet moi phan tu roi sau do duyet x
-
-BASE: dp[0] = 1;
-
-Voi moi i, ta co cac truong hop:
-
-if(x-c[j] >= 0) dp[x] += dp[x-c[j]]
-*/
-
-// SOLUTION
-void add(int &x, int y){
-    x += y;
-    if(x >= mod)    x -= mod;
-    //if(x < mod)     x += mod;
-}
-void solve(){
-    cin >> n >> x;
-    for(int i=1; i<=n; ++i) cin >> c[i];
-
-    dp[0] = 1;
-    for(int i=1; i<=n; ++i){
-        for(int j=1; j<=x; ++j){
-            if(j-c[i] >= 0)  add(dp[j], dp[j-c[i]]);
-        }
-    }
-    //add(dp[x], 0);
-    cout << dp[x] % mod;
-}
-/*
-*/
-
-
-
-/*
-    Đề cho n đồng xu, yêu cầu chọn ra các đồng xu sao cho có tổng là x
-    LƯU Ý: Ta chỉ đếm những trường hợp các đồng xu được sắp xếp 'gọn gàng'
-
-    *Nhìn vào các cách đề cho, ta có một ý tưởng đếm (dp) như sau:
-
-    Với mỗi đồng xu i, ta chọn liên tục nó cho đến x, như vậy ta sẽ đảm bảo được các đồng xu có giá trị như nhau sẽ luôn đứng gần nhau:
-
-    Ta sẽ dùng dp như sau
-
-    Ta cần quản lý:
-        + Số các đồng xu
-        + Tổng các đồng xu
-
-->  dp[i][sum]
-
-    BASE:
-    dp[0][0] = 1
-
-    Vỡi môi i, ta sẽ cộng liên tục tổng như sau:
-
-    dp[i + k*i] += dp[i]
-*/
-
-/*
-const int mod = 1e9 + 7;
-int n, x;
-int c[1000005];
-int dp[105][100005];
 void add(int &x, int y){
     x += y;
     if(x >= mod)    x -= mod;
 }
 
-void review(){
-    cin >> n >> x;
-    for(int i=1; i<=n; ++i) cin >> c[i];
+void solve() {
+    cin >> n;
 
-    for(int i=1; i<=n; ++i) dp[i][0] = 1;
+    sum = (n + 1) * n / 2;
 
-    for(int i=1; i<=n; ++i){
-        for(int j=1; j<=x; ++j){
-            dp[i][j] = dp[i-1][j];
-            if(j - c[i] >= 0)   add(dp[i][j], dp[i][j - c[i]]);
-            //dp[i][j] += dp[i][j - c[i]];
+    if(sum & 1) cout << 0;
+    else{
+        dp[1] = 1;
+        for(int i=2; i<=n; ++i){
+            for(int j=sum/2; j>=1; j--){
+                if(j >= i){
+                    add(dp[j], dp[j-i]);
+                }
+            }
         }
+        cout << dp[sum / 2];
     }
 
-    for(int i=1; i<=n; ++i) dp[i][0] = i;
-    for(int i=1; i<=x; ++i) dp[0][i] = i;
-
-    for(int i=0; i<=n; ++i){
-        for(int j=0; j<=x; ++j){
-            cout << dp[i][j] << " ";
-        }
-        cout << '\n';
-    }
-
-    cout << dp[n][x];
 }
-*/
 
-int main(){
-    ios_base::sync_with_stdio(false);   cin.tie(0);
+signed main() {
+
+
+    //#ifndef ONLINE_JUDGE
     freopen("test.INP", "r", stdin);
     freopen("test.ANS", "w", stdout);
-    solve();
-    //review();
+    //#endif
+
+
+    ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+
+
+    int t = 1;
+    //cin >> t;
+
+    while(t--) {
+        solve();
+    }
 }
+//      ProTeam
+//(¯`·.·´¯) (¯`·.·´¯)
+//`·.¸(¯`·.·´¯)¸ .·
+//×°× ` ·.¸.·´ ×°×
