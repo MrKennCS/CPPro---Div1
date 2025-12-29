@@ -1,9 +1,9 @@
 #include<iostream>
-#pragma GCC optimize(O2)
-#pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
 
 using namespace std;
 
+// SOLUTION
+/*
 const int mod = 1e9 + 7;
 int n, k;
 int a[2003];
@@ -36,6 +36,28 @@ void sub_1_va_2(){
     cout << res;
 }
 
+void solve(){
+    cin >> n >> k;
+
+    for(int val=1; val<=k; ++val)   dp[val][0] = val;
+    for(int i=1; i<=k; ++i){
+        for(int j=1; j<=n; ++j){
+            if(i == 1)  dp[i][j] = 1;
+            else{
+                for(int num=j; num<=n; num += j){
+                    add(dp[i][num], dp[i-1][j]);
+                    //dp[i][num] += dp[i-1][j];
+                }
+            }
+        }
+    }
+
+    for(int i=1; i<=n; ++i) add(res, dp[k][i]);
+    cout << res;
+}
+*/
+
+// EXPLAIN
 /*
     Đề bài yêu cầu tìm số dãy số có độ dài k và dãy thỏa điều kiện a[i] % a[i-1] == 0 với mọi i>=2
 
@@ -65,35 +87,6 @@ void sub_1_va_2(){
     dp[1][val: 1 -> n] = 1
 */
 
-void solve(){
-    cin >> n >> k;
-
-    for(int val=1; val<=k; ++val)   dp[val][0] = val;
-    for(int i=1; i<=k; ++i){
-        for(int j=1; j<=n; ++j){
-            if(i == 1)  dp[i][j] = 1;
-            else{
-                for(int num=j; num<=n; num += j){
-                    add(dp[i][num], dp[i-1][j]);
-                    //dp[i][num] += dp[i-1][j];
-                }
-            }
-        }
-    }
-    /*
-    for(int j=0; j<=n; ++j){
-        cout << j << " ";
-        for(int i=1; i<=k; ++i){
-            cout << dp[i][j] << " ";
-        }
-        cout << '\n';
-    }
-    */
-
-    for(int i=1; i<=n; ++i) add(res, dp[k][i]);
-    cout << res;
-}
-
 /*
     XÂY MẢNG THÌ CẦN YẾU TỐ ĐỘ DÀI, HƠN NỮA ĐỀ CŨNG YÊU CẦU ĐIỀU KIỆN ĐỘ DÀI K
 ->  dp phải có một chiều cho độ dài [i]
@@ -110,68 +103,72 @@ void solve(){
     dp[i][j] = dp[i-1][num] với num là mọi ước của j mà <= n
 */
 
-/**/
 
+// REVIEW1
+/*
 void review(){
     cin >> n >> k;
-    /*
-    Goi dp[k][n] la trang thai day co do dai k va phan tu cuoi cung la n
 
-    Với mỗi bài toán ở vị trí k, ta có thể cập nhật lên các bài toán k+1 bằng cách cộng dồn lên cho các trạng thái là bội của bài toán k
-
-    dp[k][n] -> dp[k+1][bội của n]
-
-=>  dp[k+1][Bội của n] += dp[k][n]
-
-    Ta có:
-
-    BASE:
-    dp[1][1] = 1
-    for(int i=1; i<k; ++i){
-        for(int j=1; j<=n; ++j){
-            for(int boi=j; boi<=n; boi+=j){
-                dp[i+1][boi] += dp[i][j];
-            }
-        }
-    }
-    */
-    //dp[1][1] = 1;
     for(int i=1; i<=n; ++i) dp[1][i] = 1;
     for(int i=1; i<=n; ++i) dp[0][i] = i;
     for(int i=1; i<=k; ++i) dp[i][0] = i;
-    /*
-    */
 
     for(int i=1; i<k; ++i){
         for(int j=1; j<=n; ++j){
             for(int boi=j; boi<=n; boi+=j){
                 add(dp[i+1][boi], dp[i][j]);
-                //dp[i+1][boi] += dp[i][j];
             }
-            /*
-            cout << "CASE: " << i << " " << j << '\n';
-            for(int i=0; i<=k; ++i){
-                for(int j=0; j<=n; ++j){
-                    cout << dp[i][j] << " ";
-                }
-                cout << '\n';
-            }
-            */
         }
     }
-    /*
-    for(int i=0; i<=k; ++i){
-        for(int j=0; j<=n; ++j){
+
+    for(int  i=1; i<=n; ++i) add(res, dp[k][i]);
+    cout << res;
+}
+*/
+
+const int mod = 1e9 + 7;
+const int N = 2e3 + 5;
+int n, k;
+int dp[N][N];
+
+void add(int &x, int y){
+    x += y;
+    if(x >= mod)    x -= mod;
+}
+
+void review2(){
+    cin >> n >> k;
+
+    for(int i=1; i<=n; ++i) dp[1][i] = 1;
+    
+    for(int i=1; i<k; ++i){
+        for(int val=1; val<=n; ++val){
+            for(int boi=val; boi<=n; boi+=val){
+                add(dp[i + 1][boi], dp[i][val]);
+            }
+        }
+    }
+
+    for(int i=1; i<=k; ++i){
+        for(int j=1; j<=n; ++j){
             cout << dp[i][j] << " ";
         }
         cout << '\n';
     }
-    */
-    for(int  i=1; i<=n; ++i) add(res, dp[k][i]);
+
+    int res = 0;
+    for(int i=1; i<=n; ++i){
+        //cout << dp[k][i] << " ";
+        add(res, dp[k][i]);
+
+    }
+
     cout << res;
 }
 
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
-    review();
+    //review();
+    review2();
+
 }
