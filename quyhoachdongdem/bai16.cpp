@@ -28,7 +28,7 @@ void solve(){
 }
 */
 
-int n;
+int i, cnt, n;
 double a[3005];
 double dp1[3005];
 
@@ -38,8 +38,8 @@ void review2(){
 
     dp1[0] = 1;
 
-    for(int i=1; i<=n; ++i){
-        for(int cnt=n; cnt>=1; --cnt){
+    for(i=1; i<=n; ++i){
+        for(cnt=i; cnt>=1; --cnt){
             dp1[cnt] = dp1[cnt] * (1 - a[i]) + dp1[cnt - 1] * a[i];
         }
         dp1[0] *= (1 - a[i]);

@@ -149,13 +149,6 @@ void review2(){
         }
     }
 
-    for(int i=1; i<=k; ++i){
-        for(int j=1; j<=n; ++j){
-            cout << dp[i][j] << " ";
-        }
-        cout << '\n';
-    }
-
     int res = 0;
     for(int i=1; i<=n; ++i){
         //cout << dp[k][i] << " ";
