@@ -24,10 +24,40 @@ using namespace std;
 #define ub upper_bound // >
 
 const int mod = 1e9 + 7;
+const int N = 1e6 + 5;
 int tc = 1;
 
+int n, k;
+int a[N];
+
+/*
+    Goi dp[i] la so cach chia thoa man
+*/
+
+void add(int &x, int y){
+    x += y;
+    if(x >= mod) x -= mod;
+}
+
+ll bpow(ll a, ll b){
+    ll r = 1;
+    while(b){
+        if(b & 1)   r = (r * a) % mod;
+        a = (a * a) % mod;
+        b >>= 1;
+    }
+    return r;
+}
+
+void sub1(){
+    cout << bpow(2, n - 1);
+}
+
 void solve(){
-    
+    cin >> n >> k;
+    for(int i=1; i<=n; ++i) cin >> a[i];
+
+    if(k == 1)  sub1();
 }
 
 int main(){
