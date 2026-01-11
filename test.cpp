@@ -1,119 +1,54 @@
-#include<iostream>
+#include<bits/stdc++.h>
+#define foru(i, a, b) for(int i=a; i<=b; ++i)
+#define ford(i, a, b) for(int i=a; i>=b; --i)
+#define unomap unordered_map
 #define int long long
+#define sz(a) (int)a.size()
 
 using namespace std;
 
-int n, m;
-int a[1005][1005];
-int cnt[1000005];
-int sum, id;
+string s;
+int q, l, r, n;
+int cnt[26][100003];
+int mx, mn;
+int cur[27];
+int pos;
 int res;
+int dis;
 
-void loang(int x, int y){
-    if(a[x][y] != 1)    return ;
-    if(x < 1 || x > m)  return ;
-    if(y < 1 || y > n)  return ;
-
-    sum += 1;
-    a[x][y] = id;
-
-    loang(x, y + 1);
-    loang(x, y - 1);
-    loang(x + 1, y);
-    loang(x - 1, y);
-}
-
-int calc(int x, int y){
-    int up, dn, lt, rt;
-
-    up = a[x - 1][y];
-    dn = a[x + 1][y];
-    lt = a[x][y - 1];
-    rt = a[x][y + 1];
-
-    if(up == dn)    dn = 0;
-    if(up == lt)    lt = 0;
-    if(up == rt)    rt = 0;
-    if(dn == lt)    lt = 0;
-    if(dn == rt)    rt = 0;
-    if(lt == rt)    rt = 0;
-
-    /*
-    cout << "----- (" << x << ", " << y << ") -----\n";
-    cout << "Up: " << x << " " << y + 1 << ": " << up << '\n';
-    cout << "Do: " << x << " " << y - 1 << ": " << dn << '\n';
-    cout << "Le: " << x - 1 << " " << y << ": " << lt << '\n';
-    cout << "Ri: " << x + 1 << " " << y << ": " << rt << '\n';
-    */
-
-    return (cnt[up] + cnt[dn] + cnt[rt] + cnt[lt] + 1);
-}
-/*
-6 6
-1 0 1 0 1 1
-1 0 1 0 1 1
-1 1 1 0 0 0
-0 0 0 1 1 1
-1 1 0 0 1 0
-1 1 1 0 1 1
-
-6 6
-1 0 0 0 1 1
-1 0 0 0 1 1
-1 1 0 0 0 0
-0 0 0 0 0 0
-0 0 0 0 1 0
-1 1 0 0 1 1
-
-6 6
-1 1 1 0 1 1
-1 0 0 1 1 1
-1 1 0 0 0 0
-0 0 0 0 0 0
-0 1 1 0 1 0
-1 1 0 0 1 1
-
-3 3
-1 1 1
-1 0 1
-1 1 1
-*/
 void solve(){
-    cin >> m >> n;
-    for(int i=1; i<=m; ++i){
-        for(int j=1; j<=n; ++j){
-            cin >> a[i][j];
-        }
+    cin >> s >> q;
+    n = sz(s);
+    foru(i, 0, n - 1){
+        for(char c='a'; c<='z'; ++c)    cnt[c - 'a'][i + 1] = cnt[c - 'a'][i];
+        cnt[s[i] - 'a'][i + 1] = cnt[s[i] - 'a'][i] + 1;
     }
 
-    id = 1;
-    for(int i=1; i<=m; ++i){
-        for(int j=1; j<=n; ++j){
-            if(a[i][j] == 1){
-                sum = 0;
-                id++;
+    while(q--){
+        cin >> l >> r;
+        mx = 0;
+        mn = 26;
+        pos = 0;
+        res = 0;
+        memset(cur, 0, sizeof(cur));
 
-                loang(i, j);
-                cnt[id] = sum;
+        for(int i=0; i<26; ++i){
+            if(cnt[i][r] - cnt[i][l - 1] > 0){
+                pos++;
+                cur[pos] = i;
             }
         }
-    }
-
-    for(int i=2; i<=id; ++i)    res = max(res, cnt[i] + 1);
-    for(int i=2; i<=id; ++i)    cout << cnt[i] << " ";  cout << '\n';
-
-    for(int i=1; i<=m; ++i){
-        for(int j=1; j<=n; ++j){
-            if(a[i][j] == 0){
-                res = max(res, calc(i, j));
+        for(int i=1; i<=pos; ++i){
+            for(int j=i+1; j<=pos; ++j){
+                dis = min(abs(cur[j] - cur[i]), abs(26 - cur[j] + cur[i]));
+                res = max(res, dis);
             }
         }
-    }
-
-    cout << res;
+        cout << res;
+    }   
 }
 
-main(){
+signed main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
     solve();
 }
