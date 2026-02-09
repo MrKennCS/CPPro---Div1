@@ -12,5 +12,6 @@
         "limits": "cpp",
         "semaphore": "cpp",
         "valarray": "cpp"
-    }
+    },
+    "C_Cpp.default.compilerPath": "C:/msys64/ucrt64/bin/gcc.exe"
 }
