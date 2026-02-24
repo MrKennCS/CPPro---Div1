@@ -31,8 +31,7 @@ const int mod = 1e9 + 7;
 int tc = 1;
 
 void solve(){
-    int n;  cin >> n;
-    foru(i, 1, n)   cout << "Duy Gay\n";
+
 }
 
 int main(){

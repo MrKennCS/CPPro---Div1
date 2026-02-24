@@ -1,43 +1,41 @@
-#include<iostream>
+// #pragma GCC optimize("O3,unroll-loops")
+// #pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
+
+#include<bits/stdc++.h>
 
 using namespace std;
 
-int n, c;
-int w[20];
-int dp[5005];
+#define ull unsigned long long
+#define ll long long
+#define umap unordered_map
+#define uset unordered_set
+#define ii pair<int, int> 
+#define getbit(x, y) (((x) >> (y)) & 1)
+#define turnon(x, y) ((x) | (1LL << y))
+#define turnof(x, y) ((x) ^ (1LL << y))
+
+#define fi first 
+#define se second
+#define pf push_front
+#define pb push_back
+#define popf pop_front
+#define popb pop_back
+#define lb lower_bound // >=
+#define ub upper_bound // >
+#define foru(i, a, b) for(int i=a; i<=b; ++i)
+#define ford(i, a, b) for(int i=a; i>=b; --i)
+#define foruc(i, a, b, c) for(int i=a; i<=b; i+=c)
+#define fordc(i, a, b, c) for(int i=a; i>=b; i-=c)
+
+const int mod = 1e9 + 7;
+int tc = 1;
 
 void solve(){
-    cin >> c >> n;
-    for(int i=1; i<=n; ++i) cin >> w[i];
-
-    /*
-    Goi dp[i] la co cach nao de tao ra mot day co tong bang i hay khong, luu y day nay gom cac phan tu cua w[i] phan biet nhau
-
-    VD:
-
-    8 4
-    2 3 3 4
-
-    dp[2]
-    */
-    dp[0] = 1;
-    for(int i=1; i<=n; ++i){
-        //cout << "VERSION: " << i << '\n';
-        for(int x=c; x>=w[i]; --x){
-            if(dp[x - w[i]] == 1){
-                //cout << "Update: " << x << " " << 1 << '\n';
-                dp[x] = 1;
-            }
-        }
-    }
-
-    for(int i=c; i>=1; --i) if(dp[i] == 1){
-        cout << i;
-        return ;
-    }
+    cout << "Gay";
 }
 
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
-    solve();
+
+    while(tc--)  solve();
 }
