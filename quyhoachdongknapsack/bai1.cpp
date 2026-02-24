@@ -31,7 +31,7 @@ const int mod = 1e9 + 7;
 int tc = 1;
 
 void solve(){
-    cout << "Gay";
+    
 }
 
 int main(){

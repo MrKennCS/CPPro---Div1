@@ -9,7 +9,7 @@ using namespace std;
 #define ll long long
 #define umap unordered_map
 #define uset unordered_set
-#define ii pair<int, int> 
+#define ii pair<int, int>
 #define getbit(x, y) (((x) >> (y)) & 1)
 #define turnon(x, y) ((x) | (1LL << y))
 #define turnof(x, y) ((x) ^ (1LL << y))
@@ -22,16 +22,15 @@ using namespace std;
 #define popb pop_back
 #define lb lower_bound // >=
 #define ub upper_bound // >
-#define foru(i, a, b) for(int i=a; i<=b; ++i)
-#define ford(i, a, b) for(int i=a; i>=b; --i)
-#define foruc(i, a, b, c) for(int i=a; i<=b; i+=c)
-#define fordc(i, a, b, c) for(int i=a; i>=b; i-=c)
 
 const int mod = 1e9 + 7;
 int tc = 1;
 
 void solve(){
-
+    int n;  cin >> n;
+    cout << n;
+    
+    
 }
 
 int main(){
