@@ -28,49 +28,78 @@ using namespace std;
 #define ub upper_bound // >
 
 const int mod = 1e9 + 7;
-const int N = 10003;
 int tc = 1;
 
 int n, m;
-ll dp[N];
-vector<ii> wv;
+int s;
+vector<ii> vec;
+vector<ii> tmp;
+vector<pair<ii, int>> cnt;
+int dp[100005];
+
+/*
+9 15
+6 5
+5 6
+6 4
+6 6
+6 6
+6 6
+3 5
+7 2
+7 2
+*/
 
 void solve(){
     cin >> n >> m;
-    foru(i, 1, n){
-        int w, v, a;
-        cin >> w >> v >> a;
-        
-        /*
-        int k = 1;
-        while(a >= k){
-            wv.pb({w*k, v*k});
-            a -= k;
-            k++;
-        }
-        if(a > 0)   wv.pb({w*a, v*a});
-        */
-        int cnt = 1;
-        while(a >= cnt){
-            wv.pb({w*cnt, v*cnt});
-            a -= cnt;
-            cnt++;
-        }
-        if(a > 0)   wv.pb({w*a, v*a});
 
+    foru(i, 1, n){
+        int w, v;
+        cin >> w >> v;
+        tmp.pb({w, v});
     }
+
+    sort(tmp.begin(), tmp.end());
+    cout << '\n';
+
+    tmp.pb({0, 0});
+    int dem = 1;
     
+    foru(i, 1, n){
+        if(tmp[i - 1].fi != tmp[i].fi || tmp[i - 1].se != tmp[i].se){
+            cnt.pb({{tmp[i - 1].fi, tmp[i - 1].se}, dem});
+            dem = 1;
+            s++;
+        }else       dem++;
+    }
+
+    foru(i, 0, s - 1){
+        int w = cnt[i].fi.fi;
+        int v = cnt[i].fi.se;
+        int a = cnt[i].se;
+
+        int k = 1;
+
+        while(a > k){
+            vec.pb({k * w, k * v});
+            a -= k;
+            k *= 2;
+        }
+        if(a > 0)   vec.pb({a * w, a * v});
+    }
+
     memset(dp, -0x3f, sizeof(dp));
     dp[0] = 0;
 
-    for(pair<int, int> v : wv){
-        for(int j=m; j>=v.fi; j--){
-            dp[j] = max(dp[j], dp[j - v.fi] + v.se);
+    for(ii item : vec){
+        ford(j, m, item.fi){
+            dp[j] = max(dp[j], dp[j - item.fi] + item.se);
         }
     }
 
-    ll res = 0;
+    int res = 0;
     foru(i, 0, m)   res = max(res, dp[i]);
+
     cout << res;
 }
 

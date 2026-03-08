@@ -30,37 +30,33 @@ using namespace std;
 const int mod = 1e9 + 7;
 int tc = 1;
 
-int c, n;
-int w[20];
-int dp[5005];
+/*
+
+*/
+
+int n, x;
+int h[1005];
+int s[1005];
+int dp[100003];
+int res;
 
 void solve(){
-    cin >> c >> n;
-    foru(i, 1, n)   cin >> w[i];
+    cin >> n >> x;
+    for(int i=1; i<=n; ++i) cin >> h[i];
+    for(int i=1; i<=n; ++i) cin >> s[i];
 
-    dp[0] = 1;
-    foru(i, 1, n){
-        ford(j, c, w[i]){
-            if(dp[j - w[i]])    dp[j] = 1;
-            //dp[j] = max(dp[j], dp[j - w[i]]);
+    memset(dp, -0x3f, sizeof(dp));
+    dp[0] = 0;
+
+    for(int i=1; i<=n; ++i){
+        for(int j=x; j>=h[i]; --j){
+            dp[j] = max(dp[j], dp[j - h[i]] + s[i]);
         }
     }
-     
-    /*
-    foru(i, 0, n){
-        foru(j, 0, c){
-            cout << dp[i][j] << " ";
-        
-        }
-        cout << '\n';
-    }
-    */
 
-    ford(i, c, 0) if(dp[i]){
-        cout << i;
-        return ;
-    }
+    for(int i=0; i<=x; ++i) res = max(res, dp[i]);
 
+    cout << res;
 
 }
 
