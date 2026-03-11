@@ -36,19 +36,39 @@ int tc = 1;
 
 */
 
-int a, b, c;
+int k;
+int a, b;
+int x[10], y[10];
+int ban[10][10];
 
-bool check(){
-    if(a < 0 || b < 0 || c < 0) return false;
-    if(a*a + b*b == c*c)    return true;
-    if(a*a + c*c == b*b)    return true;
-    if(b*b + c*c == a*a)    return true;
-    return false;
+void file(){
+    if(fopen("TEST.INP", "r")){
+        freopen("TEST.INP", "r", stdin);
+        freopen("TEST.OUT", "w", stdout);
+    }
 }
 
 void solve(){
-    cin >> a >> b >> c;
-    cout << (check() ? "YES" : "NO");
+    cin >> k;
+    while(k--){
+        cin >> a >> b;
+        
+        for(int i=1; i<=8; ++i)                     ban[i][b] = 1;
+        for(int i=1; i<=8; ++i)                     ban[a][i] = 1;
+        for(int i=a, j=b; i<=8 && j<=8; ++i, ++j)   ban[i][j] = 1;
+        for(int i=a, j=b; i>=1 && j>=1; --i, --j)   ban[i][j] = 1;
+        for(int i=a, j=b; i>=1 && j<=8; --i, ++j)   ban[i][j] = 1;
+        for(int i=a, j=b; i<=8 && j>=1; ++i, --j)   ban[i][j] = 1;
+    }
+
+    for(int i=1; i<=8; ++i){
+        for(int j=1; j<=8; ++j){
+            cout << ban[i][j] << " ";
+        }
+        cout << '\n';
+    }
+
+    
 }
 
 int main(){

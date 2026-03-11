@@ -13,8 +13,12 @@ using namespace std;
 #define getbit(x, y) (((x) >> (y)) & 1)
 #define turnon(x, y) ((x) | (1LL << y))
 #define turnof(x, y) ((x) ^ (1LL << y))
+#define foru(i, a, b)   for(int i=a; i<=b; ++i)
+#define ford(i, a, b)   for(int i=a; i>=b; --i)
+#define foruc(i, a, b, c)   for(int i=a; i<=b; i+=c)
+#define fordc(i, a, b, c)   for(int i=a; i>=b; i-=c)
 
-#define fi first 
+#define fi first
 #define se second
 #define pf push_front
 #define pb push_back
@@ -24,33 +28,42 @@ using namespace std;
 #define ub upper_bound // >
 
 const int mod = 14062008;
-const int limN = 1e5 + 5;
 int tc = 1;
 
+/*
+Goi dp 
+*/
+
 int n, k;
-bool hu[limN];
-int dp[limN];
-int tmp;
+bool hu[100005];
+int dp[100005];
+
+void add(int &x, int y){
+    x += y;
+    if(x >= mod)    x -= mod;
+}
 
 void solve(){
     cin >> n >> k;
-    for(int i=1; i<=k; ++i){
-        cin >> tmp;
+
+    //memset(hu, 0, sizeof(hu)); //
+
+    foru(i, 1, k){
+        int tmp;    cin >> tmp;
         hu[tmp] = true;
     }
+    memset(dp, 0, sizeof(dp));
+    dp[1] = 1;
 
-    if(!hu[1])  dp[1] = 1;
-    if(!hu[2])  dp[2] = 1;
-
-    for(int i=3; i<=n; ++i){
-        if(hu[i]){
-            dp[i] = 0;
-            continue ;
-        }
-        dp[i] = (dp[i-1] % mod + dp[i-2] % mod) % mod;
+    foru(i, 1, n - 1){
+        if(hu[i])   continue;
+        add(dp[i + 1], dp[i]);
+        add(dp[i + 2], dp[i]);
     }
+    /*
 
-    
+    */
+
     cout << dp[n];
 }
 

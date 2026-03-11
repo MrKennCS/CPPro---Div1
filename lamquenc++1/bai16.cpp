@@ -33,22 +33,66 @@ const int mod = 1e9 + 7;
 int tc = 1;
 
 /*
+3 1
+1 2 3
+4 5 6
+7 8 9
+-1
+
 
 */
 
-int a, b, c;
+int n, q;
+vector<vector<int>> a(103, vector<int>(103, 0));
+vector<vector<int>> b(103, vector<int>(103, 0));
+int t;
 
-bool check(){
-    if(a < 0 || b < 0 || c < 0) return false;
-    if(a*a + b*b == c*c)    return true;
-    if(a*a + c*c == b*b)    return true;
-    if(b*b + c*c == a*a)    return true;
-    return false;
+void file(){
+    if(fopen("TEST.INP", "r")){
+        freopen("TEST.INP", "r", stdin);
+        freopen("TEST.OUT", "w", stdout);
+    }
+}
+
+void nghich(){
+    for(int i=1; i<=n; ++i){
+        for(int j=1; j<=n; ++j){
+            b[i][j] = a[j][n-i+1];
+        }
+    }
+    a = b;
+}
+
+void thuan(){
+    for(int i=1; i<=n; ++i){
+        for(int j=1; j<=n; ++j){
+            b[j][n-i+1] = a[i][j];
+        }
+    }
+    a = b;
 }
 
 void solve(){
-    cin >> a >> b >> c;
-    cout << (check() ? "YES" : "NO");
+    cin >> n >> q;
+    for(int i=1; i<=n; ++i){
+        for(int j=1; j<=n; ++j){
+            cin >> a[i][j];
+        }
+    }
+    
+    while(q--){
+        cin >> t;
+        if(t == 1)  thuan();
+        else        nghich();
+    }
+
+    for(int i=1; i<=n; ++i){
+        for(int j=1; j<=n; ++j){
+            cout << a[i][j] << " ";
+        }
+        cout << '\n';
+    }
+    //a = b;
 }
 
 int main(){

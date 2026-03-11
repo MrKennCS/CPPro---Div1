@@ -36,19 +36,18 @@ int tc = 1;
 
 */
 
-int a, b, c;
+int n;
 
-bool check(){
-    if(a < 0 || b < 0 || c < 0) return false;
-    if(a*a + b*b == c*c)    return true;
-    if(a*a + c*c == b*b)    return true;
-    if(b*b + c*c == a*a)    return true;
-    return false;
+bool nhuan(int x){
+    if((x % 400 == 0) || (x % 4 == 0 && x % 100 != 0))      return true;
+    else                                                    return false;
 }
 
 void solve(){
-    cin >> a >> b >> c;
-    cout << (check() ? "YES" : "NO");
+    cin >> n;
+
+    if(nhuan(n))    cout << "Nam nhuan";
+    else            cout << "Khong la nam nhuan";
 }
 
 int main(){

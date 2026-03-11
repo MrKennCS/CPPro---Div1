@@ -36,19 +36,31 @@ int tc = 1;
 
 */
 
-int a, b, c;
+string s;
+string word;
 
-bool check(){
-    if(a < 0 || b < 0 || c < 0) return false;
-    if(a*a + b*b == c*c)    return true;
-    if(a*a + c*c == b*b)    return true;
-    if(b*b + c*c == a*a)    return true;
-    return false;
+void file(){
+    if(fopen("TEST.INP", "r")){
+        freopen("TEST.INP", "r", stdin);
+        freopen("TEST.OUT", "w", stdout);
+    }
 }
 
 void solve(){
-    cin >> a >> b >> c;
-    cout << (check() ? "YES" : "NO");
+    getline(cin, s);
+    //cout << s << '\n';
+    stringstream ss(s);
+
+    //cout << 'A' - 'a' << '\n';
+
+    while(ss >> word){
+        if('a' <= word[0] && word[0] <= 'z')    word[0] -= 32;
+        for(int i=1; i<sz(word); ++i)   if('A' <= word[i] && word[i] <= 'Z')    word[i] += 32;
+
+        cout << word << " ";
+    }
+
+
 }
 
 int main(){

@@ -5,13 +5,11 @@
 
 using namespace std;
 
-#define ll long long
 #define ull unsigned long long
-#define ii pair<int, int>
+#define ll long long
 #define umap unordered_map
 #define uset unordered_set
-
-#define sz(a) (int)a.size()
+#define ii pair<int, int>
 #define getbit(x, y) (((x) >> (y)) & 1)
 #define turnon(x, y) ((x) | (1LL << y))
 #define turnof(x, y) ((x) ^ (1LL << y))
@@ -32,23 +30,49 @@ using namespace std;
 const int mod = 1e9 + 7;
 int tc = 1;
 
-/*
+int n;
+int a[2003];
+int b[2003];
+int te[2003];
+int ad;
+ll cnt;
+ll res;
 
-*/
+void sub1(){
+    if(a[0] == a[1])    cout << 1;
+    else{
+        ll tmp = abs(a[0] - a[1]);
+        if(a[0] > a[1]) cout << tmp + 1;
+        else            cout << tmp - 1;
+    }
+}
 
-int a, b, c;
+void sub2(){
+    /*
+    TEST
+    5
+    10 5 7 10 45
 
-bool check(){
-    if(a < 0 || b < 0 || c < 0) return false;
-    if(a*a + b*b == c*c)    return true;
-    if(a*a + c*c == b*b)    return true;
-    if(b*b + c*c == a*a)    return true;
-    return false;
+5
+8 3 7 9 3
+    */    
+
+    foru(i, 0, n - 1)   b[i] = a[i] - i;
+    sort(b, b + n);
+
+    ll med = b[n / 2];
+
+    foru(i, 0, n - 1)   res += abs(b[i] - med);
+
+    cout << res;
 }
 
 void solve(){
-    cin >> a >> b >> c;
-    cout << (check() ? "YES" : "NO");
+    cin >> n;
+    foru(i, 0, n - 1)   cin >> a[i];
+
+    if(n == 2)  sub1();
+    else        sub2();
 }
 
 int main(){

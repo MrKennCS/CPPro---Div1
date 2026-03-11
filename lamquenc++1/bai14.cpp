@@ -36,19 +36,42 @@ int tc = 1;
 
 */
 
-int a, b, c;
+int n, m;
+vector<vector<int>> a(103, vector<int>(103, 0));
+vector<int> temp(103, 0);;
+int cd;
 
-bool check(){
-    if(a < 0 || b < 0 || c < 0) return false;
-    if(a*a + b*b == c*c)    return true;
-    if(a*a + c*c == b*b)    return true;
-    if(b*b + c*c == a*a)    return true;
-    return false;
+void file(){
+    if(fopen("TEST.INP", "r")){
+        freopen("TEST.INP", "r", stdin);
+        freopen("TEST.OUT", "w", stdout);
+    }
 }
 
 void solve(){
-    cin >> a >> b >> c;
-    cout << (check() ? "YES" : "NO");
+    cin >> n >> m;
+    for(int i=1; i<=n; ++i){
+        for(int j=1; j<=m; ++j){
+            cin >> a[i][j];
+        }
+    }
+    
+    for(int j=1; j<=m; ++j){
+        for(int i=1; i<=n; ++i) temp[i] = a[i][j];
+        sort(temp.begin() + 1, temp.begin() + 1 + n);
+        //for(int i=1; i<=n; ++i) cout << temp[i] << " ";  cout << '\n';
+        for(int i=1; i<=n; ++i) a[i][j] = temp[i];
+    }
+
+    for(int i=1; i<=n; ++i){
+        for(int j=1; j<=m; ++j){
+            cout << a[i][j] << " ";
+        }
+        cout << '\n';
+    }
+    /*
+
+    */
 }
 
 int main(){

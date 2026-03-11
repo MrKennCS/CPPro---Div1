@@ -36,19 +36,28 @@ int tc = 1;
 
 */
 
-int a, b, c;
+int n, m, q;
+int a[103][103];
+int x, y;
 
-bool check(){
-    if(a < 0 || b < 0 || c < 0) return false;
-    if(a*a + b*b == c*c)    return true;
-    if(a*a + c*c == b*b)    return true;
-    if(b*b + c*c == a*a)    return true;
-    return false;
+void file(){
+    if(fopen("TEST.INP", "r")){
+        freopen("TEST.INP", "r", stdin);
+        freopen("TEST.OUT", "w", stdout);
+    }
 }
 
 void solve(){
-    cin >> a >> b >> c;
-    cout << (check() ? "YES" : "NO");
+    cin >> n >> m >> q;
+    for(int i=1; i<=n; ++i){
+        for(int j=1; j<=m; ++j){
+            cin >> a[i][j];
+        }
+    }
+    while(q--){
+        cin >> x >> y;
+        cout << a[x][y] << '\n';
+    }
 }
 
 int main(){
