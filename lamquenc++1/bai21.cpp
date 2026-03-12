@@ -36,55 +36,6 @@ ll rand(ll l, ll r){
     return l + rd() % (r - l + 1);
 }
 
-const int mod = 1e9 + 7;
-int tc = 1;
-
-/*
-
-*/
-
-int n;
-int x;
-int res;
-
-ll mul(ll a, ll b, ll MOD){
-    ll ans = 0;
-    while(b){
-        if(b & 1)   ans = (ans + a) % MOD;
-        a = (a + a) % MOD;
-        b /= 2;
-    }
-    return ans;
-}
-
-ll pow(ll a, ll b, ll MOD){
-    ll ans = 1;
-    while(b){
-        if(b & 1)   ans = mul(ans, a, MOD);
-        a = mul(a, a, MOD);
-        b /= 2;
-    }
-    return ans;
-}
-
-bool snt(int num){
-    if(num <= 2)    return (num == 2);
-    for(int i=1; i<=100; ++i){
-        int x = rand(2, num - 1);
-        if(pow(x, num - 1, num) != 1)   return false;
-    }
-    return true;
-}
-
-int rev(int num){
-    int ans = 0;
-    while(num){
-        ans = num % 10 + ans * 10;
-        num /= 10;
-    }
-    return ans;
-}
-
 void file(){
     if(fopen("TEST.INP", "r")){
         freopen("TEST.INP", "r", stdin);
@@ -92,14 +43,34 @@ void file(){
     }
 }
 
+const int mod = 1e9 + 7;
+int tc = 1;
+
+/*
+
+*/
+
+struct SinhVien{
+    int toan;
+    int van;
+    int anh;
+
+    int tongdiem(){
+        return toan + van + anh;
+    }
+};
+
+SinhVien sv[1003];
+
+int n;
+int res;
+
 void solve(){
     cin >> n;
     for(int i=1; i<=n; ++i){
-        cin >> x;
-        if(snt(rev(x))) res++;
+        cin >> sv[i].toan >> sv[i].van >> sv[i].anh;
+        res = max(res, sv[i].tongdiem());
     }
-
-    cout << res;
 }
 
 int main(){

@@ -36,55 +36,6 @@ ll rand(ll l, ll r){
     return l + rd() % (r - l + 1);
 }
 
-const int mod = 1e9 + 7;
-int tc = 1;
-
-/*
-
-*/
-
-int n;
-int x;
-int res;
-
-ll mul(ll a, ll b, ll MOD){
-    ll ans = 0;
-    while(b){
-        if(b & 1)   ans = (ans + a) % MOD;
-        a = (a + a) % MOD;
-        b /= 2;
-    }
-    return ans;
-}
-
-ll pow(ll a, ll b, ll MOD){
-    ll ans = 1;
-    while(b){
-        if(b & 1)   ans = mul(ans, a, MOD);
-        a = mul(a, a, MOD);
-        b /= 2;
-    }
-    return ans;
-}
-
-bool snt(int num){
-    if(num <= 2)    return (num == 2);
-    for(int i=1; i<=100; ++i){
-        int x = rand(2, num - 1);
-        if(pow(x, num - 1, num) != 1)   return false;
-    }
-    return true;
-}
-
-int rev(int num){
-    int ans = 0;
-    while(num){
-        ans = num % 10 + ans * 10;
-        num /= 10;
-    }
-    return ans;
-}
-
 void file(){
     if(fopen("TEST.INP", "r")){
         freopen("TEST.INP", "r", stdin);
@@ -92,15 +43,64 @@ void file(){
     }
 }
 
-void solve(){
-    cin >> n;
-    for(int i=1; i<=n; ++i){
-        cin >> x;
-        if(snt(rev(x))) res++;
+const int mod = 1e9 + 7;
+int tc = 1;
+
+/*
+
+*/
+
+struct Time{
+    int h, m;
+    ll s;
+
+    Time add(Time a, Time b){
+        Time ans;
+        ans.h = a.h + b.h;
+        ans.m = a.m + b.m;
+        ans.s = a.s + b.s;
+
+        ans.m += ans.s / 60;
+        ans.s %= 60;
+
+        ans.h += ans.m / 60;
+        ans.m %= 60;
+
+        return ans;
     }
 
-    cout << res;
-}
+    Time diff(Time a, Time b){
+        Time ans;
+
+        ll giaya = 1ll * a.h * 60 * 60 + a.m * 60 + a.s;
+        ll giayb = 1ll * b.h * 60 * 60 + b.m * 60 + b.s;
+        
+        ans.s = abs(giaya - giayb);
+        //cout << "GIAY: " << ans.s << '\n';
+
+        //cout << ans.s << '\n';
+        ans.m = ans.s / 60;
+        ans.s %= 60;
+
+        ans.h = ans.m / 60;
+        ans.m %= 60;
+
+        return ans;
+    }
+};
+
+Time A, B;
+
+void solve(){
+    cin >> A.h >> A.m >> A.s;
+    cin >> B.h >> B.m >> B.s;
+
+    Time r1 = A.add(A, B);
+    Time r2 = A.diff(A, B);
+
+    cout << r1.h << " " << r1.m << " " << r1.s << '\n';
+    cout << r2.h << " " << r2.m << " " << r2.s;
+}   
 
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
