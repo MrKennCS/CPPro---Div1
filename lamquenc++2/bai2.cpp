@@ -47,35 +47,50 @@ const int mod = 1e9 + 7;
 int tc = 1;
 
 /*
-    Điều kiện đề bài, mỗi máy tính phải đượ nối với ít nhất một máy tính khác.
-    Mình sẽ QHD nối máy tính từ trái qua phải
 
-    Bước 1: công thức qqy hoạchk động
 */
 
-int n;
-int a[25005];
-int dp[25005][2];
+int n, m;
+vector<vector<int>> a(505, vector<int>(505, 0));
+bool tren, duoi, trai, phai;
+bool W, B;
 
 void solve(){
-    cin >> n;
-    for(int i=1; i<=n-1; ++i)   cin >> a[i];
-    
-    memset(dp, 0x3f, sizeof(dp));
-    dp[1][0] = 0;
-    //dp[1][1] = 0;
-
-    for(int i=1; i<=n-1; ++i){
-        dp[i + 1][1] = min(dp[i + 1][1], dp[i][0] + a[i]);
-        dp[i + 1][0] = min(dp[i + 1][0], dp[i][1]);
-        dp[i + 1][1] = min(dp[i + 1][1], dp[i][1] + a[i]);
+    cin >> n >> m;
+    for(int i=1; i<=n; ++i){
+        for(int j=1; j<=m; ++j){
+            char ch;    cin >> ch;
+            a[i][j] = (ch == 'W');
+        }
     }
 
-    cout << dp[n][1];
+    W = B = false;
+
+    // Xu ly truong hop W
+
+    tren = duoi = trai = phai = false;
+    for(int j=1; j<=m; ++j) if(a[1][j] == 1)    tren = true;
+    for(int j=1; j<=m; ++j) if(a[n][j] == 1)    duoi = true;
+    for(int i=1; i<=n; ++i) if(a[i][1] == 1)    trai = true;
+    for(int i=1; i<=n; ++i) if(a[i][m] == 1)    phai = true;
+    if(tren && duoi && trai && phai)    W = true;
+
+    // Xu ly truong hop B
+
+    tren = duoi = trai = phai = false;
+    for(int j=1; j<=m; ++j) if(a[1][j] == 0)    tren = true;
+    for(int j=1; j<=m; ++j) if(a[n][j] == 0)    duoi = true;
+    for(int i=1; i<=n; ++i) if(a[i][1] == 0)    trai = true;
+    for(int i=1; i<=n; ++i) if(a[i][m] == 0)    phai = true;
+    if(tren && duoi && trai && phai)    B = true;
+
+    cout << (W || B ? "YES\n" : "NO\n");
+    
 }
 
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
 
+    cin >> tc;
     while(tc--)  solve();
 }

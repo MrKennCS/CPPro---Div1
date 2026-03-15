@@ -47,35 +47,56 @@ const int mod = 1e9 + 7;
 int tc = 1;
 
 /*
-    Điều kiện đề bài, mỗi máy tính phải đượ nối với ít nhất một máy tính khác.
-    Mình sẽ QHD nối máy tính từ trái qua phải
+    Nx1: Bob có lợi thế rất lớn vì có thể thấy bài của Alice trước khi đi
+->  Nếu Bob sở hữu lá bài có thể đánh bại alice thì bob LUÔN THẮNG
+=>  Vậy điều kiện thắng của Alice khi này sẽ trở thành: "Alice thắng chỉ khi cô sở hữu lá bài bất bại"
 
-    Bước 1: công thức qqy hoạchk động
+    Gọi x là các là bài từ 1 -> n
+        w(x) là tập hợp các lá bài thắng x
+
+=>  Alice thắng khi sở hữu x với w[x] = {}
+
+    Nx2:
+    Dựa vào định nghĩa của x và W(x), ta có:
+
+    x = n       -> w(x) = {1}
+    x = n - 1   -> w(x) = {n}
+    x = n - 2   -> w(x) = {n, n - 1}
+    ...
+    x = 2       -> w(x) = {n, n - 1, n - 2, ... 3}
+    x = 1       -> w(x) = {n - 1, n - 2, ... 3, 2}
 */
 
 int n;
-int a[25005];
-int dp[25005][2];
+string tmp;
+string s;
+bool alice;
+int cnt;
 
 void solve(){
-    cin >> n;
-    for(int i=1; i<=n-1; ++i)   cin >> a[i];
-    
-    memset(dp, 0x3f, sizeof(dp));
-    dp[1][0] = 0;
-    //dp[1][1] = 0;
+    cin >> n >> tmp;
+    s = " " + tmp;
 
-    for(int i=1; i<=n-1; ++i){
-        dp[i + 1][1] = min(dp[i + 1][1], dp[i][0] + a[i]);
-        dp[i + 1][0] = min(dp[i + 1][0], dp[i][1]);
-        dp[i + 1][1] = min(dp[i + 1][1], dp[i][1] + a[i]);
+    alice = false;
+    cnt = 0;
+
+    if(n == 1)  cout << (s[1] == 'A' ? "Alice\n" : "Bob\n");
+    else{
+        if(s[n] == 'A' && s[1] == 'A')  alice = true;
+
+        if(s[n] == 'A' && s[n - 1] == 'A')  alice = true;
+
+        for(int i=1; i<=n; ++i) if(s[i] == 'B') cnt++;
+
+        if(cnt == 1 && s[n] == 'B') alice = true;
+
+        cout << (alice ? "Alice\n" : "Bob\n");
+
     }
-
-    cout << dp[n][1];
 }
 
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
-
+    cin >> tc;
     while(tc--)  solve();
 }

@@ -47,31 +47,52 @@ const int mod = 1e9 + 7;
 int tc = 1;
 
 /*
-    Điều kiện đề bài, mỗi máy tính phải đượ nối với ít nhất một máy tính khác.
-    Mình sẽ QHD nối máy tính từ trái qua phải
 
-    Bước 1: công thức qqy hoạchk động
 */
 
-int n;
-int a[25005];
-int dp[25005][2];
+string s;
+stack<int> st;
+int cur;
+int res;
+
+int val(char ch){
+    if(ch == 'C')   return 12;
+    if(ch == 'H')   return 1;
+    if(ch == 'O')   return 16;
+    return 0;
+}
 
 void solve(){
-    cin >> n;
-    for(int i=1; i<=n-1; ++i)   cin >> a[i];
-    
-    memset(dp, 0x3f, sizeof(dp));
-    dp[1][0] = 0;
-    //dp[1][1] = 0;
+    cin >> s;
 
-    for(int i=1; i<=n-1; ++i){
-        dp[i + 1][1] = min(dp[i + 1][1], dp[i][0] + a[i]);
-        dp[i + 1][0] = min(dp[i + 1][0], dp[i][1]);
-        dp[i + 1][1] = min(dp[i + 1][1], dp[i][1] + a[i]);
+    for(int i=0; i<sz(s); ++i){
+        if(s[i] == 'C' || s[i] == 'H' || s[i] == 'O')   st.push(val(s[i]));
+
+        if(s[i] == '(') st.push(-1);
+
+        if(s[i] == ')'){
+            cur = 0;
+            while(st.top() != -1){
+                cur += st.top();
+                st.pop();
+            }
+            st.pop();
+            st.push(cur);
+        }
+
+        if('2' <= s[i] && s[i] <= '9'){
+            cur = st.top() * (s[i] - '0');
+            st.pop();
+            st.push(cur);
+        }
     }
 
-    cout << dp[n][1];
+    while(!st.empty()){
+        res += st.top();
+        st.pop();
+    }
+
+    cout << res;
 }
 
 int main(){

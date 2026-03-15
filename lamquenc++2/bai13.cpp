@@ -51,33 +51,68 @@ int tc = 1;
 */
 
 int n;
-int a[1005];
-int dp[1005];
+int k;
+int c[103];
+int f;
 int res;
+umap<int, int> cnt;
 
 void solve(){
-    cin >> n;
-    for(int i=1; i<=n; ++i) cin >> a[i];
+    f = 0;
+    cnt.clear();
 
-    //memset(dp, 1, sizeof(dp));
-    for(int i=1; i<=n; ++i) dp[i] = 1;
-    dp[0] = 0;
-
+    cin >> n >> k;
     for(int i=1; i<=n; ++i){
-        for(int j=1; j<i; ++j){
-            if(a[j] < a[i]){
-                dp[i] = max(dp[i], dp[j] + 1);
-            }
+        cin >> c[i];
+        cnt[c[i]]++;
+    }
+
+    for(umap<int, int>::iterator it=cnt.begin(); it!=cnt.end(); ++it){
+        if(it->se >= k){
+            f += ((it->se) / k) * (k - 1);
+            it->se %= k;
+        }
+        //cout << it->fi << " " << it->se << '\n';
+    }
+    //cout << f << '\n';
+
+    for(umap<int, int>::iterator it=cnt.begin(); it!=cnt.end(); ++it){
+        if(f >= k - (it->se) && it->se > 0){
+            f -= (k - (it->se));
+            f += (k - 1);
+            it->se = 0;
         }
     }
 
-    //for(int i=1; i<=n; ++i) cout << dp[i] << " ";   cout << '\n';
-    for(int i=1; i<=n; ++i) res = max(res, dp[i]);
-    cout << res;
+    for(umap<int, int>::iterator it=cnt.begin(); it!=cnt.end(); ++it){
+        if(f >= k - (it->se) && it->se > 0){
+            f -= (k - (it->se));
+            f += (k - 1);
+            it->se = 0;
+        }
+    }
+
+    for(umap<int, int>::iterator it=cnt.begin(); it!=cnt.end(); ++it){
+        if(f >= k - (it->se) && it->se > 0){
+            f -= (k - (it->se));
+            f += (k - 1);
+            it->se = 0;
+        }
+    }
+
+    for(umap<int, int>::iterator it=cnt.begin(); it!=cnt.end(); ++it){
+        res += it->se;
+        //cout << it->fi << " " << it->se << '\n';
+    }
+
+    if(f >= k)  f = k - 1;
+
+    cout << res + f << '\n';
+
 }
 
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
-
+    cin >> tc;
     while(tc--)  solve();
 }

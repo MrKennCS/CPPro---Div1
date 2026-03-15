@@ -47,31 +47,32 @@ const int mod = 1e9 + 7;
 int tc = 1;
 
 /*
-    Điều kiện đề bài, mỗi máy tính phải đượ nối với ít nhất một máy tính khác.
-    Mình sẽ QHD nối máy tính từ trái qua phải
 
-    Bước 1: công thức qqy hoạchk động
 */
 
 int n;
-int a[25005];
-int dp[25005][2];
+int st;
+int tar;
+
+bool cp(int x){
+    return (sqrt(x) == (int)sqrt(x));
+}
 
 void solve(){
     cin >> n;
-    for(int i=1; i<=n-1; ++i)   cin >> a[i];
+    st = n * (n + 1) / 2;
     
-    memset(dp, 0x3f, sizeof(dp));
-    dp[1][0] = 0;
-    //dp[1][1] = 0;
-
-    for(int i=1; i<=n-1; ++i){
-        dp[i + 1][1] = min(dp[i + 1][1], dp[i][0] + a[i]);
-        dp[i + 1][0] = min(dp[i + 1][0], dp[i][1]);
-        dp[i + 1][1] = min(dp[i + 1][1], dp[i][1] + a[i]);
+    //cout << cp(n) << '\n';
+    for(int i=st; i<=1000000000; ++i){
+        if(cp(i)){
+            tar = i;
+            break;
+        }
     }
 
-    cout << dp[n][1];
+    for(int i=1; i<=n-1; ++i)   cout << i << " ";
+    cout << tar - st + n;   
+    //cout << sqrt(n);
 }
 
 int main(){

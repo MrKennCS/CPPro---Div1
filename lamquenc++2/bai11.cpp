@@ -47,37 +47,80 @@ const int mod = 1e9 + 7;
 int tc = 1;
 
 /*
+3
 
+1
+5 
+3 
+3
+5 2 2 
+
+3
+3 3 2 
+2 1 4 
+6
+4 4 4 2 3 3 
+
+3
+3 1 3 
+4 1 4 
+7
+3 4 1 4 5 5 1 
+
+    Nx1: Điều kiện đầu tiên để c[i] tồn tại là tổng các chữ số thế vào phải thỏa
+
+    // Nx2: Ở dãy d[i], phần tử d cuối cùng phải là một số đã có trong b[i]
+
+    Sau khi thỏa có tất cả các phần tử cần thế vào, ta đi xét các trường hợp sau:
+
+    TH1: Tồn tại phần tử có trong d[i] nhưng không có trong b[i]
+->  Ta duyệt từ phải qua trái, trong lúc duyệt, ta đếm số lượng các phần tử đã đi qua rồi đến khi gặp phần tử không có trong b[i]
+
+    TH2: Tất cả phần tử có trong d[i] đều có trong b[i]
+->  Đơn giản ta chỉ cần in ra YES
 */
 
-int n;
-int a[1005];
-int dp[1005];
-int res;
+int n, m;
+int a[200005];
+int b[200005];
+int d[200005];
+umap<int, int> cnt;
 
 void solve(){
+
+    cnt.clear();
+
     cin >> n;
     for(int i=1; i<=n; ++i) cin >> a[i];
+    for(int i=1; i<=n; ++i) cin >> b[i];
 
-    //memset(dp, 1, sizeof(dp));
-    for(int i=1; i<=n; ++i) dp[i] = 1;
-    dp[0] = 0;
-
-    for(int i=1; i<=n; ++i){
-        for(int j=1; j<i; ++j){
-            if(a[j] < a[i]){
-                dp[i] = max(dp[i], dp[j] + 1);
-            }
-        }
+    cin >> m;
+    for(int i=1; i<=m; ++i){
+        cin >> d[i];
+        cnt[d[i]]++;
     }
 
-    //for(int i=1; i<=n; ++i) cout << dp[i] << " ";   cout << '\n';
-    for(int i=1; i<=n; ++i) res = max(res, dp[i]);
-    cout << res;
+    for(int i=1; i<=n; ++i){
+        if(a[i] == b[i])    continue;
+
+        if(cnt[b[i]] == 0){
+            cout << "NO\n";
+            return ;
+        }
+
+        cnt[b[i]]--;
+    }
+
+    cnt.clear();
+
+    for(int i=1; i<=n; ++i) cnt[b[i]]++;
+
+    if(cnt[d[m]] == 0)  cout << "NO\n";
+    else                cout << "YES\n";
 }
 
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
-
+    cin >> tc;
     while(tc--)  solve();
 }

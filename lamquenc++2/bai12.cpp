@@ -47,35 +47,41 @@ const int mod = 1e9 + 7;
 int tc = 1;
 
 /*
-    Điều kiện đề bài, mỗi máy tính phải đượ nối với ít nhất một máy tính khác.
-    Mình sẽ QHD nối máy tính từ trái qua phải
+    Bai nay da lam roi, quan trong la cai dat (implement) cua bai nay
 
-    Bước 1: công thức qqy hoạchk động
+
 */
 
+string tmp;
+string s;
+int cnt;
 int n;
-int a[25005];
-int dp[25005][2];
+ll res;
 
 void solve(){
-    cin >> n;
-    for(int i=1; i<=n-1; ++i)   cin >> a[i];
-    
-    memset(dp, 0x3f, sizeof(dp));
-    dp[1][0] = 0;
-    //dp[1][1] = 0;
 
-    for(int i=1; i<=n-1; ++i){
-        dp[i + 1][1] = min(dp[i + 1][1], dp[i][0] + a[i]);
-        dp[i + 1][0] = min(dp[i + 1][0], dp[i][1]);
-        dp[i + 1][1] = min(dp[i + 1][1], dp[i][1] + a[i]);
+    res = 0;
+    cnt = 0;
+
+    cin >> tmp;
+    s = " " + tmp;
+    n = sz(tmp);
+
+    for(int i=1; i<=n; ++i){
+        if(s[i] == '1') cnt++;
+        else{
+            if(cnt == 0)    continue;
+            else{
+                res += (cnt + 1);
+
+            }
+        }
     }
-
-    cout << dp[n][1];
+    cout << res << '\n';
 }
 
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
-
+    cin >> tc;
     while(tc--)  solve();
 }

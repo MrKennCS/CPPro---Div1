@@ -47,35 +47,51 @@ const int mod = 1e9 + 7;
 int tc = 1;
 
 /*
-    Điều kiện đề bài, mỗi máy tính phải đượ nối với ít nhất một máy tính khác.
-    Mình sẽ QHD nối máy tính từ trái qua phải
 
-    Bước 1: công thức qqy hoạchk động
 */
 
+string tmp;
+string s;  
 int n;
-int a[25005];
-int dp[25005][2];
+int cntu;
+int cnti;
+int l, r;
 
 void solve(){
-    cin >> n;
-    for(int i=1; i<=n-1; ++i)   cin >> a[i];
-    
-    memset(dp, 0x3f, sizeof(dp));
-    dp[1][0] = 0;
-    //dp[1][1] = 0;
+    cin >> tmp;
 
-    for(int i=1; i<=n-1; ++i){
-        dp[i + 1][1] = min(dp[i + 1][1], dp[i][0] + a[i]);
-        dp[i + 1][0] = min(dp[i + 1][0], dp[i][1]);
-        dp[i + 1][1] = min(dp[i + 1][1], dp[i][1] + a[i]);
+    s = " " + tmp;
+    n = sz(tmp);
+
+    cntu = 0;
+    cnti = 0;
+
+    for(int i=1; i<=n; ++i){
+        if(s[i] == 'U') cntu++;
+        else            cnti++;
     }
 
-    cout << dp[n][1];
+    if((cntu == 0 || cnti == 0) || 
+       (cntu == 1 && cnti == 1))
+    {
+        cout << "No\n";
+        return ;
+    }
+
+    cntu = cnti = 0;
+    for(int i=1; i<=n; ++i){
+        if(s[i] == 'U') cntu++;
+        else            cnti++;
+
+        if((cntu >= 2 * cnti || cnti >= 2 * cntu) && (cntu >= 1 && cnti >= 1)){
+            cout << "Yes " << 1 << " " << i << '\n';
+            return ;
+        }
+    }
 }
 
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
-
+    cin >> tc;
     while(tc--)  solve();
 }

@@ -29,6 +29,8 @@ using namespace std;
 #define lb lower_bound // >=
 #define ub upper_bound // >
 
+mt19937 rd(chrono::steady_clock::now().time_since_epoch().count());
+
 const int mod = 1e9 + 7;
 int tc = 1;
 

@@ -84,24 +84,40 @@ int a[LIMN];
 
 // cs1
 bool coduong = false;
-int res1 = -1e9 - 7;
-// cs2
-int sum;
-int res2 = -1e9 - 7;
+int mn_am = -1e9 - 5;
 
-int cs1(){
+int res1;
+int res2;
+int sum;
+
+void solve(){
+    cin >> n;
+
+    coduong = false;
+    res1 = 0;
+    res2 = 0;
+    sum = 0;
+    mn_am = -1e9 - 5;
+
+    for(int i=1; i<=n; ++i){
+        cin >> a[i];
+        if(a[i] >= 0)   coduong = true;
+        else            mn_am = max(mn_am, a[i]);         
+    }
+
+    // Cs1
+    //cout << (coduong ? 1 : 0) << '\n';
+
     if(coduong){
-        res1 = 0;
         for(int i=1; i<=n; ++i) if(a[i] >= 0)   res1 += a[i];
     }else{
-        for(int i=1; i<=n; ++i) res1 = max(res1, a[i]);
+        res1 = mn_am;
     }
-    return res1;
-}
+    //cout << res1 << '\n';
 
-int cs2(){
+    //Cs2
+
     if(coduong){
-        sum = 0;
         for(int i=1; i<=n; ++i){
             sum += a[i];
             if(sum < 0){
@@ -109,23 +125,9 @@ int cs2(){
                 sum = 0;
             }else   res2 = max(res2, sum);
         }
-    }else{
-        for(int i=1; i<=n; ++i) res2 = max(res2, a[i]);
-    }
-    return res2;
-}
+    }else   res2 = mn_am;
 
-void solve(){
-    cin >> n;
-
-    coduong = false;
-
-    for(int i=1; i<=n; ++i){
-        cin >> a[i];
-        if(a[i] >= 0)   coduong = true;
-    }
-
-    cout << cs1() << " " << cs2() << '\n';;
+    cout << res1 << " " << res2 << '\n';
 }
 
 int main(){
