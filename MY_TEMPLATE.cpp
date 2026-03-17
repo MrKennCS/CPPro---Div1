@@ -31,12 +31,10 @@ using namespace std;
 
 mt19937 rd(chrono::steady_clock::now().time_since_epoch().count());
 
-const int mod = 1e9 + 7;
-int tc = 1;
-
-/*
-
-*/
+ll rand(ll l, ll r){
+    assert(l <= r);
+    return l + rd() % (r - l + 1);
+}
 
 void file(){
     if(fopen("TEST.INP", "r")){
@@ -44,6 +42,13 @@ void file(){
         freopen("TEST.OUT", "w", stdout);
     }
 }
+
+const int mod = 1e9 + 7;
+int tc = 1;
+
+/*
+
+*/
 
 void solve(){
     

@@ -47,19 +47,24 @@ const int mod = 1e9 + 7;
 int tc = 1;
 
 /*
-
+1
+10 3
+1 3 3 3 2 2 3 3 2 2
 */
 
-int n;
-int k;
+int n, k;
 int c[103];
+int cnt[103];
 int f;
+vector<int> a;
 int res;
-umap<int, int> cnt;
 
 void solve(){
+
+    a.clear();
+    memset(cnt, 0, sizeof(cnt));
     f = 0;
-    cnt.clear();
+    res = 0;
 
     cin >> n >> k;
     for(int i=1; i<=n; ++i){
@@ -67,48 +72,51 @@ void solve(){
         cnt[c[i]]++;
     }
 
-    for(umap<int, int>::iterator it=cnt.begin(); it!=cnt.end(); ++it){
-        if(it->se >= k){
-            f += ((it->se) / k) * (k - 1);
-            it->se %= k;
+    for(int i=1; i<=100; ++i){
+        if(cnt[i] >= k){
+            f += (k - 1) * (cnt[i] / k);
+            cnt[i] %= k;
         }
-        //cout << it->fi << " " << it->se << '\n';
-    }
-    //cout << f << '\n';
-
-    for(umap<int, int>::iterator it=cnt.begin(); it!=cnt.end(); ++it){
-        if(f >= k - (it->se) && it->se > 0){
-            f -= (k - (it->se));
-            f += (k - 1);
-            it->se = 0;
-        }
+        if(cnt[i] > 0)  a.pb(k - cnt[i]);
     }
 
-    for(umap<int, int>::iterator it=cnt.begin(); it!=cnt.end(); ++it){
-        if(f >= k - (it->se) && it->se > 0){
-            f -= (k - (it->se));
-            f += (k - 1);
-            it->se = 0;
-        }
+    sort(a.begin(), a.end());
+
+    //cout << "Free: " << f << '\n';
+
+    for(int i=0; i<sz(a); ++i){
+        if(f >= a[i]){
+            f = f - a[i] + k - 1;
+            //cout << f << " - " << a[i] << " + " << k - 1 << '\n';
+            a[i] = 0;
+        }else   break;
     }
 
-    for(umap<int, int>::iterator it=cnt.begin(); it!=cnt.end(); ++it){
-        if(f >= k - (it->se) && it->se > 0){
-            f -= (k - (it->se));
-            f += (k - 1);
-            it->se = 0;
+    for(int i=0; i<sz(a); ++i){
+        if(a[i] > 0){
+            res += (k - a[i]);
         }
-    }
-
-    for(umap<int, int>::iterator it=cnt.begin(); it!=cnt.end(); ++it){
-        res += it->se;
-        //cout << it->fi << " " << it->se << '\n';
     }
 
     if(f >= k)  f = k - 1;
 
     cout << res + f << '\n';
 
+    /*
+    for(int i=1; i<=100; ++i){
+        if(cnt[i] > 0){
+            cout << i << " " << cnt[i] << '\n';
+        }
+    }
+
+    cout << "Free: " << f << '\n';
+
+    for(int i=0; i<sz(a); ++i){
+        cout << a[i] << " ";
+    }
+
+    cout << '\n';
+    */
 }
 
 int main(){

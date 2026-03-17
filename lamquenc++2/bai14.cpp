@@ -47,42 +47,48 @@ const int mod = 1e9 + 7;
 int tc = 1;
 
 /*
-    INPUT
-    axyb
-    abyxb
-
-    OUTPUT
-    axb
-
-    Gọi dp[i][j] là xâu con dài nhất khi ta xét đến tiền tố độ dài i ở xâu a và độ dài j ở xâu b
-
-    ->  Base： dp[0][0] = 0
-        res: dp[n][m];
+    abcabcabc...
+    acbacbacb
+    bacbacbac
+    bcabcabca
+    cabcabcab
+    cbacbacba
 */
 
-string s, t;
 int n, m;
-int dp[3003][3003];
+string mai;
+string s;
+vector<string> t;
+int l, r;
+int si;
+int cur;
 
 void solve(){
-    cin >> s >> t;
-    n = sz(s);
-    m = sz(t);
-    s = " " + s;
-    t = " " + t;
+    cin >> n >> m;
+    cin >> mai;
+    mai = " " + mai;
 
-    memset(dp, -0x3f, sizeof(dp));
-    dp[0][0] = 0;
+    while(m--){
+        s = "";
+        t = vector<string>(6, "");
+        cin >> l >> r;
+        for(int i=l; i<=r; ++i) s += mai[i];
 
-    for(int i=1; i<=n; ++i){
-        for(int j=1; j<=m; ++j){
-            dp[i][j] = max(dp[i - 1][j], dp[i][j]);
-            dp[i][j] = max(dp[i][j - 1], dp[i][j]);
-            if(s[i] == t[j] && i > 0 && j > 0)  dp[i][j] = max(dp[i][j], dp[i - 1][j - 1] + 1);
+        si = r - l + 1;
+
+        // so lan can add si / 3 + 1
+
+        for(int i=1; i<=si / 3 + 1; ++i)    t[0] += "abc";
+        for(int i=1; i<=si / 3 + 1; ++i)    t[1] += "acb";
+        for(int i=1; i<=si / 3 + 1; ++i)    t[2] += "bac";
+        for(int i=1; i<=si / 3 + 1; ++i)    t[3] += "bca";
+        for(int i=1; i<=si / 3 + 1; ++i)    t[4] += "cab";
+        for(int i=1; i<=si / 3 + 1; ++i)    t[5] += "cba";
+
+        for(int i=1; i<=si; ++i){
+            cout << s[i]
         }
     }
-
-    cout << dp[n][m];
 
 }
 
