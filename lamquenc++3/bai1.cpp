@@ -47,60 +47,30 @@ const int mod = 1e9 + 7;
 int tc = 1;
 
 /*
+    5
+    3 4 2 3 4
+
+    0 1 2 0 1
 
 */
 
-int n, m;
-int l, r;
-int cnt;
-string s;
-string pattern[6] = {"abc", "acb", "bac", "bca", "cab", "cba"};
-vector<string> gen(6, "");
-vector<vector<ll>> pre(6, vector<ll>(200005, 0));
+int n;
+int a[100005];
+int cnt[3];
 ll res;
 
 void solve(){
-    cin >> n >> m;
-    cin >> s;
-
-    while(cnt <= n){
-        gen[0] += pattern[0];
-        gen[1] += pattern[1];
-        gen[2] += pattern[2];
-        gen[3] += pattern[3];
-        gen[4] += pattern[4];
-        gen[5] += pattern[5];
-        cnt += 3;
+    cin >> n;
+    for(int i=1; i<=n; ++i){
+        cin >> a[i];
+        cnt[a[i] % 3]++;
     }
 
+    res = 1ll * cnt[1] * cnt[2] + cnt[0] * (cnt[0] - 1) / 2;
+
+    cout << res;
 
 
-    for(int pt=0; pt<6; ++pt){
-        for(int i=0; i<sz(s); ++i){
-            pre[pt][i + 1] = pre[pt][i] + (s[i] != gen[pt][i]);
-        }
-    }
-    /*
-    */
-
-    while(m--){
-        cin >> l >> r;
-
-        res = 1e9 + 7;
-
-        for(int pt=0; pt<6; ++pt){
-            res = min(pre[pt][r] - pre[pt][l - 1], res);
-        }
-        /*
-        for(int pt=0; pt<6; ++pt){
-            res = min(pre[pt][r] - pre[pt][l - 1], res);
-        }
-        */
-
-        cout << res << '\n';
-    }
-    /*
-    */
 }
 
 int main(){
