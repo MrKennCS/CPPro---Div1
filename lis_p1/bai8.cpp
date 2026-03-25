@@ -50,19 +50,40 @@ int tc = 1;
 
 */
 
-int n, k;
-int a[100005];
+int n, m;
+int a[2002][2002];
+int dp[2002][2002];
+int res;
 
 void solve(){
-    cin >> n >> k;
-    for(int i=1; i<=n; ++i) cin >> a[i];
-    sort(a + 1, a + n + 1);
+    cin >> n >> m;
+    for(int i=1; i<=n; ++i){
+        for(int j=1; j<=m; ++j){
+            cin >> a[i][j];
+            if(a[i][j] == 1){
+                dp[i][j] = 1;
+                if(a[i][j] == a[i][j - 1] && a[i][j] == a[i - 1][j] && a[i][j] == a[i - 1][j - 1]){
+                    dp[i][j] = min({dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]}) + 1;
+                }
+            }else   dp[i][j] = 0;
+            res = max(res, dp[i][j]);
+        }
+    }
+    for(int i=1; i<=n; ++i){
+        for(int j=1; j<=m; ++j){
+            if(a[i][j] == 0){
+                dp[i][j] = 1;
+                if(a[i][j] == a[i][j - 1] && a[i][j] == a[i - 1][j] && a[i][j] == a[i - 1][j - 1]){
+                    dp[i][j] = min({dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]}) + 1;
+                }
+            }else   dp[i][j] = 0;
+            res = max(res, dp[i][j]);
+        }
+    }
 
-    int *up = ub(a + 1, a + n + 1, k);
-    int *low = lb(a + 1, a + n + 1, k);
+    cout << res;
 
-    //for(int i=1; i<=n; ++i) cout << a[i] << " ";    cout << '\n';
-    cout << up - low;
+
 }
 
 int main(){

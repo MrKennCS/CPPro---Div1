@@ -51,7 +51,7 @@ int tc = 1;
 */
 
 void solve(){
-    
+
 }
 
 int main(){

@@ -47,43 +47,54 @@ const int mod = 1e9 + 7;
 int tc = 1;
 
 /*
-    INPUT
-    axyb
-    abyxb
 
-    OUTPUT
-    axb
-
-    Gọi dp[i][j] là xâu con dài nhất khi ta xét đến tiền tố độ dài i ở xâu a và độ dài j ở xâu b
-
-    ->  Base： dp[0][0] = 0
-        res: dp[n][m];
 */
 
-string s, t;
 int n, m;
+string s;
+string t;
 int dp[3003][3003];
+string res;
 
 void solve(){
     cin >> s >> t;
+
     n = sz(s);
     m = sz(t);
     s = " " + s;
     t = " " + t;
 
-    memset(dp, -0x3f, sizeof(dp));
-    dp[0][0] = 0;
+    dp[0][0] = dp[0][1] = dp[1][0] = 0;
 
     for(int i=1; i<=n; ++i){
         for(int j=1; j<=m; ++j){
-            dp[i][j] = max(dp[i - 1][j], dp[i][j]);
-            dp[i][j] = max(dp[i][j - 1], dp[i][j]);
-            if(s[i] == t[j] && i > 0 && j > 0)  dp[i][j] = max(dp[i][j], dp[i - 1][j - 1] + 1);
+            if(s[i] == t[j])    dp[i][j] = dp[i - 1][j - 1] + 1;
+            else                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
         }
     }
 
-    cout << dp[n][m];
+    int len = dp[n][m];
+    int u = n;
+    int v = m;
 
+    res = string(len, ' ');
+    
+    while(len){
+        if(s[u] == t[v]){
+            res[len - 1] = s[u];
+            u--;
+            v--;
+            len--;
+        }else{
+            if(dp[u][v - 1] > dp[u - 1][v]) v--;
+            else                            u--;
+        }
+    }
+    /*
+    */
+
+
+    cout << res;
 }
 
 int main(){

@@ -71,6 +71,8 @@ void solve(){
         cin >> sv[i].toan >> sv[i].van >> sv[i].anh;
         res = max(res, sv[i].tongdiem());
     }
+
+    cout << res;
 }
 
 int main(){

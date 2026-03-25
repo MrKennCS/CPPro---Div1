@@ -50,19 +50,47 @@ int tc = 1;
 
 */
 
-int n, k;
-int a[100005];
+ll mul(ll a, ll b, ll MOD){
+    ll ans = 0;
+    while(b){
+        if(b & 1)   ans = (ans + a) % MOD;
+        a = (a + a) % MOD;
+        b /= 2;
+    }
+    return ans;
+}
+
+ll pow(ll a, ll b, ll MOD){
+    ll ans = 1;
+    while(b){
+        if(b & 1)   ans = mul(ans, a, MOD);
+        a = mul(a, a, MOD);
+        b /= 2;
+    }
+    return ans;
+}
+
+bool snt(ll n){
+    if(n <= 2)  return (n == 2);
+    for(int i=1; i<=100; ++i){
+        ll x = rand(2, n - 1);
+        if(pow(x, n - 1, n) != 1)   return false;
+    }
+    return true;
+}
+
+int n;
 
 void solve(){
-    cin >> n >> k;
-    for(int i=1; i<=n; ++i) cin >> a[i];
-    sort(a + 1, a + n + 1);
-
-    int *up = ub(a + 1, a + n + 1, k);
-    int *low = lb(a + 1, a + n + 1, k);
-
-    //for(int i=1; i<=n; ++i) cout << a[i] << " ";    cout << '\n';
-    cout << up - low;
+    cin >> n;
+    
+    while(true){
+        n++;
+        if(snt(n)){
+            cout << n;
+            return ;
+        }
+    }
 }
 
 int main(){

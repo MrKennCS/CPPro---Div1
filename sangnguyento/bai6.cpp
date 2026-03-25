@@ -50,19 +50,43 @@ int tc = 1;
 
 */
 
-int n, k;
-int a[100005];
+ll n;
+queue<int> mu;
+queue<int> val;
+ll res;
+
+void factor(ll n){
+    int cnt = 0;
+    for(int i=2; 1ll*i*i<=n; ++i){
+        cnt = 0;
+        while(n % i == 0){
+            cnt++;
+            n /= i;
+        }
+        mu.push(cnt);
+        val.push(i);
+    }
+    if(n > 1){
+        val.push(n);
+        mu.push(1);
+    }
+    //cout << n << '\n';
+}
 
 void solve(){
-    cin >> n >> k;
-    for(int i=1; i<=n; ++i) cin >> a[i];
-    sort(a + 1, a + n + 1);
+    cin >> n;
 
-    int *up = ub(a + 1, a + n + 1, k);
-    int *low = lb(a + 1, a + n + 1, k);
+    factor(n);
+    res = 1;
 
-    //for(int i=1; i<=n; ++i) cout << a[i] << " ";    cout << '\n';
-    cout << up - low;
+    while(!mu.empty()){
+        //cout << val.front() << " " << mu.front() << '\n';
+        res *= (mu.front() + 1);
+        val.pop();
+        mu.pop();
+    }
+
+    cout << res;
 }
 
 int main(){

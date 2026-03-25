@@ -55,7 +55,7 @@ void solve(){
     }
 
     for(int i=1; i<=n; ++i){
-        sort(a[i].begin(), a[i].begin() + m);
+        sort(a[i].begin() + 1, a[i].begin() + 1 + m);
     }
 
     for(int i=1; i<=n; ++i){

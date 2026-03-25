@@ -56,8 +56,8 @@ int res;
 int med(int x, int y, int z){
     if(y > x)   swap(x, y);
     if(z > x)   swap(x, z);
-    cout << x << '\n';
-    return min(y, z);
+    //cout << x << '\n';
+    return max(y, z);
 }
 
 void solve(){

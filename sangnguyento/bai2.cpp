@@ -50,20 +50,24 @@ int tc = 1;
 
 */
 
-int n, k;
-int a[100005];
+int n;
+priority_queue<int, vector<int>, greater<int>> qu;
 
 void solve(){
-    cin >> n >> k;
-    for(int i=1; i<=n; ++i) cin >> a[i];
-    sort(a + 1, a + n + 1);
+    cin >> n;
+    for(int i=1; 1ll*i*i<=n; ++i){
+        if(n % i == 0){
+            qu.push(i);
+            if(n / i != i)  qu.push(n / i);
+        }
+    }
 
-    int *up = ub(a + 1, a + n + 1, k);
-    int *low = lb(a + 1, a + n + 1, k);
-
-    //for(int i=1; i<=n; ++i) cout << a[i] << " ";    cout << '\n';
-    cout << up - low;
+    while(!qu.empty()){
+        cout << qu.top() << " ";
+        qu.pop();
+    }
 }
+
 
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);

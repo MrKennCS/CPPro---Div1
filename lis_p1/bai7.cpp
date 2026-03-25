@@ -50,19 +50,27 @@ int tc = 1;
 
 */
 
-int n, k;
-int a[100005];
+int a, b, c;
+int cnt[100];
+ii res = {100, 0};
 
 void solve(){
-    cin >> n >> k;
-    for(int i=1; i<=n; ++i) cin >> a[i];
-    sort(a + 1, a + n + 1);
+    cin >> a >> b >> c;
 
-    int *up = ub(a + 1, a + n + 1, k);
-    int *low = lb(a + 1, a + n + 1, k);
+    for(int i=1; i<=a; ++i){
+        for(int j=1; j<=b; ++j){
+            for(int k=1; k<=c; ++k){
+                cnt[i + j + k]++;
+            }
+        }
+    }
 
-    //for(int i=1; i<=n; ++i) cout << a[i] << " ";    cout << '\n';
-    cout << up - low;
+    for(int i=1; i<=a + b + c; ++i){
+        if(cnt[i] == res.se)    res.fi = min(i, res.fi);
+        if(cnt[i] > res.se)     res = {i, cnt[i]};
+    }
+
+    cout << res.fi;
 }
 
 int main(){

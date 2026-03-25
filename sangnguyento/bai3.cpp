@@ -50,19 +50,22 @@ int tc = 1;
 
 */
 
-int n, k;
-int a[100005];
+int n;
+
+int cnt(int n){
+    int ans = 0;
+    for(int i=1; 1ll*i*i<=n; ++i){
+        if(n % i == 0){
+            if(n / i != i)  ans += 2;
+            else            ans += 1;
+        }
+    }
+    return ans;
+}
 
 void solve(){
-    cin >> n >> k;
-    for(int i=1; i<=n; ++i) cin >> a[i];
-    sort(a + 1, a + n + 1);
-
-    int *up = ub(a + 1, a + n + 1, k);
-    int *low = lb(a + 1, a + n + 1, k);
-
-    //for(int i=1; i<=n; ++i) cout << a[i] << " ";    cout << '\n';
-    cout << up - low;
+    cin >> n;
+    cout << cnt(n);
 }
 
 int main(){

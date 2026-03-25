@@ -44,93 +44,18 @@ void file(){
 }
 
 const int mod = 1e9 + 7;
-const int LIMN = 1e5 + 5;
 int tc = 1;
 
 /*
-        1. Tìm dãy con (không cần liên tiếp) khác rỗng có tổng lớn nhất
-    
-    * -1e4 <= a[i] <= 1e4
 
-    Note: Gọi res1 là đáp án cần tìm (res1 = -1e9 - 5)
-
-    TH1: Nếu mảng có số dương hoặc 0 (a[i] >= 0)
-    res1 = sum(mọi a[i] thuộc a) (ĐK: a[i] >= 0);
-
-    TH2: Nếu mảng không có số dương hoặc 0
-    res1 = số ấm lớn nhất
-
-        2. Tìm đoạn con liên tiếp khác rỗng lớn nhất
-    Bài toán quen thuộc -> Ta sẽ duy trì một biến sum là tổng, với mỗi a[i], ta xét:
-
-    sum += a[i];
-
-    if(sum < 0){
-        res2 = max(res2, sum - a[i]);
-        sum = 0;
-    }
-
-    cout << res2
-
-2
-4
-1 2 3 4
-6
-2-1 2 3 4-5
 */
 
-int n;
-int a[LIMN];
-
-// cs1
-bool coduong = false;
-int res1 = -1e9 - 7;
-// cs2
-int sum;
-int res2 = -1e9 - 7;
-
-int cs1(){
-    if(coduong){
-        res1 = 0;
-        for(int i=1; i<=n; ++i) if(a[i] >= 0)   res1 += a[i];
-    }else{
-        for(int i=1; i<=n; ++i) res1 = max(res1, a[i]);
-    }
-    return res1;
-}
-
-int cs2(){
-    if(coduong){
-        sum = 0;
-        for(int i=1; i<=n; ++i){
-            sum += a[i];
-            if(sum < 0){
-                res2 = max(res2, sum - a[i]);
-                sum = 0;
-            }else   res2 = max(res2, sum);
-        }
-    }else{
-        for(int i=1; i<=n; ++i) res2 = max(res2, a[i]);
-    }
-    return res2;
-}
-
 void solve(){
-    cin >> n;
-
-    coduong = false;
-
-    for(int i=1; i<=n; ++i){
-        cin >> a[i];
-        if(a[i] >= 0)   coduong = true;
-    }
-
-    cout << cs1() << " " << cs2() << '\n';;
+    
 }
 
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
 
-    cin >> tc;
     while(tc--)  solve();
 }

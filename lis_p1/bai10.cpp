@@ -50,19 +50,56 @@ int tc = 1;
 
 */
 
-int n, k;
-int a[100005];
+int n;
+string s;
+string t;
+string res;
+int dp[2002][2002];
+
+string rev(string x){
+    string ans = "";
+    for(int i=sz(x)-1; i>=0; --i)   ans += x[i];
+    return ans;
+}
 
 void solve(){
-    cin >> n >> k;
-    for(int i=1; i<=n; ++i) cin >> a[i];
-    sort(a + 1, a + n + 1);
+    cin >> s;
 
-    int *up = ub(a + 1, a + n + 1, k);
-    int *low = lb(a + 1, a + n + 1, k);
+    n = sz(s);
+    t = rev(s);
 
-    //for(int i=1; i<=n; ++i) cout << a[i] << " ";    cout << '\n';
-    cout << up - low;
+    s = " " + s;
+    t = " " + t;
+
+    //cout << s << " " << t;
+
+    for(int i=1; i<=n; ++i){
+        for(int j=1; j<=n; ++j){
+            if(s[i] == t[j])    dp[i][j] = dp[i - 1][j - 1] + 1;
+            else                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+        }
+    }
+
+    //cout << dp[n][n];
+    int len = dp[n][n];
+    int u = n;
+    int v = n;
+
+    res = string(len, ' ');
+    
+    while(len){
+        if(s[u] == t[v]){
+            res[len - 1] = s[u];
+            u--;
+            v--;
+            len--;
+        }else{
+            if(dp[u - 1][v] > dp[u][v - 1]) u--;
+            else                            v--;
+        }
+    }
+
+    cout << res;
 }
 
 int main(){
