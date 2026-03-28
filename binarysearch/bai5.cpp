@@ -1,40 +1,87 @@
-#include<iostream>
-#define int long long
+// #pragma GCC optimize("O3,unroll-loops")
+// #pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
+
+#include<bits/stdc++.h>
 
 using namespace std;
 
-int n, q, x;
-int a[1000009];
-long long pre[1000009];
+#define ll long long
+#define ull unsigned long long
+#define ii pair<int, int>
+#define umap unordered_map
+#define uset unordered_set
+
+#define sz(a) (int)a.size()
+#define getbit(x, y) (((x) >> (y)) & 1)
+#define turnon(x, y) ((x) | (1LL << y))
+#define turnof(x, y) ((x) ^ (1LL << y))
+#define foru(i, a, b)   for(int i=a; i<=b; ++i)
+#define ford(i, a, b)   for(int i=a; i>=b; --i)
+#define foruc(i, a, b, c)   for(int i=a; i<=b; i+=c)
+#define fordc(i, a, b, c)   for(int i=a; i>=b; i-=c)
+
+#define fi first
+#define se second
+#define pf push_front
+#define pb push_back
+#define popf pop_front
+#define popb pop_back
+#define lb lower_bound // >=
+#define ub upper_bound // >
+
+mt19937 rd(chrono::steady_clock::now().time_since_epoch().count());
+
+ll rand(ll l, ll r){
+    assert(l <= r);
+    return l + rd() % (r - l + 1);
+}
+
+void file(){
+    if(fopen("TEST.INP", "r")){
+        freopen("TEST.INP", "r", stdin);
+        freopen("TEST.OUT", "w", stdout);
+    }
+}
+
+const int mod = 1e9 + 7;
+int tc = 1;
+
+/*
+
+*/
+
+int n;
+int a[1000006];
+int q;
 int l, r, mid, res;
+
+int bs(int l, int r, int target){
+    while(l <= r){
+        mid = l + (r - l) / 2;
+        if(a[mid] < target){
+            l = mid + 1;
+        }else{
+            r = mid - 1;
+        }
+    }
+    return mid;
+}
 
 void solve(){
     cin >> n;
     for(int i=1; i<=n; ++i){
         cin >> a[i];
-        pre[i] = pre[i-1] + a[i];
+        a[i] += a[i - 1];
     }
 
+    for(int i=1; i<=n; ++i) cout << a[i] << " ";
+    
     cin >> q;
-    while(q--){
-        cin >> x;
-
-        l = 1;
-        r = n;
-        // tim mid BE NHAT ma pre[mid] <= x
-        while(l <= r){
-            mid = (l + r) >> 1;
-            if(pre[mid] >= x){
-                res = mid;
-                r = mid - 1;
-            }else   l = mid + 1;
-        }
-
-        cout << res << '\n';
-    }
+    
 }
 
-signed main(){
+int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
-    solve();
+
+    while(tc--)  solve();
 }
