@@ -47,62 +47,47 @@ const int mod = 1e9 + 7;
 int tc = 1;
 
 /*
-    1
-    4 2
-    1 4
-    2 3
 
-    1
-    7 5
-    5 1
-    3 2
-    7 4
-    2 2
-    6 6
 */
 
-int n, m;
-int l[100005];
-ll res;
-int last;
-int a, b;
-
-
+int n, x, q;
+int cnt[1003];
+int kind, k;
+int sum;
+int r;
 
 void solve(){
+    cin >> n;
 
-    
-    cin >> n >> m;
-
-    res = 0;
-    for(int i=1; i<=n; ++i) l[i] = 0;
-
-    for(int i=1; i<=m; ++i){
-        cin >> a >> b;
-        if(a > b)   swap(a, b);
-        l[b] = max(l[b], a);
+    for(int i=1; i<=n; ++i){
+        cin >> x;
+        cnt[x]++;
+        r = max(r, x);
     }
 
-    //cout << "\n";
-    for(int i=1; i<=n; ++i){
-        int id = l[i];
-        //cout << "ID: " << id << '\n';
-        for(int j=i; j>l[i]; --j){
-            if(l[j] > id){
-                id = l[j];
-                //cout << "UPDATE: " << id << '\n';
+    cin >> q;
+    while(q--){
+        cin >> kind;
+        if(kind == 1){
+            cin >> x;
+            cnt[x]++;
+            r = max(r, x);
+        }else{
+            cin >> k;
+            sum = 0;
+            for(int i=1; i<=r; ++i){
+                sum += cnt[i];
+                if(sum >= k){
+                    cout << i << '\n';
+                    break;
+                }
             }
         }
-        //cout << i << " " << id << '\n';
-        res += (i - id);
     }
-
-    cout << res << '\n';
 }
 
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
 
-    cin >> tc;
     while(tc--)  solve();
 }

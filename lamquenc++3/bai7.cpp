@@ -47,62 +47,52 @@ const int mod = 1e9 + 7;
 int tc = 1;
 
 /*
-    1
-    4 2
-    1 4
-    2 3
 
-    1
-    7 5
-    5 1
-    3 2
-    7 4
-    2 2
-    6 6
 */
 
-int n, m;
-int l[100005];
-ll res;
-int last;
-int a, b;
+int n;
+int a[55];
+int cnt[155];
+int l, r;
 
-
+bool BS1 = true;
 
 void solve(){
+    cin >> n;
 
-    
-    cin >> n >> m;
+    l = 155;
+    r = 0;
 
-    res = 0;
-    for(int i=1; i<=n; ++i) l[i] = 0;
-
-    for(int i=1; i<=m; ++i){
-        cin >> a >> b;
-        if(a > b)   swap(a, b);
-        l[b] = max(l[b], a);
+    if(n == 1){     // TH a chi co 1 phan tu
+        cin >> a[0];
+        cout << "YES";
+        return ;
     }
 
-    //cout << "\n";
     for(int i=1; i<=n; ++i){
-        int id = l[i];
-        //cout << "ID: " << id << '\n';
-        for(int j=i; j>l[i]; --j){
-            if(l[j] > id){
-                id = l[j];
-                //cout << "UPDATE: " << id << '\n';
-            }
-        }
-        //cout << i << " " << id << '\n';
-        res += (i - id);
+        cin >> a[i];
+        cnt[a[i]]++;
+        r = max(r, a[i]);
+        l = min(l, a[i]);
     }
 
-    cout << res << '\n';
+    if(l == r){ // TH tat cac phan tu trong a deu bang nhau
+        cout << "YES";
+        return ;
+    }
+
+    for(int i=l; i<=r; ++i){
+        if(cnt[i] == 0){
+            cout << "NO";
+            return ;
+        }
+    }
+    cout << "YES\n";
+    return ;
 }
 
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
 
-    cin >> tc;
     while(tc--)  solve();
 }

@@ -47,57 +47,36 @@ const int mod = 1e9 + 7;
 int tc = 1;
 
 /*
-    1
-    4 2
-    1 4
-    2 3
 
-    1
-    7 5
-    5 1
-    3 2
-    7 4
-    2 2
-    6 6
 */
 
-int n, m;
-int l[100005];
-ll res;
-int last;
-int a, b;
-
-
+int n;
+int a[105];
+int sum;
+int mx;
 
 void solve(){
+    mx = 0;
+    sum = 0;
 
-    
-    cin >> n >> m;
-
-    res = 0;
-    for(int i=1; i<=n; ++i) l[i] = 0;
-
-    for(int i=1; i<=m; ++i){
-        cin >> a >> b;
-        if(a > b)   swap(a, b);
-        l[b] = max(l[b], a);
-    }
-
-    //cout << "\n";
+    cin >> n;
     for(int i=1; i<=n; ++i){
-        int id = l[i];
-        //cout << "ID: " << id << '\n';
-        for(int j=i; j>l[i]; --j){
-            if(l[j] > id){
-                id = l[j];
-                //cout << "UPDATE: " << id << '\n';
-            }
-        }
-        //cout << i << " " << id << '\n';
-        res += (i - id);
+        cin >> a[i];
+        sum += a[i];
+        mx = max(mx, a[i]);
+    }
+    
+    // BÀI NÀY MÌNH XÉT THIẾU TRƯỜNG HỢP CÓ MỘT ĐỐNG ĐÁ ÁP ĐẢO
+    if(2 * mx > sum){
+        cout << "T\n";
+        return ;
     }
 
-    cout << res << '\n';
+    if(sum & 1) cout << "T\n";
+    else        cout << "HL\n";
+
+    return ;
+
 }
 
 int main(){
