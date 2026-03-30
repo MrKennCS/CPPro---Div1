@@ -47,11 +47,30 @@ const int mod = 1e9 + 7;
 int tc = 1;
 
 /*
-
+    8 12
+    1 5 6 10 12 15 16 19
 */
 
+int n;
+int a[1000005];
+int x;
+
+int find(int target){
+    int x = 5;
+    int id = 1;
+    while(a[id] < target && id <= n){
+        id += x;
+        //cout << id << " ";
+    }
+    for(int i=max(1, id - x); i<=id; ++i)   if(a[i] == target)  return i;
+    return -1;
+}
+
 void solve(){
-    
+    cin >> n >> x;
+    for(int i=1; i<=n; ++i) cin >> a[i];
+
+    cout << find(x);
 }
 
 int main(){

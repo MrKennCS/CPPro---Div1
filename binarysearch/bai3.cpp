@@ -1,4 +1,4 @@
-// #pragma GCC optimize("O3,unroll-loops")
+    // #pragma GCC optimize("O3,unroll-loops")
 // #pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
 
 #include<bits/stdc++.h>
@@ -50,27 +50,31 @@ int tc = 1;
 
 */
 
-int n, m;
+int n, k;
 int a[100005];
 
-bool bs(int l, int r, int tar){
-    int mid;
+int find(int l, int r, int x){
+    int mid, res;
     while(l <= r){
         mid = l + (r - l) / 2;
-        if(a[mid] == tar)   return true;
-        if(a[mid] > tar)    r = mid - 1;
-        else                l = mid + 1;
+        if(a[mid] == x) return mid;
+        else{
+            if(a[mid] < x)  l = mid + 1;
+            else            r = mid - 1;
+        }
     }
-    return false;
+    return -1;
 }
 
 void solve(){
-    cin >> n >> m;
+    cin >> n >> k;
     for(int i=1; i<=n; ++i) cin >> a[i];
 
+    sort(a + 1, a + n + 1);
+
     for(int i=1; i<n; ++i){
-        if(bs(i + 1, n, a[i] + m)){
-            cout << a[i] << " " << a[i] + m;
+        if(find(i + 1, n, a[i] + k) != -1){
+            cout << a[i] << " " << a[find(i + 1, n, a[i] + k)];
             return ;
         }
     }

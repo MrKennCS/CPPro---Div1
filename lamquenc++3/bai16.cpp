@@ -1,4 +1,4 @@
-    // #pragma GCC optimize("O3,unroll-loops")
+// #pragma GCC optimize("O3,unroll-loops")
 // #pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
 
 #include<bits/stdc++.h>
@@ -50,49 +50,32 @@ int tc = 1;
 
 */
 
-int n, k;
-int a[100005];
+int n, m;
+int x, y;
 
-
-void sub1(){
-    int cnt = 0;
-    for(int i=1; i<=n; ++i){
-        for(int j=i+1; j<=n; ++j){
-            if(abs(a[i] - a[j]) == k)   cnt++;
-        }
-    }
-    cout << cnt;
-}
-
-bool find(int l, int r, int x){
-    int mid, res;
-    while(l <= r){
-        mid = l + (r - l) / 2;
-        if(a[mid] == x) return true;
-        else{
-            if(a[mid] < x)  l = mid + 1;
-            else            r = mid - 1;  
-        }
-    }
+bool corner(int x, int y){
+    if      (x == 1 && y == 1)  return true;
+    else if (x == 1 && y == m)  return true;
+    else if (x == n && y == 1)  return true;
+    else if (x == n && y == m)  return true;
     return false;
 }
 
-void sub2(){
-    int cnt = 0;
-    sort(a + 1, a + n + 1);
-    // a[i] - x == k -> 
-    for(int i=1; i<n; ++i){
-        cnt += find(i + 1, n, a[i] + k);
-    }
-    cout << cnt;
+bool edge(int x, int y){
+    if(x == 1)      return true;
+    else if(x == n) return true;
+    else if(y == 1) return true;
+    else if(y == m) return true;
+    return false;
 }
 
 void solve(){
-    cin >> n >> k;
-    for(int i=1; i<=n; ++i) cin >> a[i];
+    cin >> n >> m;
+    cin >> x >> y;
 
-    if(n <= 1000)   sub1();
-    else            sub2();
+    if(corner(x, y))    cout << 3;
+    else if(edge(x, y)) cout << 5;
+    else                cout << 8;
 }
 
 int main(){

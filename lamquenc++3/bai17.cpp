@@ -1,4 +1,4 @@
-    // #pragma GCC optimize("O3,unroll-loops")
+// #pragma GCC optimize("O3,unroll-loops")
 // #pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
 
 #include<bits/stdc++.h>
@@ -50,53 +50,38 @@ int tc = 1;
 
 */
 
-int n, k;
-int a[100005];
+int n, a, b;
+string s;
 
-
-void sub1(){
-    int cnt = 0;
-    for(int i=1; i<=n; ++i){
-        for(int j=i+1; j<=n; ++j){
-            if(abs(a[i] - a[j]) == k)   cnt++;
-        }
+void BASE_CASE(){
+    // BS1
+    bool BS1 = true;
+    for(int i=1; i<sz(s); ++i)  if(s[i] == '0') BS1 = false;
+    if(BS1){
+        cout << "YES\n";
+        return ;
     }
-    cout << cnt;
-}
 
-bool find(int l, int r, int x){
-    int mid, res;
-    while(l <= r){
-        mid = l + (r - l) / 2;
-        if(a[mid] == x) return true;
-        else{
-            if(a[mid] < x)  l = mid + 1;
-            else            r = mid - 1;  
-        }
+    // BS2
+    if(a == 1){
+        cout << "YES\n";
+        return ;
     }
-    return false;
-}
-
-void sub2(){
-    int cnt = 0;
-    sort(a + 1, a + n + 1);
-    // a[i] - x == k -> 
-    for(int i=1; i<n; ++i){
-        cnt += find(i + 1, n, a[i] + k);
-    }
-    cout << cnt;
 }
 
 void solve(){
-    cin >> n >> k;
-    for(int i=1; i<=n; ++i) cin >> a[i];
+    cin >> n >> a >> b;
+    cin >> s;
+    s = " " + s;
 
-    if(n <= 1000)   sub1();
-    else            sub2();
+    BASE_CASE();
+
+    cout << "GAY\n";
 }
 
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
 
+    cin >> tc;
     while(tc--)  solve();
 }

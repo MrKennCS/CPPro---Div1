@@ -1,4 +1,4 @@
-    // #pragma GCC optimize("O3,unroll-loops")
+// #pragma GCC optimize("O3,unroll-loops")
 // #pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
 
 #include<bits/stdc++.h>
@@ -43,6 +43,7 @@ void file(){
     }
 }
 
+const int offset = 2000000;
 const int mod = 1e9 + 7;
 int tc = 1;
 
@@ -51,48 +52,25 @@ int tc = 1;
 */
 
 int n, k;
-int a[100005];
-
-
-void sub1(){
-    int cnt = 0;
-    for(int i=1; i<=n; ++i){
-        for(int j=i+1; j<=n; ++j){
-            if(abs(a[i] - a[j]) == k)   cnt++;
-        }
-    }
-    cout << cnt;
-}
-
-bool find(int l, int r, int x){
-    int mid, res;
-    while(l <= r){
-        mid = l + (r - l) / 2;
-        if(a[mid] == x) return true;
-        else{
-            if(a[mid] < x)  l = mid + 1;
-            else            r = mid - 1;  
-        }
-    }
-    return false;
-}
-
-void sub2(){
-    int cnt = 0;
-    sort(a + 1, a + n + 1);
-    // a[i] - x == k -> 
-    for(int i=1; i<n; ++i){
-        cnt += find(i + 1, n, a[i] + k);
-    }
-    cout << cnt;
-}
+int val[2005];
+int cnt[4000006];
+int res;
 
 void solve(){
     cin >> n >> k;
-    for(int i=1; i<=n; ++i) cin >> a[i];
+    for(int i=1; i<=n; ++i) cin >> val[i];
 
-    if(n <= 1000)   sub1();
-    else            sub2();
+    for(int c=n-1; c>=3; --c){
+        for(int d=c+1; d<=n; ++d){
+            cnt[val[c] + val[d] + offset]++;
+        }
+        int b = c - 1;
+        for(int a=1; a<b; ++a){
+            res += cnt[k - val[a] - val[b] + offset];
+        }
+    }
+
+    cout << res;
 }
 
 int main(){

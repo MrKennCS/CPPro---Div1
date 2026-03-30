@@ -79,6 +79,8 @@ void solve(){
     factor(n);
     res = 1;
 
+    
+
     while(!mu.empty()){
         //cout << val.front() << " " << mu.front() << '\n';
         res *= (mu.front() + 1);

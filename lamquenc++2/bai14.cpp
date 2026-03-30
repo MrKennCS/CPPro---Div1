@@ -69,7 +69,7 @@ void solve(){
         gen[2] += pattern[2];
         gen[3] += pattern[3];
         gen[4] += pattern[4];
-        gen[5] += pattern[5];
+        gen[5] += pattern[5];s
         cnt += 3;
     }
 

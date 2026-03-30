@@ -1,4 +1,4 @@
-    // #pragma GCC optimize("O3,unroll-loops")
+// #pragma GCC optimize("O3,unroll-loops")
 // #pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
 
 #include<bits/stdc++.h>
@@ -43,56 +43,37 @@ void file(){
     }
 }
 
+const int LIMN = 3e3 + 3;
 const int mod = 1e9 + 7;
 int tc = 1;
 
 /*
+    X: Điểm của Taro
+    Y: Điểm của Jiro
 
+    Taro chơi đầu
+
+    Taro muốn:  X - Y = max
+    => X max && Y min
+
+    Jiro muốn: X - Y = min
+    => X min && Y max
+
+    
 */
 
-int n, k;
-int a[100005];
-
-
-void sub1(){
-    int cnt = 0;
-    for(int i=1; i<=n; ++i){
-        for(int j=i+1; j<=n; ++j){
-            if(abs(a[i] - a[j]) == k)   cnt++;
-        }
-    }
-    cout << cnt;
-}
-
-bool find(int l, int r, int x){
-    int mid, res;
-    while(l <= r){
-        mid = l + (r - l) / 2;
-        if(a[mid] == x) return true;
-        else{
-            if(a[mid] < x)  l = mid + 1;
-            else            r = mid - 1;  
-        }
-    }
-    return false;
-}
-
-void sub2(){
-    int cnt = 0;
-    sort(a + 1, a + n + 1);
-    // a[i] - x == k -> 
-    for(int i=1; i<n; ++i){
-        cnt += find(i + 1, n, a[i] + k);
-    }
-    cout << cnt;
-}
+int n;
+int a[LIMN];
+ll dp[LIMN][LIMN];
 
 void solve(){
-    cin >> n >> k;
+    cin >> n;
     for(int i=1; i<=n; ++i) cin >> a[i];
 
-    if(n <= 1000)   sub1();
-    else            sub2();
+    memset(dp, 0, sizeof(dp));
+    for(int i=1; i<=n; ++i) dp[i][i] = a[i];
+
+    
 }
 
 int main(){

@@ -1,4 +1,4 @@
-    // #pragma GCC optimize("O3,unroll-loops")
+// #pragma GCC optimize("O3,unroll-loops")
 // #pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
 
 #include<bits/stdc++.h>
@@ -50,49 +50,26 @@ int tc = 1;
 
 */
 
-int n, k;
-int a[100005];
-
-
-void sub1(){
-    int cnt = 0;
-    for(int i=1; i<=n; ++i){
-        for(int j=i+1; j<=n; ++j){
-            if(abs(a[i] - a[j]) == k)   cnt++;
-        }
-    }
-    cout << cnt;
-}
-
-bool find(int l, int r, int x){
-    int mid, res;
-    while(l <= r){
-        mid = l + (r - l) / 2;
-        if(a[mid] == x) return true;
-        else{
-            if(a[mid] < x)  l = mid + 1;
-            else            r = mid - 1;  
-        }
-    }
-    return false;
-}
-
-void sub2(){
-    int cnt = 0;
-    sort(a + 1, a + n + 1);
-    // a[i] - x == k -> 
-    for(int i=1; i<n; ++i){
-        cnt += find(i + 1, n, a[i] + k);
-    }
-    cout << cnt;
-}
+int n;
+int a[200005];
+int cur;
+ll res;
 
 void solve(){
-    cin >> n >> k;
+    cin >> n;
     for(int i=1; i<=n; ++i) cin >> a[i];
 
-    if(n <= 1000)   sub1();
-    else            sub2();
+    sort(a + 1, a + n + 1);
+
+    res = 1;
+    cur = 1;
+
+    for(int i=2; i<=n; ++i){
+        if(a[i - 1] < a[i]) cur++;
+        res += cur;
+    }
+
+    cout << res;
 }
 
 int main(){

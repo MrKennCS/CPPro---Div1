@@ -50,33 +50,8 @@ int tc = 1;
 
 */
 
-int n, m;
-int a[1000005];
-int res;
-
-int upper(int l, int r, int tar){
-    int mid;
-    while(l <= r){
-        mid = l + (r - l) / 2;
-        if(a[mid] <= tar)   l = mid + 1;
-        else                r = mid - 1;
-    }
-    return l;
-}
-
 void solve(){
-    cin >> n >> m;
-    for(int i=1; i<=n; ++i) cin >> a[i];
 
-    sort(a + 1, a + n + 1);
-
-    for(int i=1; i<n; ++i){
-        int x = upper_bound(a + i + 2,a + n + 1, m - a[i]) - a;
-        cout << x << '\n';
-        res += (x - i + 1);
-    }
-
-    cout << res;
 }
 
 int main(){
