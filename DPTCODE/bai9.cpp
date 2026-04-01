@@ -50,45 +50,52 @@ int tc = 1;
 
 */
 
-int n;
-int a[300005];
-ll res;
+int n, m;
+ll s;
+int c[40];
+int res;
 
+// SUB1
 ll sum;
+
 
 void sub1(){
     for(int i=1; i<=n; ++i){
-        for(int j=i+1; j<=n; ++j){
-            res += abs(a[i] - a[j]);
-        }
+        if(sum - c[i] == s) res++;
     }
     cout << res;
 }
 
 void sub2(){
-    sort(a + 1, a + n + 1, greater<int>()); // O(nlogn) ~ 5e6
+    int dp[n + 3][m + 3];
+    memset(dp, 0, sizeof(dp));
+    dp[0][0] = 0;
 
-    //for(int i=1; i<=n; ++i) cout << a[i];
-
-    for(int i=1; i<n; ++i){
-        sum -= a[i];
-        //cout << a[i] << " " << n - i << " " << sum << '\n';
-        res += (1ll * (n - i) * a[i] - sum); 
+    for(int i=1; i<=n; ++i){
+        for(int j=1; j<=m; ++j){
+            dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j] + c[i];
+        }
     }
 
-    cout << res;
+    cout << dp[n][m];
+}
+
+void sub3(){
+
 }
 
 void solve(){
-    cin >> n;
+    cin >> n >> m >> s;
     for(int i=1; i<=n; ++i){
-        cin >> a[i];
-        // PRE CALC SUB2
-        sum += a[i];
+        cin >> c[i];
+
+        // SUB1
+        sum += c[i];
     }
 
-    if(n <= 1000)   sub2();
-    else            sub2();
+    if(n - 1 == m && n <= 18)   sub2();
+    else if(n <= 18)            sub2();
+    else                        sub3();
 }
 
 int main(){

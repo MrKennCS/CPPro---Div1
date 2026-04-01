@@ -52,30 +52,25 @@ int tc = 1;
 
 int n;
 int a[300005];
+int pre[300005];
 ll res;
 
-ll sum;
-
 void sub1(){
-    for(int i=1; i<=n; ++i){
-        for(int j=i+1; j<=n; ++j){
-            res += abs(a[i] - a[j]);
+    for(int l=1; l<=n; ++l){
+        for(int r=l; r<=n; ++r){
+            res += (1ll * (pre[r] - pre[l - 1]) % mod * (pre[r] - pre[l - 1]) % mod) % mod;
+            res %= mod;
         }
     }
+
     cout << res;
 }
 
 void sub2(){
-    sort(a + 1, a + n + 1, greater<int>()); // O(nlogn) ~ 5e6
-
-    //for(int i=1; i<=n; ++i) cout << a[i];
-
-    for(int i=1; i<n; ++i){
-        sum -= a[i];
-        //cout << a[i] << " " << n - i << " " << sum << '\n';
-        res += (1ll * (n - i) * a[i] - sum); 
+    for(int i=1; i<=n; ++i){
+        res += (1ll * a[i] % mod * i % mod * (n - i + 1) % mod) % mod;
+        res %= mod;
     }
-
     cout << res;
 }
 
@@ -83,11 +78,10 @@ void solve(){
     cin >> n;
     for(int i=1; i<=n; ++i){
         cin >> a[i];
-        // PRE CALC SUB2
-        sum += a[i];
+        pre[i] = pre[i - 1] + a[i];
     }
 
-    if(n <= 1000)   sub2();
+    if(n <= 1000)   sub1();
     else            sub2();
 }
 
