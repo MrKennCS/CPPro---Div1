@@ -45,6 +45,7 @@ void file(){
     }
 }
 
+const int LIMN = 3000000;
 const int mod = 1e9 + 7;
 int tc = 1;
 
@@ -52,23 +53,62 @@ int tc = 1;
 
 */
 
-void solve(){
+int l, r;
+bool snt[LIMN + 5];
+int res;
 
+void INPUT(){
+    cin >> l >> r;
+}
+
+void sangsnt(){ // O(nlog(log(n))) ~ 1e7
+    snt[0] = snt[1] = 1;
+    for(int i=2; 1ll*i*i<=LIMN; ++i){
+        if(snt[i] == 0){
+            for(int j=i*i; j<=LIMN; j+=i){
+                snt[j] = 1;
+            }
+        }
+    }
+}
+
+int sumnum(int n){ // Do 1 <= l <= r <= 3e6    -> O(6) ~ O(1)
+    int ans = 0;
+    while(n){
+        ans += (n % 10);
+        n /= 10;
+    }
+    return ans;
+}
+
+void solve(){
+    sangsnt();
+    for(int i=l; i<=r; ++i){
+        if(snt[i] == 0){
+            if(sumnum(i) % 5 == 0)  res++;
+        }
+    }
+
+    cout << res;
+    //cout << snt[l] << " " << snt[r] << '\n';
 }
 
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
     file();
-
-    // INPUT
-
-    // END_INPUT
-
+    INPUT();
+    // Bat dau do
+    /*
+    */
     #ifndef ONLINE_JUDGE
     auto start = high_resolution_clock::now();
     #endif
-    
+
     while(tc--)  solve();
+
+    // Dung do
+    /*
+    */
     
     #ifndef ONLINE_JUDGE
     auto stop = high_resolution_clock::now();

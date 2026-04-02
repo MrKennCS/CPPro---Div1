@@ -52,8 +52,21 @@ int tc = 1;
 
 */
 
-void solve(){
+int l, r, k;
+ll res;
 
+void trau(){
+    for(int i=l; i<=r; ++i){
+        if(i % k == 0)  res += i;
+    }
+    cout << res;
+}
+
+void solve(){
+    for(int i=max(l, k); i<=r; i+=k){
+        res += i;
+    }
+    cout << res;
 }
 
 int main(){
@@ -61,14 +74,17 @@ int main(){
     file();
 
     // INPUT
-
+    cin >> l >> r >> k;
     // END_INPUT
 
     #ifndef ONLINE_JUDGE
     auto start = high_resolution_clock::now();
     #endif
     
-    while(tc--)  solve();
+    while(tc--){
+        //solve();
+        trau();
+    }
     
     #ifndef ONLINE_JUDGE
     auto stop = high_resolution_clock::now();

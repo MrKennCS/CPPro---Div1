@@ -52,8 +52,26 @@ int tc = 1;
 
 */
 
-void solve(){
+int a, b;
+int ucln;
+stack<int> st;
 
+int gcd(int a, int b){
+    return (b == 0 ? a : gcd(b, a % b));
+}
+
+void solve(){
+    ucln = gcd(a, b);
+    for(int i=1; 1ll*i*i<=ucln; ++i){
+        if(ucln % i == 0){
+            cout << i << " ";
+            if(ucln / i != i)  st.push(ucln / i);
+        }
+    }
+    while(!st.empty()){
+        cout << st.top() << " ";
+        st.pop();
+    }
 }
 
 int main(){
@@ -61,6 +79,7 @@ int main(){
     file();
 
     // INPUT
+    cin >> a >> b;
 
     // END_INPUT
 

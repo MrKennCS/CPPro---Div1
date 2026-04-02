@@ -52,23 +52,67 @@ int tc = 1;
 
 */
 
-void solve(){
+int n;
+int a[100005];
 
+int uoc[1000006];
+
+void INPUT(){
+    cin >> n;
+    for(int i=1; i<=n; ++i) cin >> a[i];
+}
+
+int cnt_uoc(int n){
+    int ans = 0;
+    for(int i=1; 1ll*i*i<=n; ++i){
+        if(n % i == 0){
+            if(n / i != i)  ans += 2;
+            else            ans += 1;
+        }
+    }
+    return ans;
+}
+
+void trau(){
+    // O(n can n) ~ 1e8
+    for(int i=1; i<=n; ++i){
+        cout << cnt_uoc(a[i]) << '\n';
+    }
+}
+
+void sanguoc(){                     // O()
+    for(int i=1; i<=1000000; ++i){
+        for(int j=i; j<=1000000; j+=i){
+            uoc[j] += 1;
+        }
+    }
+}
+
+void solve(){
+    sanguoc();
+    for(int i=1; i<=n; ++i) cout << uoc[a[i]] << '\n';
 }
 
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
     file();
-
-    // INPUT
-
-    // END_INPUT
-
+    INPUT();
+    // Bat dau do
+    /*
+    */
     #ifndef ONLINE_JUDGE
     auto start = high_resolution_clock::now();
     #endif
+
     
-    while(tc--)  solve();
+    while(tc--){
+        solve();
+        //trau();
+    }
+
+    // Dung do
+    /*
+    */
     
     #ifndef ONLINE_JUDGE
     auto stop = high_resolution_clock::now();

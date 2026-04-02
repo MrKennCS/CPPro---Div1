@@ -53,37 +53,51 @@ int tc = 1;
 */
 
 int n;
-int cnt;
+int uoc[1000006];
 int res;
 
 void INPUT(){
     cin >> n;
 }
 
-void solve(){
-    for(int i=1; 1ll*i*i<=n; ++i){
-        if(n % i == 0){
-            cnt = 0;
-            for(int j=1; 1ll*j*j<=i; ++j){
-                if(i % j == 0){
-                    if(i / j != j)  cnt += 2;
-                    else            cnt += 1;
-                }
-            }
-            if(cnt == 4)    res++;
-            if(n / i != i){
-                cnt = 0;
-                for(int j=1; 1ll*j*j<=n/i; ++j){
-                    if(i % j == 0){
-                        if(j != i / j)  cnt += 2;
-                        else            cnt += 1;
-                    }
-                }
-                if(cnt == 4)    res++;
-            }
+void sanguoc(){
+    for(int i=1; i<=1000000; ++i){      
+        for(int j=i; j<=1000000; j+=i){
+            uoc[j] += 1;
         }
     }
+}
 
+int demuoc_fraction(int n){
+    vector<ii> val;
+    int cur;
+    int ans = 1;
+    for(int i=2; 1ll*i*i<=n; ++i){
+        if(n % i == 0){
+            cur = 0;
+            while(n % i == 0){
+                cur++;
+                n /= i;
+            }
+            val.pb({i, cur});
+        }
+    }
+    if(n > 1)   val.pb({n, 1});
+    //for(int i=0; i<sz(val); ++i)    cout << val[i].fi << " " << val[i].se << '\n';
+    for(int i=0; i<sz(val); ++i)    ans *= (val[i].se + 1);
+    return ans;
+}
+
+void solve(){
+    demuoc_fraction(n);
+    for(int i=1; 1ll*i*i<=n; ++i){
+        if(n % i == 0){
+            //if(uoc[i] == 4) res++;
+            //if(n / i != i && uoc[n / i] == 4)   res++;
+            if(demuoc_fraction(i) == 4) res++;
+            if(n / i != i && demuoc_fraction(n / i) == 4)   res++;
+        }
+    }
     cout << res;
 }
 
@@ -98,6 +112,7 @@ int main(){
     auto start = high_resolution_clock::now();
     #endif
 
+    sanguoc();
     while(tc--)  solve();
 
     // Dung do

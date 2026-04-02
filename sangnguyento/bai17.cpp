@@ -52,8 +52,27 @@ int tc = 1;
 
 */
 
-void solve(){
+int a, b;
+int cnt;
 
+int rev(int n){
+    int ans = 0;
+    while(n){
+        ans = ans * 10 + n % 10;
+        n /= 10;
+    }
+    return ans;
+}
+
+int gcd(int a, int b){
+    return (b == 0 ? a : gcd(b, a % b));
+}
+
+void solve(){
+    for(int i=a; i<=b; ++i){
+        if(gcd(i, rev(i)) == 1) cnt++;
+    }
+    cout << cnt;
 }
 
 int main(){
@@ -61,7 +80,7 @@ int main(){
     file();
 
     // INPUT
-
+    cin >> a >> b;
     // END_INPUT
 
     #ifndef ONLINE_JUDGE

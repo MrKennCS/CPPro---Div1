@@ -52,13 +52,36 @@ int tc = 1;
 
 */
 
-void solve(){
+int n;
+ll a[100005];
+int bcln = 1;
+ll x;
+ll res = 1e18 + 9;
 
+ll gcd(ll a, ll b){
+    return (b == 0 ? a : gcd(b, a % b));
+}
+
+ll lcm(ll a, ll b){
+    return a / gcd(a, b) * b;
+}
+
+void solve(){
+    for(int i=1; i<=n; ++i){
+        ll tmp = ((x + a[i] - 1) / a[i]) * a[i];
+        //cout << tmp << " ";
+        res = min(res, tmp);
+    }
+    //cout << '\n';
+    cout << res;
 }
 
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
     file();
+
+    cin >> n >> x;
+    for(int i=1; i<=n; ++i) cin >> a[i];
 
     // INPUT
 

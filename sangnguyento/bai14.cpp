@@ -52,8 +52,21 @@ int tc = 1;
 
 */
 
-void solve(){
+ll a, b;
 
+ll ucln(ll a, ll b){
+    while(b){
+        ll tmp = b;
+        b = a % b;
+        a = tmp;
+    }
+    return a;
+}
+
+void solve(){
+    cin >> a >> b;
+    //cout << ucln(a, b);
+    cout << __gcd(a, b);
 }
 
 int main(){

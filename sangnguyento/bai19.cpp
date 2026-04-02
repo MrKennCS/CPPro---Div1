@@ -52,8 +52,67 @@ int tc = 1;
 
 */
 
-void solve(){
+int n;
+int a[100006];
+int bcln = 1;
+int cur;
+ll res = 1;
 
+ll gcd(ll a, ll b){
+    return (b == 0 ? a : gcd(b, a % b));
+}
+
+ll lcm(ll a, ll b){
+    return (a / gcd(a, b) * b);
+}
+
+ll mul(ll a, ll b, ll mod){
+    ll ans = 0;
+    while(b){
+        if(b & 1)   ans = (ans + a) % mod;
+        a = (a + a) % mod;
+        b /= 2;
+    }
+    return ans;
+}
+
+ll pow(ll a, ll b, ll mod){
+    ll ans = 1;
+    while(b){
+        if(b & 1)   ans = mul(ans, a, mod);
+        a = mul(a, a, mod);
+        b /= 2;
+    }
+    return ans;
+}
+
+void solve(){
+    for(int i=1; i<=n; ++i){
+        bcln %= mod;
+        bcln = lcm(bcln, a[i]);
+    }
+
+    vector<pair<ll, int>> val;
+    //cout << "BCLN: " << bcln << '\n';
+    for(ll i=2; i*i<=bcln; ++i){
+        if(bcln % i == 0){
+            cur = 0;
+            while(bcln % i == 0){
+                cur++;
+                bcln /= i;
+            }
+            //val.pb()
+            if(cur & 1) cur++;
+            val.pb({i, cur});
+        }
+    }
+    if(bcln > 1)    val.pb({bcln, 2});
+
+    for(int i=0; i<sz(val); ++i){
+        res = mul(res, pow(val[i].fi, val[i].se, mod), mod);
+    }
+
+    cout << res;
 }
 
 int main(){
@@ -61,7 +120,8 @@ int main(){
     file();
 
     // INPUT
-
+    cin >> n;
+    for(int i=1; i<=n; ++i) cin >> a[i];
     // END_INPUT
 
     #ifndef ONLINE_JUDGE

@@ -52,8 +52,37 @@ int tc = 1;
 
 */
 
-void solve(){
+int n;
+int a[100005];
+int mx;
+int res;
 
+int factor(int n){
+    int cur;
+    int tong = 0;
+    for(int i=2; 1ll*i*i<=n; ++i){
+        if(n % i == 0){
+            cur = 0;
+            while(n % i == 0){
+                cur++;
+                n /= i;
+            }
+            tong += cur;
+        }
+    }
+    if(n > 1)   tong += 1;
+    return tong;
+}
+
+void solve(){
+    cin >> n;
+    for(int i=1; i<=n; ++i){
+        cin >> a[i];
+        int tmp = factor(a[i]);
+        mx = max(mx, tmp);
+        res += tmp;
+    }
+    cout << res - mx;
 }
 
 int main(){
