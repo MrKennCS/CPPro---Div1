@@ -45,8 +45,6 @@ void file(){
     }
 }
 
-const int LIMN = 1e5 + 5;
-const int LIMA = 1e7 + 7;
 const int mod = 1e9 + 7;
 int tc = 1;
 
@@ -55,70 +53,17 @@ int tc = 1;
 */
 
 int n;
-int a[LIMN];
-int spf[LIMA];
-int mu[LIMA];
-int cur;
-ll bcln = 1;
-ll res = 1;
-
-ll gcd(ll a, ll b){
-    return (b == 0 ? a : gcd(b, a % b));
-}
-
-ll lcm(ll a, ll b){
-    return (a / gcd(a, b) * b);
-}
-
-ll pow(ll a, ll b, ll mod){
-    ll ans = 1;
-    while(b){
-        if(b & 1)   ans = (ans * a) % mod;
-        a = (a * a) % mod;
-        b /= 2;
-    }
-    return ans;
-}
-
-void sangspf(){
-    for(int i=1; i<=10000000; ++i)    spf[i] = i;
-    for(int i=2; 1ll*i*i<=10000000; ++i){
-        if(spf[i] == i){
-            for(int j=i*i; j<=10000000; j+=i){
-                if(spf[j] == j){
-                    spf[j] = i;
-                }
-            }
-        }
-    }
-}
+int a[200005];
 
 void solve(){
-    //vector<ii> val;
-    for(int i=1; i<=n; ++i){
-        while(a[i] > 1){
-            int uoc = spf[a[i]];
-            cur = 0;
-            //cerr << "GAY\n";
-            while(a[i] % uoc == 0){
-                cur++;
-                a[i] /= uoc;
-                //cout << "a[i]: " << a[i] << '\n';
-            }
-    
-            mu[uoc] = max(mu[uoc], cur);
+    sort(a + 1, a + n + 2);
+    for(int i=2; i<=n+1; ++i){
+        if(a[i] - a[i - 1] == 1){
+            cout << a[i - 1] << " " << a[i];
+            return ;
         }
     }
-
-    for(int i=1; i<=10000000; ++i){
-        if(mu[i] > 0){
-            //cout << i << " " << mu[i] << '\n';
-            if(mu[i] & 1)   mu[i]++;
-            res = (res * pow(i, mu[i], mod)) % mod;
-        }
-    }
-
-    cout << res;
+    cout << -1;
 }
 
 int main(){
@@ -127,14 +72,13 @@ int main(){
 
     // INPUT
     cin >> n;
-    for(int i=1; i<=n; ++i) cin >> a[i];
+    for(int i=1; i<=n+1; ++i)   cin >> a[i];
     // END_INPUT
 
     #ifndef ONLINE_JUDGE
     auto start = high_resolution_clock::now();
     #endif
     
-    sangspf();
     while(tc--)  solve();
     
     #ifndef ONLINE_JUDGE

@@ -45,8 +45,6 @@ void file(){
     }
 }
 
-const int LIMN = 1e5 + 5;
-const int LIMA = 1e7 + 7;
 const int mod = 1e9 + 7;
 int tc = 1;
 
@@ -54,21 +52,10 @@ int tc = 1;
 
 */
 
-int n;
-int a[LIMN];
-int spf[LIMA];
-int mu[LIMA];
-int cur;
-ll bcln = 1;
-ll res = 1;
-
-ll gcd(ll a, ll b){
-    return (b == 0 ? a : gcd(b, a % b));
-}
-
-ll lcm(ll a, ll b){
-    return (a / gcd(a, b) * b);
-}
+int l, r;
+ll sum;
+int cnt;
+vector<bool> prime(10000005, true);
 
 ll pow(ll a, ll b, ll mod){
     ll ans = 1;
@@ -80,45 +67,61 @@ ll pow(ll a, ll b, ll mod){
     return ans;
 }
 
-void sangspf(){
-    for(int i=1; i<=10000000; ++i)    spf[i] = i;
+bool snt(ll n){
+    if(n <= 2)  return (n == 2);
+    for(int i=1; i<=100; ++i){
+        ll x = rand(2, n - 1);
+        if(pow(x, n - 1, n) != 1)   return false;
+    }
+    return true;
+}
+
+void sangsnt(){
+    prime[0] = prime[1] = false;
     for(int i=2; 1ll*i*i<=10000000; ++i){
-        if(spf[i] == i){
+        if(prime[i]){
             for(int j=i*i; j<=10000000; j+=i){
-                if(spf[j] == j){
-                    spf[j] = i;
-                }
+                prime[j] = false;
             }
         }
     }
 }
 
+void sub1(){
+    // O(n )
+    sum = 0;
+    cnt = 0;
+    for(int i=l; i<=r; ++i){
+        if(snt(i)){
+            sum += i;
+            cnt++;
+        }
+    }
+    cout << fixed << setprecision(2) << 1.0 * sum / cnt << '\n';
+}
+
+void sub2(){
+    sum = 0;
+    cnt = 0;
+    for(int i=l; i<=r; ++i){
+        if(prime[i]){
+            sum += i;
+            cnt++;
+        }
+    }
+    cout << fixed << setprecision(2) << 1.0 * sum / cnt << '\n';
+}
+
+void sub3(){
+    sub2();
+}
+
 void solve(){
-    //vector<ii> val;
-    for(int i=1; i<=n; ++i){
-        while(a[i] > 1){
-            int uoc = spf[a[i]];
-            cur = 0;
-            //cerr << "GAY\n";
-            while(a[i] % uoc == 0){
-                cur++;
-                a[i] /= uoc;
-                //cout << "a[i]: " << a[i] << '\n';
-            }
-    
-            mu[uoc] = max(mu[uoc], cur);
-        }
-    }
+    cin >> l >> r;
 
-    for(int i=1; i<=10000000; ++i){
-        if(mu[i] > 0){
-            //cout << i << " " << mu[i] << '\n';
-            if(mu[i] & 1)   mu[i]++;
-            res = (res * pow(i, mu[i], mod)) % mod;
-        }
-    }
-
-    cout << res;
+    if(r <= 10000)          sub1();
+    else if(r <= 1000000)   sub2();
+    else                    sub3();
 }
 
 int main(){
@@ -126,15 +129,14 @@ int main(){
     file();
 
     // INPUT
-    cin >> n;
-    for(int i=1; i<=n; ++i) cin >> a[i];
+    cin >> tc;
     // END_INPUT
 
     #ifndef ONLINE_JUDGE
     auto start = high_resolution_clock::now();
     #endif
-    
-    sangspf();
+
+    sangsnt();
     while(tc--)  solve();
     
     #ifndef ONLINE_JUDGE
