@@ -45,46 +45,47 @@ void file(){
     }
 }
 
-const int mod = 1e9 + 7;
+const int mod = 998244353;
 int tc = 1;
 
 /*
 
 */
 
-int n, m;
+int n;
+int res;
+int uoc[100007];
 
-bool cp(int x){
-    return (sqrt(x) == (int)sqrt(x));
+void sanguoc(){
+    for(int i=1; i<=100000; ++i)  uoc[i] = 1;
+    //memset(uoc, 1, sizeof(uoc));
+    for(int i=1; i<=100000; ++i){
+        for(int j=i; j<=100000; j+=i){
+            uoc[j] = (1ll * uoc[j] * i) % mod;
+        }
+    }
 }
 
 void sub1(){
-    
+    cout << uoc[n] << '\n';
 }
 
 void sub2(){
-
+    cout << uoc[n] << '\n';
 }
 
 void sub3(){
 
 }
 
-void sub4(){
+void chuan(){
 
 }
-
-void sub5(){
-
-}
-
 
 void solve(){
-    if(n <= 10)             sub1();
-    else if(n <= 50)        sub2();
-    else if(n <= 1000)      sub3();
-    else if(n <= 100000)    sub4();
-    else if(n <= 1000000)   sub5();
+    cin >> n;
+    
+
 }
 
 int main(){
@@ -92,13 +93,14 @@ int main(){
     file();
 
     // INPUT
-    cin >> n >> m;
     // END_INPUT
-
+    
     #ifndef ONLINE_JUDGE
     auto start = high_resolution_clock::now();
     #endif
     
+    cin >> tc;
+    sanguoc();
     while(tc--)  solve();
     
     #ifndef ONLINE_JUDGE

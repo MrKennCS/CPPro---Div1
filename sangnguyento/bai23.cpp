@@ -59,7 +59,28 @@ bool cp(int x){
 }
 
 void sub1(){
-    
+    //cout << cp(n) << " " << cp(m);
+    /*
+    int cnt = 0;
+    for(int i=1; i<=10; ++i){
+        cout << "---------- \ni: " << i << '\n';
+        cnt = 0;
+        for(int j=1; j<=i; ++j){
+            for(int k=j+1; k<=i; ++k){
+                //cout << j << " " << k << " "<< '\n';
+                if(cp(j * k)){
+                    cnt++;
+                    cout << j << " " << k << " " << j * k << '\n';
+                }
+            }
+        }
+        cout << '\n' << cnt << '\n';
+    }
+    */
+    if(n == 1 || n == 2 || n == 3)                  cout << 0;  
+    else if(n == 4 || n == 5 || n == 6 || n == 7)   cout << 1;
+    else if(n == 8)                                 cout << 2;
+    else                                            cout << 4;
 }
 
 void sub2(){
