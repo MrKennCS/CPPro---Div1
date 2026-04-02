@@ -4,12 +4,14 @@
 #include<bits/stdc++.h>
 
 using namespace std;
+using namespace std::chrono;
 
 #define ll long long
 #define ull unsigned long long
 #define ii pair<int, int>
 #define umap unordered_map
 #define uset unordered_set
+#define pqueue priority_queue
 
 #define sz(a) (int)a.size()
 #define getbit(x, y) (((x) >> (y)) & 1)
@@ -51,48 +53,76 @@ int tc = 1;
 */
 
 ll n;
-queue<int> mu;
-queue<int> val;
-ll res;
+
+int demuoc(ll n){   // O(sqrt(n)) ~ 44721
+    int ans = 0;
+    for(int i=1; 1ll*i*i<=n; ++i){
+        if(n % i == 0){
+            if(n / i == i)  ans += 1;
+            else            ans += 2;  
+        }
+    }
+    return ans;
+}
 
 void factor(ll n){
-    int cnt = 0;
+    queue<int> coso, mu;
+    int cur;
     for(int i=2; 1ll*i*i<=n; ++i){
-        cnt = 0;
+        cur = 0;
         while(n % i == 0){
-            cnt++;
+            cur++;
             n /= i;
         }
-        mu.push(cnt);
-        val.push(i);
+        coso.push(i);
+        mu.push(cur);
     }
     if(n > 1){
-        val.push(n);
+        coso.push(n);
         mu.push(1);
     }
-    //cout << n << '\n';
+
+    bool dau = true;
+    while(!mu.empty()){
+        while(mu.front()--){
+            if(dau) cout << coso.front(),   dau = false;
+            else    cout << "*" << coso.front();
+        }
+        mu.pop();
+        coso.pop();
+    }
+    cout << '\n';
+}
+
+void INPUT(){
+    cin >> n;
 }
 
 void solve(){
-    cin >> n;
-
     factor(n);
-    res = 1;
-
-    
-
-    while(!mu.empty()){
-        //cout << val.front() << " " << mu.front() << '\n';
-        res *= (mu.front() + 1);
-        val.pop();
-        mu.pop();
-    }
-
-    cout << res;
+    cout << demuoc(n);
 }
 
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
+    file();
+    INPUT();
+    // Bat dau do
+    /*
+    */
+    #ifndef ONLINE_JUDGE
+    auto start = high_resolution_clock::now();
+    #endif
 
     while(tc--)  solve();
+
+    // Dung do
+    /*
+    */
+    
+    #ifndef ONLINE_JUDGE
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<milliseconds>(stop - start);
+    cerr << "\n[Time: " << duration.count() << " ms]\n"; 
+    #endif
 }

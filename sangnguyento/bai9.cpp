@@ -12,6 +12,7 @@ using namespace std::chrono;
 #define umap unordered_map
 #define uset unordered_set
 #define pqueue priority_queue
+
 #define sz(a) (int)a.size()
 #define getbit(x, y) (((x) >> (y)) & 1)
 #define turnon(x, y) ((x) | (1LL << y))
@@ -51,13 +52,45 @@ int tc = 1;
 
 */
 
-void solve(){
+int n;
+int cnt;
+int res;
 
+void INPUT(){
+    cin >> n;
+}
+
+void solve(){
+    for(int i=1; 1ll*i*i<=n; ++i){
+        if(n % i == 0){
+            cnt = 0;
+            for(int j=1; 1ll*j*j<=i; ++j){
+                if(i % j == 0){
+                    if(i / j != j)  cnt += 2;
+                    else            cnt += 1;
+                }
+            }
+            if(cnt == 4)    res++;
+            if(n / i != i){
+                cnt = 0;
+                for(int j=1; 1ll*j*j<=n/i; ++j){
+                    if(i % j == 0){
+                        if(j != i / j)  cnt += 2;
+                        else            cnt += 1;
+                    }
+                }
+                if(cnt == 4)    res++;
+            }
+        }
+    }
+
+    cout << res;
 }
 
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
-
+    file();
+    INPUT();
     // Bat dau do
     /*
     */

@@ -4,12 +4,14 @@
 #include<bits/stdc++.h>
 
 using namespace std;
+using namespace std::chrono;
 
 #define ll long long
 #define ull unsigned long long
 #define ii pair<int, int>
 #define umap unordered_map
 #define uset unordered_set
+#define pqueue priority_queue
 
 #define sz(a) (int)a.size()
 #define getbit(x, y) (((x) >> (y)) & 1)
@@ -52,21 +54,21 @@ int tc = 1;
 
 int n;
 
-ll mul(ll a, ll b, ll MOD){
+ll mul(ll a, ll b, ll mod){
     ll ans = 0;
     while(b){
-        if(b & 1)   ans = (ans + a) % MOD;
-        a = (a + a) % MOD;
+        if(b & 1)   ans = (ans + a) % mod;
+        a = (a + a) % mod;
         b /= 2;
     }
     return ans;
 }
 
-ll pow(ll a, ll b, ll MOD){
+ll pow(ll a, ll b, ll mod){
     ll ans = 1;
     while(b){
-        if(b & 1)   ans = mul(ans, a, MOD);
-        a = mul(a, a, MOD);
+        if(b & 1)   ans = mul(ans, a, mod);
+        a = mul(a, a, mod);
         b /= 2;
     }
     return ans;
@@ -81,8 +83,11 @@ bool snt(ll n){
     return true;
 }
 
-void solve(){
+void INPUT(){
     cin >> n;
+}
+
+void solve(){
     while(n){
         if(!snt(n)){
             cout << "KHONG";
@@ -91,11 +96,30 @@ void solve(){
         n /= 10;
     }
     cout << "PHAI";
-    
+    return ;
 }
 
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
 
+    // Bat dau do
+    /*
+    */
+    INPUT();
+
+    #ifndef ONLINE_JUDGE
+    auto start = high_resolution_clock::now();
+    #endif
+
     while(tc--)  solve();
+
+    // Dung do
+    /*
+    */
+    
+    #ifndef ONLINE_JUDGE
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<milliseconds>(stop - start);
+    cerr << "\n[Time: " << duration.count() << " ms]\n"; 
+    #endif
 }

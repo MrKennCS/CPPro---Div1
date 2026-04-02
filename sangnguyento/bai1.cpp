@@ -52,21 +52,21 @@ int tc = 1;
 
 ll n;
 
-ll mul(ll a, ll b, ll MOD){
+ll mul(ll a, ll b, ll mod){
     ll ans = 0;
     while(b){
-        if(b & 1)   ans = (ans + a) % MOD;
-        a = (a + a) % MOD;
+        if(b & 1)   ans = (ans + a) % mod;
+        a = (a + a) % mod;
         b /= 2;
     }
     return ans;
 }
 
-ll pow(ll a, ll b, ll MOD){
+ll pow(ll a, ll b, ll mod){
     ll ans = 1;
     while(b){
-        if(b & 1)   ans = mul(ans, a, MOD);
-        a = mul(a, a, MOD);
+        if(b & 1)   ans = mul(ans, a, mod);
+        a = mul(a, a, mod);
         b /= 2;
     }
     return ans;
@@ -83,6 +83,7 @@ bool snt(ll n){
 
 void solve(){
     cin >> n;
+    
     if(snt(n))  cout << "YES";
     else        cout << "NO";
 }

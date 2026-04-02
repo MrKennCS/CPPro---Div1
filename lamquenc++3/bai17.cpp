@@ -53,20 +53,16 @@ int tc = 1;
 int n, a, b;
 string s;
 
-void BASE_CASE(){
+bool BASE_CASE(){
     // BS1
     bool BS1 = true;
     for(int i=1; i<sz(s); ++i)  if(s[i] == '0') BS1 = false;
-    if(BS1){
-        cout << "YES\n";
-        return ;
-    }
+    if(BS1) return true;
 
     // BS2
-    if(a == 1){
-        cout << "YES\n";
-        return ;
-    }
+    if(a == 1)  return true;
+    
+    return false;
 }
 
 void solve(){
@@ -74,7 +70,10 @@ void solve(){
     cin >> s;
     s = " " + s;
 
-    BASE_CASE();
+    if(BASE_CASE()){
+        cout << "YES\n";
+        return ;
+    }
 
     cout << "GAY\n";
 }

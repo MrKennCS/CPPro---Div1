@@ -4,6 +4,7 @@
 #include<bits/stdc++.h>
 
 using namespace std;
+using namespace std::chrono;
 
 #define ll long long
 #define ull unsigned long long
@@ -134,6 +135,9 @@ void solve(){
     MMDMMDDM
 
     */
+
+    SUB2 = true;
+
     cin >> n >> k;
     cin >> s;
 
@@ -153,6 +157,17 @@ void solve(){
 
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
+
+    #ifndef ONLINE_JUDGE
+    auto start = high_resolution_clock::now();
+    #endif
+
     cin >> tc;
     while(tc--)  solve();
+
+    #ifndef ONLINE_JUDGE
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<milliseconds>(start - stop);
+    cerr << "\n[Time: " << duration.count() << " ms]\n"; 
+    #endif
 }
