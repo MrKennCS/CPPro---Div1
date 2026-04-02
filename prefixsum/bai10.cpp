@@ -1,81 +1,122 @@
+// #pragma GCC optimize("O3,unroll-loops")
+// #pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
+
 #include<bits/stdc++.h>
-#define ll long long 
-#define foru(i, a, b) for(int i=a; i<=b; ++i)
-#define ford(i, a, b) for(int i=a; i>=b; --i)
-#define unomap unordered_map
 
-using namespace std; 
+using namespace std;
+using namespace std::chrono;
 
-const int limN = 1e6 + 3;
-const int lim = 5e3;
+#define ll long long
+#define ull unsigned long long
+#define ii pair<int, int>
+#define umap unordered_map
+#define uset unordered_set
+#define pqueue priority_queue
+
+#define sz(a) (int)a.size()
+#define getbit(x, y) (((x) >> (y)) & 1)
+#define turnon(x, y) ((x) | (1LL << y))
+#define turnof(x, y) ((x) ^ (1LL << y))
+#define foru(i, a, b)   for(int i=a; i<=b; ++i)
+#define ford(i, a, b)   for(int i=a; i>=b; --i)
+#define foruc(i, a, b, c)   for(int i=a; i<=b; i+=c)
+#define fordc(i, a, b, c)   for(int i=a; i>=b; i-=c)
+
+#define fi first
+#define se second
+#define pf push_front
+#define pb push_back
+#define popf pop_front
+#define popb pop_back
+#define lb lower_bound // >=
+#define ub upper_bound // >
+
+mt19937 rd(chrono::steady_clock::now().time_since_epoch().count());
+
+ll rand(ll l, ll r){
+    assert(l <= r);
+    return l + rd() % (r - l + 1);
+}
+
+void file(){
+    if(fopen("TEST.INP", "r")){
+        freopen("TEST.INP", "r", stdin);
+        freopen("TEST.OUT", "w", stdout);
+    }
+}
+
+const int mod = 1e9 + 7;
+int tc = 1;
+
+/*
+
+*/
 
 int n;
-int a[limN];
-int pre[limN];
-int b[lim];
-int c[lim];
-bool snt[limN];
-int pos;
-int previous;
-
-ll sum;
+int a[1000006];
+ll pre[1000006];
+vector<bool> prime(1000005, 1);
+vector<int> id;
+int lim;
 ll res;
 
-void sieve(){
-    memset(snt, true, sizeof(snt));
-    snt[0] = snt[1] = false;
-    foru(i, 2, n){
-        if(snt[i]){
-            for(int j=i*i; j<=n; j+=i){
-                snt[j] = false;
+void sangsnt(){
+    prime[0] = prime[1] = 0;
+    for(int i=2; 1ll*i*i<=1000000; ++i){
+        if(prime[i]){
+            id.pb(i);
+            //cnt++;
+            for(int j=i*i; j<=1000000; j+=i){
+                prime[j] = 0;
             }
         }
     }
+
+    //cout << cnt;
 }
 
 void solve(){
     cin >> n;
-
-    sieve();
-    res = -1e6 - 6;
-    for(int i=1; i<=n; ++i) if(snt[i])  res = max(res, 1LL*i);
-
-    foru(i, 1, n){
+    for(int i=1; i<=n; ++i){
         cin >> a[i];
         pre[i] = pre[i - 1] + a[i];
     }
 
-    previous = 2;
-    pos = 1;
-
-    for(int i=3; i<=n; ++i){
-        if(snt[i]){
-            b[pos] = pre[i] - pre[previous - 1];
-            c[pos] = a[i];
-            previous = i;
-            pos++;
+    for(int i=0; i<sz(id); ++i){
+        if(id[i + 1] > n){
+            lim = i;
+            break;
         }
     }
-
-
-    foru(i, 1, pos - 1){
-        sum += b[i];
-        sum -= c[i - 1];
-        if(sum < 0) sum = 0;
-        res = max(res, sum);
+    //cerr << "LIM: " << lim << "   " << "SNT: " << id[lim] << '\n';
+    for(int i=0; i<=lim; ++i){
+        for(int j=i+1; j<=lim; ++j){
+            res = max(res, pre[id[j]] - pre[id[i] - 1]);
+        }
     }
 
     cout << res;
 
-    /*
-    foru(i, 1, pos) cout << b[i] << " ";    
-    cout << '\n';
-    foru(i, 1, pos) cout << c[i] << " ";    
-    cout << '\n';
-    */
 }
 
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
-    solve();
+    file();
+
+    // INPUT
+
+    // END_INPUT
+
+    #ifndef ONLINE_JUDGE
+    auto start = high_resolution_clock::now();
+    #endif
+    
+    sangsnt();
+    while(tc--)  solve();
+    
+    #ifndef ONLINE_JUDGE
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<milliseconds>(stop - start);
+    cerr << "\n[Time: " << duration.count() << " ms]\n"; 
+    #endif
 }
