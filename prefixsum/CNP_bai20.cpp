@@ -52,30 +52,46 @@ int tc = 1;
 
 */
 
-int n, m, k;
-int a[1000006];
-ll pre[1000006];
-ll res = -2;
+int n, m, a, b;
+int val[1005][1005];
+vector<int> ar;
+int res;
+
+void sub1(){
+    for(int i=a; i<=n; ++i){
+        for(int j=b; j<=m; ++j){
+            //cout << i - a + 1 << " " << j - b + 1 << " " << i << " " << j << '\n';
+            ar.clear();
+            for(int k=i-a+1; k<=i; ++k){
+                for(int l=j-b+1; l<=j; ++l){
+                    ar.pb(val[k][l]);
+                }
+            }
+            sort(ar.begin(), ar.end());
+            res = max(res, ar[a * b / 2]);
+        }
+    }
+    cout << res;
+}
+
+void sub2(){
+
+}
 
 void solve(){
-    cin >> m >> n >> k;
-    for(int i=1; i<=m; ++i) cin >> a[i];
-
-    if(n > m){
-        cout << -2;
-        return ;
+    cin >> n >> m >> a >> b;
+    //cout << n << " " << m << " " << a << " " << b << '\n';
+    for(int i=1; i<=n; ++i){
+        for(int j=1; j<=m; ++j){
+            cin >> val[i][j];
+            //cout << val[i][j] << " ";
+        }
+        //cout << '\n';
     }
 
-    sort(a + 1, a + m + 1);
-    for(int i=1; i<=m; ++i) pre[i] = pre[i - 1] + a[i];
+    if(n <= 1000 && m <= 1000)  sub1();
+    else                        sub2();
 
-    for(int r=n; r<=m; ++r){
-        int l = r - n + 1;
-        //cout << l << " ";
-        if(a[r] - a[l] <= k)    res = max(res, pre[r] - pre[l - 1]);
-    }
-
-    cout << res;
 }
 
 int main(){

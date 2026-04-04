@@ -1,29 +1,122 @@
-#include <iostream>
-#include <bitset>
+// #pragma GCC optimize("O3,unroll-loops")
+// #pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
+
+#include<bits/stdc++.h>
 
 using namespace std;
+using namespace std::chrono;
 
-const int LIM = 100000000; // 10^8
-bitset<LIM + 5> is_prime; // Mặc định tất cả là 0
+#define ll long long
+#define ull unsigned long long
+#define ii pair<int, int>
+#define umap unordered_map
+#define uset unordered_set
+#define pqueue priority_queue
 
-void sieve() {
-    is_prime.set(); // Đặt tất cả các bit thành 1 (coi như đều là số nguyên tố)
-    is_prime[0] = is_prime[1] = 0; // 0 và 1 không phải SNT
+#define sz(a) (int)a.size()
+#define getbit(x, y) (((x) >> (y)) & 1)
+#define turnon(x, y) ((x) | (1LL << y))
+#define turnof(x, y) ((x) ^ (1LL << y))
+#define foru(i, a, b)   for(int i=a; i<=b; ++i)
+#define ford(i, a, b)   for(int i=a; i>=b; --i)
+#define foruc(i, a, b, c)   for(int i=a; i<=b; i+=c)
+#define fordc(i, a, b, c)   for(int i=a; i>=b; i-=c)
 
-    for (int i = 2; 1LL * i * i <= LIM; i++) {
-        if (is_prime[i]) {
-            for (int j = i * i; j <= LIM; j += i) {
-                is_prime.reset(j); // Đặt bit thứ j thành 0 cực nhanh
-            }
-        }
+#define fi first
+#define se second
+#define pf push_front
+#define pb push_back
+#define popf pop_front
+#define popb pop_back
+#define lb lower_bound // >=
+#define ub upper_bound // >
+
+mt19937 rd(chrono::steady_clock::now().time_since_epoch().count());
+
+ll rand(ll l, ll r){
+    assert(l <= r);
+    return l + rd() % (r - l + 1);
+}
+
+void file(){
+    if(fopen("TEST.INP", "r")){
+        freopen("TEST.INP", "r", stdin);
+        freopen("TEST.OUT", "w", stdout);
     }
 }
 
-int main() {
-    sieve();
-    if (is_prime[97]) cout << "97 la so nguyen to!";
+const int LIMN = 1e7 + 5;
+const int mod = 1e9 + 7;
+int tc = 1;
+
+/*
+
+*/
+
+int l, r;
+int sum;
+int cnt;
+
+ll mul(ll a, ll b, ll mod){
+    ll ans = 0;
+    while(b){
+        if(b & 1)   ans = (ans + a) % mod;
+        a = (a + a) % mod;
+        b /= 2;
+    }
+    return ans;
+}
+
+ll pow(ll a, ll b, ll mod){
+    ll ans = 1;
+    while(b){
+        if(b & 1)   ans = mul(ans, a, mod);
+        a = mul(a, a, mod);
+        b /= 2;
+    }
+    return ans;
+}
+
+bool snt(ll n){
+    if(n <= 2)  return (n == 2);
+    for(int i=1; i<=100; ++i){
+        ll x = rand(2, n - 1);
+        if(pow(x, n - 1, n) != 1)   return false;
+    }
+    return true;
+}
+
+void solve(){
+    cin >> l >> r;
+    sum = 0;
+    cnt = 0;
+    for(int i=l; i<=r; ++i){
+        if(snt(i)){
+            sum += i;
+            cnt++;
+        }
+    }
+    cout << fixed << setprecision(2) << 1.0 * sum / cnt << '\n';
+}
+
+int main(){
+    ios_base::sync_with_stdio(false);   cin.tie(0);
+    file();
+
+    // INPUT
+    cin >> tc;
+    // cin >> l >> r;
+    // END_INPUT
+
+    #ifndef ONLINE_JUDGE
+    auto start = high_resolution_clock::now();
+    #endif
     
-    // Đếm xem có bao nhiêu số nguyên tố từ 0 đến LIM
-    cout << "\nSo luong SNT: " << is_prime.count(); 
-    return 0;
+    while(tc--)  solve();
+    
+    #ifndef ONLINE_JUDGE
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<milliseconds>(stop - start);
+    cerr << "\n[Time: " << duration.count() << " ms]\n"; 
+    #endif
 }

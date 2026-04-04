@@ -52,30 +52,21 @@ int tc = 1;
 
 */
 
-int n, m, k;
-int a[1000006];
-ll pre[1000006];
-ll res = -2;
+int n, q;
+int pre[100005];
+int type, l, r, x;
 
 void solve(){
-    cin >> m >> n >> k;
-    for(int i=1; i<=m; ++i) cin >> a[i];
+    cin >> n >> q;
+    while(q--){
+        cin >> type >> l >> r >> x;
+        if(type == 2)   x = -x;
 
-    if(n > m){
-        cout << -2;
-        return ;
+        pre[l] += x;
+        pre[r + 1] -= x;
     }
 
-    sort(a + 1, a + m + 1);
-    for(int i=1; i<=m; ++i) pre[i] = pre[i - 1] + a[i];
-
-    for(int r=n; r<=m; ++r){
-        int l = r - n + 1;
-        //cout << l << " ";
-        if(a[r] - a[l] <= k)    res = max(res, pre[r] - pre[l - 1]);
-    }
-
-    cout << res;
+    for(int i=1; i<=n; ++i) pre[i] += pre[i - 1],   cout << pre[i] << " ";
 }
 
 int main(){

@@ -52,29 +52,29 @@ int tc = 1;
 
 */
 
-int n, m, k;
-int a[1000006];
-ll pre[1000006];
-ll res = -2;
+int n, l, r;
+int pre[60006];
+int N;
+int cur;
+int res;
 
 void solve(){
-    cin >> m >> n >> k;
-    for(int i=1; i<=m; ++i) cin >> a[i];
-
-    if(n > m){
-        cout << -2;
-        return ;
+    cin >> n;
+    for(int i=1; i<=n; ++i){
+        cin >> l >> r;
+        pre[l + 1]++;
+        pre[r + 1]--;
+        N = max(N, r);
     }
 
-    sort(a + 1, a + m + 1);
-    for(int i=1; i<=m; ++i) pre[i] = pre[i - 1] + a[i];
-
-    for(int r=n; r<=m; ++r){
-        int l = r - n + 1;
-        //cout << l << " ";
-        if(a[r] - a[l] <= k)    res = max(res, pre[r] - pre[l - 1]);
+    for(int i=1; i<=N; ++i){
+        pre[i] += pre[i - 1];
+        //cout << pre[i] << " ";
+        if(pre[i] == 0){
+            res = max(res, cur);
+            cur = 0;
+        }else   cur++;
     }
-
     cout << res;
 }
 
