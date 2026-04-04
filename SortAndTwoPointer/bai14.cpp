@@ -53,67 +53,62 @@ int tc = 1;
 */
 
 int n;
-ll s;
-ll a[400006];
-int res = 400000008;
+int a[5005];
+int l, r;
+int res;
 
-void sub1(){
-    ll sum = 0;
-    //for(int i=1; i<=2*n; ++i)   a[i] += a[i - 1];
+void trau(){
+    cin >> n;
     for(int i=1; i<=n; ++i){
-        for(int j=i; j<=n; ++j){
-            sum = 0;
+        cin >> a[i];
+        a[i] += a[i - 1];
+    }
+
+    for(int i=1; i<=n; ++i){
+        for(int j=i+1; j<=n; ++j){
             for(int k=i; k<=j; ++k){
-                sum += a[k];
-            }
-            if(sum >= s && j - i + 1 <= n / 2){
-                res = min(res, j - i + 1);
-            }
-        }
-    }
-    cout << (res == 400000008 ? -1 : res);
-}
-
-void sub2(){
-    for(int i=1; i<=n; ++i) a[i] += a[i - 1];
-
-    for(int i=1; i<=n; ++i){
-        for(int j=i; j<=n; ++j){
-            if(a[j] - a[i - 1] >= s && j - i + 1 <= n / 2){
-                res = min(res, j - i + 1);
+                if(2 * a[k] == a[i - 1] + a[j]){
+                    res = max(res, j - i + 1);
+                    break;
+                }
             }
         }
     }
 
-    cout << (res == 400000008 ? -1 : res);
-}
-
-void sub3(){    
-    int l = 1;
-    //cout << "GAY\n";
-    for(int i=1; i<=n; ++i) a[i] += a[i - 1];
-    // l là vị trí trái gần r nhất thỏa l <= r && a[r] - a[l - 1] >= s
-    //for(int i=1; i<=n; ++i) cout << a[i] << " ";    cout << '\n';
-    for(int r=1; r<=n; ++r){
-        //while(l < r && a[r] - a[l - 1] >= s)    l++;
-        while(l < r && a[r] - a[l] >= s)    l++;
-        if(a[r] - a[l - 1] >= s && r - l + 1 <= n / 2)  res = min(res, r - l + 1);
-        //cout << r << " " << l << " " << a[r] - a[l - 1] << '\n';
-    }
-    cout << (res == 400000008 ? -1 : res);
+    cout << res;
 }
 
 void solve(){
-    cin >> n >> s;
+    cin >> n;
     for(int i=1; i<=n; ++i){
         cin >> a[i];
-        a[i + n] = a[i];
+        a[i] += a[i - 1];
+        //cerr << a[i] << " ";
     }
-    n *= 2;
+    //cerr << '\n';
+    for(int k=1; k<=n; ++k){
+        /*
+        Doan1: l -> k
+        Doan2: r -> k + 1
+        */
 
-    if(n <= 100)        sub3();
-    else if(n <= 2000)  sub2();
-    else                sub3();
+        l = k;
+        r = k + 1;
+
+        while(l >= 1 && r <= n){
+            //cerr << l << " " << k << " " << r << " " << a[k] - a[l - 1] << " " << a[r] - a[k] << '\n';
+            if(a[k] - a[l - 1] == a[r] - a[k]){
+                //cerr << "UPDATE: " << l << " " << k << " " << r << '\n';
+                res = max(res, r - l + 1);
+                r++;
+            }else{
+                if(a[k] - a[l - 1] > a[r] - a[k])   r++;
+                else                                l--;
+            }
+        }
+    }
+
+    cout << res;
 }
 
 int main(){

@@ -52,68 +52,45 @@ int tc = 1;
 
 */
 
-int n;
-ll s;
-ll a[400006];
-int res = 400000008;
-
-void sub1(){
-    ll sum = 0;
-    //for(int i=1; i<=2*n; ++i)   a[i] += a[i - 1];
-    for(int i=1; i<=n; ++i){
-        for(int j=i; j<=n; ++j){
-            sum = 0;
-            for(int k=i; k<=j; ++k){
-                sum += a[k];
-            }
-            if(sum >= s && j - i + 1 <= n / 2){
-                res = min(res, j - i + 1);
-            }
-        }
-    }
-    cout << (res == 400000008 ? -1 : res);
-}
-
-void sub2(){
-    for(int i=1; i<=n; ++i) a[i] += a[i - 1];
-
-    for(int i=1; i<=n; ++i){
-        for(int j=i; j<=n; ++j){
-            if(a[j] - a[i - 1] >= s && j - i + 1 <= n / 2){
-                res = min(res, j - i + 1);
-            }
-        }
-    }
-
-    cout << (res == 400000008 ? -1 : res);
-}
-
-void sub3(){    
-    int l = 1;
-    //cout << "GAY\n";
-    for(int i=1; i<=n; ++i) a[i] += a[i - 1];
-    // l là vị trí trái gần r nhất thỏa l <= r && a[r] - a[l - 1] >= s
-    //for(int i=1; i<=n; ++i) cout << a[i] << " ";    cout << '\n';
-    for(int r=1; r<=n; ++r){
-        //while(l < r && a[r] - a[l - 1] >= s)    l++;
-        while(l < r && a[r] - a[l] >= s)    l++;
-        if(a[r] - a[l - 1] >= s && r - l + 1 <= n / 2)  res = min(res, r - l + 1);
-        //cout << r << " " << l << " " << a[r] - a[l - 1] << '\n';
-    }
-    cout << (res == 400000008 ? -1 : res);
-}
+int n, m;
+int a[10004];
+int cnt[10004];
+int lim;
+int id = 1;
+int l, mid;
+int res;
 
 void solve(){
-    cin >> n >> s;
+    cin >> n >> m;
     for(int i=1; i<=n; ++i){
         cin >> a[i];
-        a[i + n] = a[i];
+        cnt[a[i]]++;
+        lim = max(lim, a[i]);
     }
-    n *= 2;
+    // O(n + 10000);
+    for(int i=1; i<=lim; ++i){
+        for(int j=1; j<=cnt[i]; ++j){
+            a[id] = i;
+            id++;
+        }
+    }
+    //for(int i=1; i<=n; ++i) cout << a[i] << " ";    cout << '\n';
+    for(int r=3; r<=n; ++r){
+        l = 1;
+        mid = r - 1;
+        //cout << "R: " << r << "\n";
+        while(l < mid){
+            if(a[l] + a[mid] + a[r] <= m){
+                res = max(res, a[l] + a[mid] + a[r]);
+                //cout << l << " " << mid << " " << r << " " << a[l] + a[mid] + a[r] << '\n';
+                l++;
+            }else{
+                mid--;
+            }
+        }
+    }
+    cout << res;
 
-    if(n <= 100)        sub3();
-    else if(n <= 2000)  sub2();
-    else                sub3();
 }
 
 int main(){

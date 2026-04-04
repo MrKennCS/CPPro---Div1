@@ -45,6 +45,7 @@ void file(){
     }
 }
 
+const int LIMN = 1048580;
 const int mod = 1e9 + 7;
 int tc = 1;
 
@@ -52,68 +53,37 @@ int tc = 1;
 
 */
 
-int n;
-ll s;
-ll a[400006];
-int res = 400000008;
+int n, L, R;
+int a[LIMN];
+umap<int, int> d;
+int cnt;
 
-void sub1(){
-    ll sum = 0;
-    //for(int i=1; i<=2*n; ++i)   a[i] += a[i - 1];
-    for(int i=1; i<=n; ++i){
-        for(int j=i; j<=n; ++j){
-            sum = 0;
-            for(int k=i; k<=j; ++k){
-                sum += a[k];
-            }
-            if(sum >= s && j - i + 1 <= n / 2){
-                res = min(res, j - i + 1);
-            }
-        }
-    }
-    cout << (res == 400000008 ? -1 : res);
-}
-
-void sub2(){
-    for(int i=1; i<=n; ++i) a[i] += a[i - 1];
-
-    for(int i=1; i<=n; ++i){
-        for(int j=i; j<=n; ++j){
-            if(a[j] - a[i - 1] >= s && j - i + 1 <= n / 2){
-                res = min(res, j - i + 1);
-            }
-        }
-    }
-
-    cout << (res == 400000008 ? -1 : res);
-}
-
-void sub3(){    
+ll calc(int x){
+    ll res = 0;
+    d.clear();
     int l = 1;
-    //cout << "GAY\n";
-    for(int i=1; i<=n; ++i) a[i] += a[i - 1];
-    // l là vị trí trái gần r nhất thỏa l <= r && a[r] - a[l - 1] >= s
-    //for(int i=1; i<=n; ++i) cout << a[i] << " ";    cout << '\n';
+    cnt = 0;
     for(int r=1; r<=n; ++r){
-        //while(l < r && a[r] - a[l - 1] >= s)    l++;
-        while(l < r && a[r] - a[l] >= s)    l++;
-        if(a[r] - a[l - 1] >= s && r - l + 1 <= n / 2)  res = min(res, r - l + 1);
-        //cout << r << " " << l << " " << a[r] - a[l - 1] << '\n';
+        if(d[a[r]] == 0)    cnt++;
+        d[a[r]]++;
+
+        while(l + 1 <= r && cnt > x){
+            d[a[l]]--;
+            if(d[a[l]] == 0)    cnt--;
+            l++;
+        }
+
+        if(cnt <= x)   res += (r - l + 1);
     }
-    cout << (res == 400000008 ? -1 : res);
+    return res;
 }
 
 void solve(){
-    cin >> n >> s;
-    for(int i=1; i<=n; ++i){
-        cin >> a[i];
-        a[i + n] = a[i];
-    }
-    n *= 2;
+    cin >> n >> L >> R;
+    for(int i=1; i<=n; ++i) cin >> a[i];
 
-    if(n <= 100)        sub3();
-    else if(n <= 2000)  sub2();
-    else                sub3();
+    cout << calc(R) - calc(L - 1);
+
 }
 
 int main(){

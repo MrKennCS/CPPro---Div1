@@ -52,68 +52,25 @@ int tc = 1;
 
 */
 
-int n;
-ll s;
-ll a[400006];
-int res = 400000008;
-
-void sub1(){
-    ll sum = 0;
-    //for(int i=1; i<=2*n; ++i)   a[i] += a[i - 1];
-    for(int i=1; i<=n; ++i){
-        for(int j=i; j<=n; ++j){
-            sum = 0;
-            for(int k=i; k<=j; ++k){
-                sum += a[k];
-            }
-            if(sum >= s && j - i + 1 <= n / 2){
-                res = min(res, j - i + 1);
-            }
-        }
-    }
-    cout << (res == 400000008 ? -1 : res);
-}
-
-void sub2(){
-    for(int i=1; i<=n; ++i) a[i] += a[i - 1];
-
-    for(int i=1; i<=n; ++i){
-        for(int j=i; j<=n; ++j){
-            if(a[j] - a[i - 1] >= s && j - i + 1 <= n / 2){
-                res = min(res, j - i + 1);
-            }
-        }
-    }
-
-    cout << (res == 400000008 ? -1 : res);
-}
-
-void sub3(){    
-    int l = 1;
-    //cout << "GAY\n";
-    for(int i=1; i<=n; ++i) a[i] += a[i - 1];
-    // l là vị trí trái gần r nhất thỏa l <= r && a[r] - a[l - 1] >= s
-    //for(int i=1; i<=n; ++i) cout << a[i] << " ";    cout << '\n';
-    for(int r=1; r<=n; ++r){
-        //while(l < r && a[r] - a[l - 1] >= s)    l++;
-        while(l < r && a[r] - a[l] >= s)    l++;
-        if(a[r] - a[l - 1] >= s && r - l + 1 <= n / 2)  res = min(res, r - l + 1);
-        //cout << r << " " << l << " " << a[r] - a[l - 1] << '\n';
-    }
-    cout << (res == 400000008 ? -1 : res);
-}
+int n, k;
+int a[100005];
+bool kt[100005];
+int pos;
+int res;
 
 void solve(){
-    cin >> n >> s;
-    for(int i=1; i<=n; ++i){
-        cin >> a[i];
-        a[i + n] = a[i];
-    }
-    n *= 2;
+    cin >> n >> k;
+    for(int i=1; i<=n; ++i) cin >> a[i];
 
-    if(n <= 100)        sub3();
-    else if(n <= 2000)  sub2();
-    else                sub3();
+    sort(a + 1, a + n + 1, greater<int>());
+
+    for(int i=1; i<=n; ++i) cout << a[i] << " ";
+
+    pos = 1;
+
+    for(int i=1; i<=n; ++i){
+
+    }
 }
 
 int main(){
