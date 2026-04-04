@@ -71,11 +71,7 @@ void sub2(){
     memset(dp, 0, sizeof(dp));
     dp[0][0] = 0;
 
-    for(int i=1; i<=n; ++i){
-        for(int j=1; j<=m; ++j){
-            dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j] + c[i];
-        }
-    }
+    
 
     cout << dp[n][m];
 }

@@ -67,33 +67,7 @@ int tc = 1;
     3 2
     3 1
 
-    Nx1:
-    O truy van loai 2, thay vi ta di cong lan luot nhu vay, ta dat nhat tu chung va khi nay ta co so tien cua p la:
-
-    m[p] = s[p] * (v1 + v2 + ... + vn);
-
-    Nx2:
-    Khi gap truy van 3, ta se tien hanh reset m[p] = 0, DONG THOI NEU GOI CUR[i] LA SO CO PHIEU CONG TY NGUOI I CO
-    -> Ta se reset CUR[i] = 0
-
-=>  Khi nay moi lan goi truy van 3, ta chi can in ra:
-
-    m[p] = s[p] * cur[p]
-    cur[p] = 0;
-
-    Vay lam sao de duy tri mang cur[p]?
-
-    1. Ngay tho:
-        Voi moi truy van 2, ta cong lan luot cur[i: 1 -> n] += v
-        -> DPT ko khac gi trau
-    
-    2. Toi uu
-        Ta goi V la tong so co phan cua cong ty tu dau toi gio
-
-        V = cur_1[i] + cur_2[i] + ... + cur_n[i] voi cur_i[i] la tong so co phieu nguoi i co sau i lan RESET
-    =>  Goi TONG[i] la so co phieu da bi reset cua nguoi i
-
-    =>  cur_i = V - tong[i]
+    Truy v 
 
 */
 
@@ -151,7 +125,7 @@ void solve(){
         cin >> loai;
         if(loai == 1){
             cin >> p >> x;
-            s[p] += x;
+            
         }else if(loai == 2){
 
         }else{

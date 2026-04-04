@@ -57,7 +57,7 @@ int a[100005];
 int mx;
 int res;
 
-int factor(int n){
+int factor(int n){  // 
     int cur;
     int tong = 0;
     for(int i=2; 1ll*i*i<=n; ++i){

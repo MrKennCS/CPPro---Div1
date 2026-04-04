@@ -71,7 +71,7 @@ void solve(){
 
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
-    file();
+    file(); 
 
     // INPUT
     cin >> l >> r >> k;

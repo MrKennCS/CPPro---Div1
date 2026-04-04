@@ -1,38 +1,105 @@
-#include<iostream>
-#include<algorithm>
-#define int long long
+// #pragma GCC optimize("O3,unroll-loops")
+// #pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
+
+#include<bits/stdc++.h>
+
 using namespace std;
+using namespace std::chrono;
+
+#define ll long long
+#define ull unsigned long long
+#define ii pair<int, int>
+#define umap unordered_map
+#define uset unordered_set
+#define pqueue priority_queue
+
+#define sz(a) (int)a.size()
+#define getbit(x, y) (((x) >> (y)) & 1)
+#define turnon(x, y) ((x) | (1LL << y))
+#define turnof(x, y) ((x) ^ (1LL << y))
+#define foru(i, a, b)   for(int i=a; i<=b; ++i)
+#define ford(i, a, b)   for(int i=a; i>=b; --i)
+#define foruc(i, a, b, c)   for(int i=a; i<=b; i+=c)
+#define fordc(i, a, b, c)   for(int i=a; i>=b; i-=c)
+
+#define fi first
+#define se second
+#define pf push_front
+#define pb push_back
+#define popf pop_front
+#define popb pop_back
+#define lb lower_bound // >=
+#define ub upper_bound // >
+
+mt19937 rd(chrono::steady_clock::now().time_since_epoch().count());
+
+ll rand(ll l, ll r){
+    assert(l <= r);
+    return l + rd() % (r - l + 1);
+}
+
+void file(){
+    if(fopen("TEST.INP", "r")){
+        freopen("TEST.INP", "r", stdin);
+        freopen("TEST.OUT", "w", stdout);
+    }
+}
+
+const int mod = 1e9 + 7;
+int tc = 1;
+
+/*
+
+*/
 
 int n;
-pair<int, int> a[1000000];
+ii val[105];
+int a, b;
 
-bool cmp(pair<int, int> a, pair<int, int> b){
-    if(a.second == b.second)    return (a.first > b.first);
-    return (a.second > b.second);
+bool cmp(ii a, ii b){
+    if(a.se == b.se)    return (a.fi > b.fi);
+    else                return (a.se > b.se);
 }
 
 void solve(){
     cin >> n;
-    for(int i=1; i<=n; ++i){
-        cin >> a[i].first >> a[i].second;
-    }
+    for(int i=1; i<=n; ++i) cin >> val[i].fi >> val[i].se;
 
-    sort(a + 1, a + n + 1, cmp);
+    sort(val + 1, val + n + 1, cmp);
 
-    int cnt = 1;
-    int res = 0;
+    a = 0;
+    b = 1;
 
     for(int i=1; i<=n; ++i){
-        if(cnt == 0)    break;
-        cnt -= 1;
-        cnt += a[i].second;
-        res += a[i].first;
+        if(b <= 0){
+            cout << a;
+            return ;
+        }
+        b -= 1;
+        b += val[i].se;
+        a += val[i].fi;
     }
-
-    cout << res;
+    cout << a;
+    return ;
 }
 
-signed main(){
+int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
-    solve();
+    file();
+
+    // INPUT
+
+    // END_INPUT
+
+    #ifndef ONLINE_JUDGE
+    auto start = high_resolution_clock::now();
+    #endif
+    
+    while(tc--)  solve();
+    
+    #ifndef ONLINE_JUDGE
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<milliseconds>(stop - start);
+    cerr << "\n[Time: " << duration.count() << " ms]\n"; 
+    #endif
 }

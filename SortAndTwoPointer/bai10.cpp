@@ -52,25 +52,34 @@ int tc = 1;
 
 */
 
-int n, m;
-int a[100005];
-int b[100005];
-int c[100005];
-int id;
+int n;
+int a[200005];
+int x;
+int res;
 
 void solve(){
-    cin >> n >> m;
-
+    cin >> n >> x;
     for(int i=1; i<=n; ++i) cin >> a[i];
-    for(int i=1; i<=m; ++i) cin >> b[i];
 
-    id = 0;
-    for(int i=1; i<=m; ++i){
-        while(a[id + 1] < b[i] && id < n) id++;
-        c[i] = id;
+    sort(a + 1, a + n + 1);
+    //for(int i=1; i<=n; ++i) cout << a[i] << " ";    cout << '\n';
+
+    int l = 1;
+    int r = n;
+
+    while(l < r){
+        //cout << a[l] << " " << a[r] << " " << a[l] + a[r] << '\n';
+        if(a[l] + a[r] <= x){
+            //cout << "GAY\n";
+            l += 1;
+            r -= 1;
+            res += 1;
+        }else{
+            r -= 1;
+            res += 1;
+        }
     }
-
-    for(int i=1; i<=m; ++i) cout << c[i] << " ";
+    cout << res + (l == r);
 }
 
 int main(){

@@ -39,13 +39,13 @@ ll rand(ll l, ll r){
 }
 
 void file(){
-    if(fopen("TEST.INP", "r")){
-        freopen("TEST.INP", "r", stdin);
-        freopen("TEST.OUT", "w", stdout);
+    if(fopen("LAB.INP", "r")){
+        freopen("LAB.INP", "r", stdin);
+        freopen("LAB.OUT", "w", stdout);
     }
 }
 
-const int LIMN = 1e7 + 5;
+const int LIMN = 200005;
 const int mod = 1e9 + 7;
 int tc = 1;
 
@@ -53,50 +53,61 @@ int tc = 1;
 
 */
 
-int l, r;
-int sum;
-int cnt;
+int n;
+int a[LIMN];
+int pos[LIMN];
+bool check[LIMN];
+int nx[LIMN];
+int mn;
+int mx;
+int res;
+int u, v, l, r;
+int cur;
 
-ll mul(ll a, ll b, ll mod){
-    ll ans = 0;
-    while(b){
-        if(b & 1)   ans = (ans + a) % mod;
-        a = (a + a) % mod;
-        b /= 2;
-    }
-    return ans;
-}
-
-ll pow(ll a, ll b, ll mod){
-    ll ans = 1;
-    while(b){
-        if(b & 1)   ans = mul(ans, a, mod);
-        a = mul(a, a, mod);
-        b /= 2;
-    }
-    return ans;
-}
-
-bool snt(ll n){
-    if(n <= 2)  return (n == 2);
-    for(int i=1; i<=100; ++i){
-        ll x = rand(2, n - 1);
-        if(pow(x, n - 1, n) != 1)   return false;
-    }
-    return true;
+int nxt(int x){
+    if(nx[x] == x)  return x;
+    return nx[x] = nxt(nx[x]);
 }
 
 void solve(){
-    cin >> l >> r;
-    sum = 0;
-    cnt = 0;
-    for(int i=l; i<=r; ++i){
-        if(snt(i)){
-            sum += i;
-            cnt++;
-        }
+    cin >> n;
+
+    foru(i, 0, n - 1){
+        cin >> a[i];
+        pos[a[i]] = i;
+        nx[i] = i;
     }
-    cout << fixed << setprecision(2) << 1.0 * sum / cnt << '\n';
+    
+    nx[n] = n;
+
+    mn = 1;
+    mx = n;
+    res = 0;
+
+    while(mn <= mx){
+        while(mn <= n && check[mn]) mn++;
+        while(mx >= 1 && check[mx]) mx--;
+
+        if(mn > mx) break;
+
+        u = pos[mn];
+        v = pos[mx];
+
+        l = min(u, v);
+        r = max(u, v);
+
+        cur = nxt(l);
+
+        while(cur <= r){
+            check[a[cur]] = 1;
+            nx[cur] = nxt(cur + 1);
+            cur = nxt(cur);
+        }
+
+        res++;
+    }
+
+    cout << res << '\n';
 }
 
 int main(){
@@ -104,8 +115,7 @@ int main(){
     file();
 
     // INPUT
-    cin >> tc;
-    // cin >> l >> r;
+
     // END_INPUT
 
     #ifndef ONLINE_JUDGE

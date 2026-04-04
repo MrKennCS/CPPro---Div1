@@ -52,25 +52,8 @@ int tc = 1;
 
 */
 
-int n, m;
-int a[100005];
-int b[100005];
-int c[100005];
-int id;
-
 void solve(){
-    cin >> n >> m;
 
-    for(int i=1; i<=n; ++i) cin >> a[i];
-    for(int i=1; i<=m; ++i) cin >> b[i];
-
-    id = 0;
-    for(int i=1; i<=m; ++i){
-        while(a[id + 1] < b[i] && id < n) id++;
-        c[i] = id;
-    }
-
-    for(int i=1; i<=m; ++i) cout << c[i] << " ";
 }
 
 int main(){

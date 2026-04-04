@@ -52,38 +52,18 @@ int tc = 1;
 
 */
 
-int l, w;
-int n, k;
-int a[255][255];
-int pre[255][255];
-vector<vector<ii>> id(255, vector<ii>(255, {0, 0}));
+int n;
+int a[100005];
 
-int x, y;
-
-void sub1(){
-
-}
-
-void sub2(){
-
+bool cmp(){
+    
 }
 
 void solve(){
-    cin >> l >> w;
-    cin >> n >> k;
-
+    cin >> n;
     for(int i=1; i<=n; ++i){
-        cin >> x >> y;
-        a[x][y]++;
+        cin >> a[i];
     }
-
-    for(int i=1; i<=l; ++i){
-        for(int j=1; j<=w; ++j){
-            pre[i][j] = pre[i - 1][j] + pre[i][j - 1] - pre[i - 1][j - 1] + a[i][j];
-        }
-    }
-
-    
 
 }
 

@@ -52,25 +52,67 @@ int tc = 1;
 
 */
 
-int n, m;
-int a[100005];
-int b[100005];
-int c[100005];
-int id;
+int n;
+ll s;
+ll a[400006];
+int res = 2000006;
 
-void solve(){
-    cin >> n >> m;
+void sub1(){
+    ll sum = 0;
+    //for(int i=1; i<=2*n; ++i)   a[i] += a[i - 1];
+    for(int i=1; i<=n; ++i){
+        for(int j=i; j<=n; ++j){
+            sum = 0;
+            for(int k=i; k<=j; ++k){
+                sum += a[k];
+            }
+            if(sum >= s && j - i + 1 <= n / 2){
+                res = min(res, j - i + 1);
+            }
+        }
+    }
+    cout << (res == 2000006 ? -1 : res);
+}
 
-    for(int i=1; i<=n; ++i) cin >> a[i];
-    for(int i=1; i<=m; ++i) cin >> b[i];
+void sub2(){
+    for(int i=1; i<=n; ++i) a[i] += a[i - 1];
 
-    id = 0;
-    for(int i=1; i<=m; ++i){
-        while(a[id + 1] < b[i] && id < n) id++;
-        c[i] = id;
+    for(int i=1; i<=n; ++i){
+        for(int j=i; j<=n; ++j){
+            if(a[j] - a[i - 1] >= s && j - i + 1 <= n / 2){
+                res = min(res, j - i + 1);
+            }
+        }
     }
 
-    for(int i=1; i<=m; ++i) cout << c[i] << " ";
+    cout << (res == 2000006 ? -1 : res);
+}
+
+void sub3(){    
+    int l = 1;
+    //cout << "GAY\n";
+    for(int i=1; i<=n; ++i) a[i] += a[i - 1];
+
+    for(int r=1; r<=n; ++r){
+        if(a[r] - a[l - 1] >= s){
+            if(r - l + 1 <= n / 2)  res = min(res, r - l + 1);
+            while((a[r] - a[l - 1] >= s && l < r)  || r - l + 1 > n / 2)    l++;
+        }
+    }
+    cout << (res == 2000006 ? -1 : res);
+}
+
+void solve(){
+    cin >> n >> s;
+    for(int i=1; i<=n; ++i){
+        cin >> a[i];
+        a[i + n] = a[i];
+    }
+    n *= 2;
+
+    if(n <= 100)        sub1();
+    else if(n <= 2000)  sub2();
+    else                sub3();
 }
 
 int main(){

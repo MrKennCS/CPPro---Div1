@@ -103,16 +103,16 @@ void solve(){
         }
         cout << tich % mod;
         */
-       if(am & 1)  cout << 0;
-       else{
-           for(int i=1; i<=n; ++i){
-               if(a[i] != 0){
-                   tich = (tich % mod * (1ll * a[i]) % mod) % mod;
-                   //cout << i << " " << a[i] << " " << tich << '\n';
-               }
-           }
-           cout << tich % mod;
-       }
+        if(am & 1)  cout << 0;
+        else{
+            for(int i=1; i<=n; ++i){
+                if(a[i] != 0){
+                    tich = (tich % mod * (1ll * a[i]) % mod) % mod;
+                    //cout << i << " " << a[i] << " " << tich << '\n';
+                }
+            }
+            cout << tich % mod;
+        }
         /*
         */
     }else{
