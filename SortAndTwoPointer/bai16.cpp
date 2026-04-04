@@ -64,13 +64,17 @@ void solve(){
 
     sort(a + 1, a + n + 1, greater<int>());
 
-    for(int i=1; i<=n; ++i) cout << a[i] << " ";
+    //for(int i=1; i<=n; ++i) cout << a[i] << " ";
 
     pos = 1;
 
     for(int i=1; i<=n; ++i){
-
+        while(kt[pos] == 1 && pos <= n) pos++;
+        if(kt[pos] == 0 && a[pos] >= a[i] + k)  kt[pos] = 1;
+        else    res += a[i];
     }
+
+    cout << res;
 }
 
 int main(){
