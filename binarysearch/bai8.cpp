@@ -49,18 +49,30 @@ const int mod = 1e9 + 7;
 int tc = 1;
 
 /*
+    Thắc mắc: Lỡ thuật toán tìm ra cmootj số X thỏa mãn count(X) >= k, nhưng số X đó lại KHÔNG CÓ THẬT trong ma trận thì sao?
 
+    Chứng minh giả sử sai:
+
+    Ta có: Thuật Binary Search tìm giá trị (X) nhỏ nhất thỏa mãn count(X) >= k, giả sử có tìm ra X không có trong ma trận
+    Vậy thì phần tử có thật lớn nhất vẫn thỏa count(Y) >= k nằm ngay dưới X (Ta Gọi nó là Y, Y < X)
+
+    Với Y cũng sẽ có số lượng số <= y bằng với X
+    Hay count(Y) = count(X) >= k
+
+    Khi đó Thuật Binsearch đáng ra phải tìm ra Y chứ ko phải X vì nó tìm GIÁ TRỊ NHỎ NHẤT VẪN THỎA COUNT(X) >= k
+
+=>  Giả sử sai
+=>  Số tìm được chắc chắn nằm trong Ma Trận
 */
 
 int n, m;
 ll k;
-int a[1000006];
+ll cnt;
 
-int check(int x){
-    ll cnt = 0;
-    for(int i=1; i<=n; ++i){
-        int low = lb(a + 1, a + m + 1, x / i) - a;
-        cnt += (low == m + 1 ? m : low);
+ll check(ll x){
+    cnt = 0;
+    for(int i=1; i<=min(x, 1ll * n); ++i){
+        cnt += min(1ll * m, x / i);
     }
     return cnt;
 }
@@ -69,37 +81,38 @@ void sub1(){
     vector<int> val;
     for(int i=1; i<=n; ++i){
         for(int j=1; j<=m; ++j){
-            cout << i * j << " ";
+            //cout << i * j << " ";
             val.pb(i * j);
         }
-        cout << '\n';
+        //cout << '\n';
     }
     sort(val.begin(), val.end());
-    for(int i=0; i<n*m; ++i)    cout << val[i] << " ";  cout << '\n';
+    //for(int i=0; i<n*m; ++i)    cout << val[i] << " ";  cout << '\n';
     cout << val[k - 1];
 }
 
 void sub2(){
     ll l = 1;
-    ll r = n * m;
-    ll mid, ans;
-    for(int i=1; i<=m; ++i) a[i] = i;
+    ll r = 1ll * n * m;
+    ll mid;
+    ll ans = 0;
 
     while(l <= r){
-        mid = l + (r - l) / 2;
-        if(check(mid) == k){
-            cout << mid;
-            return ;
-        }
-        if(check(mid) > k)  r = mid - 1;
-        else                l = mid + 1;
+        mid = (l + r) >> 1;
+        if(check(mid) >= k){
+            ans = mid;
+            r = mid - 1;
+        }else   l = mid + 1;
     }
+
+    cout << ans;
 }
 
 void solve(){
     cin >> n >> m >> k;
+    //if(n > m)   swap(n, m);
 
-    if(n <= 1000 && m <= 1000)  sub2();
+    if(n <= 1000 && m <= 1000)  sub1();
     else                        sub2();
 }
 

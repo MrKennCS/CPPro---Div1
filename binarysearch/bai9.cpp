@@ -1,60 +1,102 @@
-#include<iostream>
+// #pragma GCC optimize("O3,unroll-loops")
+// #pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
+
+#include<bits/stdc++.h>
 
 using namespace std;
+using namespace std::chrono;
+
+#define ll long long
+#define ull unsigned long long
+#define ii pair<int, int>
+#define umap unordered_map
+#define uset unordered_set
+#define pqueue priority_queue
+
+#define sz(a) (int)a.size()
+#define getbit(x, y) (((x) >> (y)) & 1)
+#define turnon(x, y) ((x) | (1LL << y))
+#define turnof(x, y) ((x) ^ (1LL << y))
+#define foru(i, a, b)   for(int i=a; i<=b; ++i)
+#define ford(i, a, b)   for(int i=a; i>=b; --i)
+#define foruc(i, a, b, c)   for(int i=a; i<=b; i+=c)
+#define fordc(i, a, b, c)   for(int i=a; i>=b; i-=c)
+
+#define fi first
+#define se second
+#define pf push_front
+#define pb push_back
+#define popf pop_front
+#define popb pop_back
+#define lb lower_bound // >=
+#define ub upper_bound // >
+
+mt19937 rd(chrono::steady_clock::now().time_since_epoch().count());
+
+ll rand(ll l, ll r){
+    assert(l <= r);
+    return l + rd() % (r - l + 1);
+}
+
+void file(){
+    if(fopen("TEST.INP", "r")){
+        freopen("TEST.INP", "r", stdin);
+        freopen("TEST.OUT", "w", stdout);
+    }
+}
+
+const int mod = 1e9 + 7;
+int tc = 1;
+
+/*
+
+*/
 
 int n, m, q, x;
-int L, R;
-int a[100009];
-int cnt[100009];
-int pre[100009];
-int l, r, mid, res;
-// dung counting sort
+int l, r, mid, ans;
+int a[100005];
+
+
+
 void solve(){
     cin >> n >> m;
-    for(int i=1; i<=m; ++i){
-        cin >> L >> R;
-        pre[L]++;
-        pre[R+1]--;
+    while(m--){
+        cin >> l >> r;
+        a[l]++;
+        a[r + 1]--;
     }
-
-    for(int i=1; i<=n; ++i){
-        pre[i] += pre[i-1];
-        cnt[pre[i]]++;
-    }
-
-    int id = 1;
-    for(int i=0; i<=100000; ++i){
-        for(int j=0; j<cnt[i]; ++j){
-            pre[id] = i;
-            id += 1;
-        }
-    }
-    // 0 1 1 2 2 3 3
-
-    //for(int i=1; i<=n; ++i) cout << pre[i] << " ";  cout << '\n';
-
     cin >> q;
+
+    for(int i=1; i<=n; ++i) a[i] += a[i - 1];
+    sort(a + 1, a + n + 1);
+    //for(int i=1; i<=n; ++i) cout << a[i] << " ";    cout << '\n';
+
     while(q--){
         cin >> x;
-        // tim vi tri mid sao cho pre[mid] >= x
-        l = 1;
-        r = n;
-
-        while(l <= r){
-            mid = (l + r) >> 1;
-            if(x <= pre[mid]){
-                res = mid;
-                r = mid - 1;
-            }else   l = mid + 1;
-        }
-        if(pre[res] < x)   res = n + 1; 
-
-        cout << n - res + 1 << '\n';
+        int low = lb(a + 1, a + n + 1, x) - a;
+        
+        //cout << x << " " << low << '\n';
+        cout << n - low + 1 << '\n';
     }
-
-}  
+}
 
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
-    solve();
+    file();
+
+    // INPUT
+
+    // END_INPUT
+
+    #ifndef ONLINE_JUDGE
+    auto start = high_resolution_clock::now();
+    #endif
+    
+    while(tc--)  solve();
+    
+    #ifndef ONLINE_JUDGE
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<milliseconds>(stop - start);
+    cerr << "\n[Time: " << duration.count() << " ms]\n"; 
+    #endif
 }

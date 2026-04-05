@@ -53,32 +53,62 @@ int tc = 1;
 */
 
 int n;
+ll a[100005];
 ll k;
-ll a[1000006];
 ll l, r, mid, ans;
+
+void sub1(){
+    vector<ll> val;
+    for(int i=1; i<=n; ++i){
+        for(int j=i; j<=n; ++j){
+            val.pb(a[j] - a[i - 1]);
+        }
+    }
+    sort(val.begin(), val.end(), greater<int>());
+    cout << val[k - 1];
+}
 
 ll dem(ll x){
     ll cnt = 0;
-    for(int i=1; i<=n; ++i) cnt += (x / a[i]);
+    for(int i=1; i<=n; ++i){
+        int upper = ub(a + i, a + n + 1, a[i - 1] + x) - a;
+        //cout << "UPPER: " << upper << " " << n - upper + 1 << '\n';
+        cnt += (n - upper + 1);
+    }
     return cnt;
+}
+
+void sub2(){
+    l = -1e14;
+    r = 1e14;
+
+    while(l <= r){
+        mid = l + (r - l) / 2;
+        if(dem(mid) < k){
+            r = mid - 1;
+            ans = mid;
+        }else   l = mid + 1;
+    }
+    cout << ans;
+    /*
+    for(int i=1; i<=n; ++i) cout << a[i] << " ";    cout << '\n';
+    for(int i=1; i<=6; ++i){
+        cout << "TEST: " << i << '\n';
+        cout << dem(i) << '\n';
+    }
+    */
+
 }
 
 void solve(){
     cin >> n >> k;
-    for(int i=1; i<=n; ++i) cin >> a[i];
-
-    l = 0;
-    r = 1e18;
-    ans = -1;
-    while(l <= r){
-        mid = l + (r - l) / 2;
-        if(dem(mid) >= k){
-            ans = mid;
-            r = mid - 1;
-        }else   l = mid + 1;
+    for(int i=1; i<=n; ++i){
+        cin >> a[i];
+        a[i] += a[i - 1];
     }
 
-    cout << ans;
+    if(n <= 1000)   sub2();
+    else            sub2();
 }
 
 int main(){
