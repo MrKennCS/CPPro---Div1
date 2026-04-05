@@ -49,65 +49,27 @@ const int mod = 1e9 + 7;
 int tc = 1;
 
 /*
-    Mang tang dan
 
-->  Tim vi tri lon nhat ma a[i] <= tar
-->  Tim vi tri be nhat ma tar <= a[i]
 */
 
-int n, x;
-int a[100005];
-int l, r, mid, res;
-
-int high(int l, int r, int tar){
-    res = 0;
-    while(l <= r){
-        //cout << l << " " << r << '\n';
-        mid = l + (r - l) / 2;
-        if(a[mid] <= tar){
-            if(a[mid] == tar)   res = mid;
-            l = mid + 1;
-        }else   r = mid - 1;
-    }
-    return res;
-}
-
-int low(int l, int r, int tar){
-    res = 0;
-    while(l <= r){
-        mid = l + (r - l) / 2;
-        if(a[mid] >= tar){
-            if(a[mid] == tar)   res = mid;
-            r = mid - 1;
-        }else   l = mid + 1;
-    }
-    return res;
-}
-
-void solve1(){
-    cin >> n >> x;
-    for(int i=1; i<=n; ++i) cin >> a[i];
-    sort(a + 1, a + n + 1);
-
-    int low = lb(a + 1, a + n + 1, x) - a;
-    int high = ub(a + 1, a + n + 1, x) - a;
-
-    cout << low << " " << high << '\n';
-}
+int a[7];
+int res;
 
 void solve(){
-    cin >> n >> x;
-    for(int i=1; i<=n; ++i) cin >> a[i];
-    sort(a + 1, a + n + 1);
-    if(low(1, n, x) == 0 && high(1, n, x) == 0) cout << 0;
-    else    cout << high(1, n, x) - low(1, n, x) + 1;
-    //cout << low(1, n, x) << " " << high(1, n, x) << '\n';
-    //cout << high(1, n, x) << " " << low(1, n, x);
+    res = 0;
+    for(int i=0; i<7; ++i){
+        cin >> a[i];
+    }
+
+    sort(a, a + 7);
+    for(int i=0; i<6; ++i)  res -= a[i];
+    cout << res + a[6] << '\n';
+    return ;
 }
 
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
-    file();
+    //file();
 
     // INPUT
 
@@ -116,8 +78,8 @@ int main(){
     #ifndef ONLINE_JUDGE
     auto start = high_resolution_clock::now();
     #endif
-    
-    while(tc--)  solve1();
+    cin >> tc;
+    while(tc--)  solve();
     
     #ifndef ONLINE_JUDGE
     auto stop = high_resolution_clock::now();

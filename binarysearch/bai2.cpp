@@ -1,15 +1,17 @@
-    // #pragma GCC optimize("O3,unroll-loops")
+// #pragma GCC optimize("O3,unroll-loops")
 // #pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
 
 #include<bits/stdc++.h>
 
 using namespace std;
+using namespace std::chrono;
 
 #define ll long long
 #define ull unsigned long long
 #define ii pair<int, int>
 #define umap unordered_map
 #define uset unordered_set
+#define pqueue priority_queue
 
 #define sz(a) (int)a.size()
 #define getbit(x, y) (((x) >> (y)) & 1)
@@ -52,51 +54,56 @@ int tc = 1;
 
 int n, k;
 int a[100005];
-
+int res;
 
 void sub1(){
-    int cnt = 0;
     for(int i=1; i<=n; ++i){
         for(int j=i+1; j<=n; ++j){
-            if(abs(a[i] - a[j]) == k)   cnt++;
+            res += (abs(a[i] - a[j]) == k);
         }
     }
-    cout << cnt;
-}
-
-bool find(int l, int r, int x){
-    int mid, res;
-    while(l <= r){
-        mid = l + (r - l) / 2;
-        if(a[mid] == x) return true;
-        else{
-            if(a[mid] < x)  l = mid + 1;
-            else            r = mid - 1;  
-        }
-    }
-    return false;
+    cout << res;
 }
 
 void sub2(){
-    int cnt = 0;
     sort(a + 1, a + n + 1);
-    // a[i] - x == k -> 
-    for(int i=1; i<n; ++i){
-        cnt += find(i + 1, n, a[i] + k);
+    //for(int i=1; i<=n; ++i) cout << a[i] << " ";    cout << '\n';
+    for(int i=n; i>=2; --i){
+        int *low = lb(a + 1, a + i, a[i] - k);
+        int *high = ub(a + 1, a + i, a[i] - k);
+        //cout << high - a << " " << low - a << '\n';
+        res += (high - low);
     }
-    cout << cnt;
+    cout << res;
 }
 
 void solve(){
     cin >> n >> k;
     for(int i=1; i<=n; ++i) cin >> a[i];
+    
+    if(n <= 1000)       sub2();
+    else                sub2();
 
-    if(n <= 1000)   sub1();
-    else            sub2();
+
 }
 
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
+    file();
 
+    // INPUT
+
+    // END_INPUT
+
+    #ifndef ONLINE_JUDGE
+    auto start = high_resolution_clock::now();
+    #endif
+    
     while(tc--)  solve();
+    
+    #ifndef ONLINE_JUDGE
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<milliseconds>(stop - start);
+    cerr << "\n[Time: " << duration.count() << " ms]\n"; 
+    #endif
 }

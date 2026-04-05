@@ -4,12 +4,14 @@
 #include<bits/stdc++.h>
 
 using namespace std;
+using namespace std::chrono;
 
 #define ll long long
 #define ull unsigned long long
 #define ii pair<int, int>
 #define umap unordered_map
 #define uset unordered_set
+#define pqueue priority_queue
 
 #define sz(a) (int)a.size()
 #define getbit(x, y) (((x) >> (y)) & 1)
@@ -50,21 +52,21 @@ int tc = 1;
 
 */
 
-int n;
-int a[1000006];
-int q;
-int l, r, mid, res;
+int n, q;
+ll x;
+ll a[10000006];
+int l, r, mid, ans;
 
-int bs(int l, int r, int target){
+int upper(int l, int r, ll tar){
+    ans = -1;
     while(l <= r){
         mid = l + (r - l) / 2;
-        if(a[mid] < target){
-            l = mid + 1;
-        }else{
+        if(a[mid] >= tar){
+            ans = mid;
             r = mid - 1;
-        }
+        }else   l = mid + 1;
     }
-    return mid;
+    return (ans == -1 ? n : ans);
 }
 
 void solve(){
@@ -72,16 +74,33 @@ void solve(){
     for(int i=1; i<=n; ++i){
         cin >> a[i];
         a[i] += a[i - 1];
+        //cout << a[i] << " ";
     }
-
-    for(int i=1; i<=n; ++i) cout << a[i] << " ";
-    
+    //cout << '\n';
     cin >> q;
-    
+    while(q--){
+        cin >> x;
+        cout << upper(1, n, x) << '\n';
+    }
 }
 
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
+    file();
 
+    // INPUT
+
+    // END_INPUT
+
+    #ifndef ONLINE_JUDGE
+    auto start = high_resolution_clock::now();
+    #endif
+    
     while(tc--)  solve();
+    
+    #ifndef ONLINE_JUDGE
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<milliseconds>(stop - start);
+    cerr << "\n[Time: " << duration.count() << " ms]\n"; 
+    #endif
 }

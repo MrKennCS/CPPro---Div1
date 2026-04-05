@@ -1,15 +1,17 @@
-    // #pragma GCC optimize("O3,unroll-loops")
+// #pragma GCC optimize("O3,unroll-loops")
 // #pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
 
 #include<bits/stdc++.h>
 
 using namespace std;
+using namespace std::chrono;
 
 #define ll long long
 #define ull unsigned long long
 #define ii pair<int, int>
 #define umap unordered_map
 #define uset unordered_set
+#define pqueue priority_queue
 
 #define sz(a) (int)a.size()
 #define getbit(x, y) (((x) >> (y)) & 1)
@@ -50,31 +52,45 @@ int tc = 1;
 
 */
 
-int n, k;
+int n, m;
 int a[100005];
+int l, r, mid, ans;
 
-int find(int l, int r, int x){
-    int mid, res;
+int bsearch(int l, int r, int tar){
     while(l <= r){
         mid = l + (r - l) / 2;
-        if(a[mid] == x) return mid;
-        else{
-            if(a[mid] < x)  l = mid + 1;
-            else            r = mid - 1;
-        }
+        if(a[mid] == tar)   return mid;
+        if(a[mid] < tar)    l = mid + 1;
+        else                r = mid - 1;
     }
     return -1;
 }
 
+void solve1(){
+    cin >> n >> m;
+    for(int i=1; i<=n; ++i) cin >> a[i];
+    sort(a + 1, a + n + 1);
+
+    for(int i=1; i<=n; ++i){
+        int low = lb(a + i + 1, a + n + 1, a[i] + m) - a;
+        //cout << low << " ";
+        if(low >= n)    continue;
+        if(a[low] == a[i] + m){
+            cout << a[i] << " " << a[i] + m;
+            return ;
+        }
+    }
+}
+
 void solve(){
-    cin >> n >> k;
+    cin >> n >> m;
     for(int i=1; i<=n; ++i) cin >> a[i];
 
     sort(a + 1, a + n + 1);
 
-    for(int i=1; i<n; ++i){
-        if(find(i + 1, n, a[i] + k) != -1){
-            cout << a[i] << " " << a[find(i + 1, n, a[i] + k)];
+    for(int i=1; i<=n; ++i){
+        if(bsearch(i + 1, n, a[i] + m) != -1){
+            cout << a[i] << " " << a[bsearch(i + 1, n, a[i] + m)];
             return ;
         }
     }
@@ -82,6 +98,21 @@ void solve(){
 
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
+    file();
 
-    while(tc--)  solve();
+    // INPUT
+
+    // END_INPUT
+
+    #ifndef ONLINE_JUDGE
+    auto start = high_resolution_clock::now();
+    #endif
+    
+    while(tc--)  solve1();
+    
+    #ifndef ONLINE_JUDGE
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<milliseconds>(stop - start);
+    cerr << "\n[Time: " << duration.count() << " ms]\n"; 
+    #endif
 }

@@ -52,7 +52,29 @@ int tc = 1;
 
 */
 
+int n, m, k;
+int a[200005];
+int b[200005];
+int res;
+
 void solve(){
+    cin >> n >> m >> k;
+    for(int i=1; i<=n; ++i) cin >> a[i];
+    for(int i=1; i<=m; ++i) cin >> b[i];
+
+    sort(a + 1, a + n + 1, greater<int>());
+    sort(b + 1, b + m + 1, greater<int>());
+
+    int j = 1;
+    for(int i=1; i<=m; ++i){
+        while(j <= n && (b[i] < a[j] - k))   j++;
+        if(a[j] - k <= b[i] && b[i] <= a[j] + k && j <= n){
+            res++;
+            j++;
+        }
+    }
+
+    cout << res;
 
 }
 

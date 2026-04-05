@@ -56,15 +56,13 @@ int n, k;
 int a[100005];
 bool kt[100005];
 int pos;
-int res;
+ll res;
 
 void solve(){
     cin >> n >> k;
     for(int i=1; i<=n; ++i) cin >> a[i];
 
     sort(a + 1, a + n + 1, greater<int>());
-
-    //for(int i=1; i<=n; ++i) cout << a[i] << " ";
 
     pos = 1;
 

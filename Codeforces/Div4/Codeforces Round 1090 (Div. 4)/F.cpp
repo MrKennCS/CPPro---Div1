@@ -49,60 +49,36 @@ const int mod = 1e9 + 7;
 int tc = 1;
 
 /*
-    Mang tang dan
 
-->  Tim vi tri lon nhat ma a[i] <= tar
-->  Tim vi tri be nhat ma tar <= a[i]
 */
 
-int n, x;
-int a[100005];
-int l, r, mid, res;
-
-int high(int l, int r, int tar){
-    res = 0;
-    while(l <= r){
-        //cout << l << " " << r << '\n';
-        mid = l + (r - l) / 2;
-        if(a[mid] <= tar){
-            if(a[mid] == tar)   res = mid;
-            l = mid + 1;
-        }else   r = mid - 1;
-    }
-    return res;
-}
-
-int low(int l, int r, int tar){
-    res = 0;
-    while(l <= r){
-        mid = l + (r - l) / 2;
-        if(a[mid] >= tar){
-            if(a[mid] == tar)   res = mid;
-            r = mid - 1;
-        }else   l = mid + 1;
-    }
-    return res;
-}
-
-void solve1(){
-    cin >> n >> x;
-    for(int i=1; i<=n; ++i) cin >> a[i];
-    sort(a + 1, a + n + 1);
-
-    int low = lb(a + 1, a + n + 1, x) - a;
-    int high = ub(a + 1, a + n + 1, x) - a;
-
-    cout << low << " " << high << '\n';
-}
+int x, y;
+int n;
 
 void solve(){
-    cin >> n >> x;
-    for(int i=1; i<=n; ++i) cin >> a[i];
-    sort(a + 1, a + n + 1);
-    if(low(1, n, x) == 0 && high(1, n, x) == 0) cout << 0;
-    else    cout << high(1, n, x) - low(1, n, x) + 1;
-    //cout << low(1, n, x) << " " << high(1, n, x) << '\n';
-    //cout << high(1, n, x) << " " << low(1, n, x);
+    cin >> x >> y;
+    n = x + y;
+
+    if(!(n & 1)){
+        if(x >= 1 && y >= x){
+            cout << "YES\n";
+            for(int i=1; i<=x; ++i)     cout << i << " " << x + i << '\n';
+            for(int i=2; i<=x; ++i)     cout << 1 << " " << i << '\n';
+            for(int i=2*x+1; i<=n; ++i) cout << 1 << " " << i << '\n';
+        }else   cout << "NO\n";
+    }else{
+        if(y >= x + 1){
+            cout << "YES\n";
+            if(x == 0){
+                for(int i=2; i<=n; ++i) cout << 1 << " " << i << '\n';
+            }else{
+                cout << 1 << " " << 2 << '\n';
+                for(int i=2; i<=x+1; ++i)   cout << i << " " << x + i << '\n';
+                for(int i=3; i<=x+1; ++i)   cout << 2 << " " << i << '\n';
+                for(int i=2*x+2; i<=n; ++i) cout << 2 << " " << i << '\n';
+            }
+        }else   cout << "NO\n";
+    }
 }
 
 int main(){
@@ -117,7 +93,8 @@ int main(){
     auto start = high_resolution_clock::now();
     #endif
     
-    while(tc--)  solve1();
+    cin >> tc;
+    while(tc--)  solve();
     
     #ifndef ONLINE_JUDGE
     auto stop = high_resolution_clock::now();
