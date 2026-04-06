@@ -52,22 +52,37 @@ int tc = 1;
 
 */
 
-int n, x;
-int a[100005];
+int q;
+int Q[200005];
+int cnt[105];
+vector<int> val;
 
 void solve(){
-    cin >> n >> x;
-    for(int i=1; i<=n; ++i) cin >> a[i];
-    sort(a + 1, a + n + 1);
-    int *low = lb(a + 1, a + n + 1, x);
-    int *upper = ub(a + 1, a + n + 1, x);
+    cin >> q;
+    for(int i=1; i<=q; ++i){
+        cin >> Q[i];
+        val.pb(Q[i]);
+    }
+    sort(val.begin(), val.end());
+    val.erase(unique(val.begin(), val.end()), val.end());
 
-    cout << upper - low;
+    //for(int i=0; i<sz(val); ++i)    cout << val[i] << " ";  
+    for(int i=1; i<=q; ++i){
+        int dem = 0;
+        int lower = lb(val.begin(), val.end(), Q[i]) - val.begin();
+        for(int j=0; j<lower; ++j){
+            dem += cnt[j];
+        }
+        cnt[lower]++;
+        
+        cout << dem << '\n';
+    }
+
 }
 
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
-    //file();
+    file();
 
     // INPUT
 

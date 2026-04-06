@@ -39,13 +39,12 @@ ll rand(ll l, ll r){
 }
 
 void file(){
-    if(fopen("LAB.INP", "r")){
-        freopen("LAB.INP", "r", stdin);
-        freopen("LAB.OUT", "w", stdout);
+    if(fopen("TEST.INP", "r")){
+        freopen("TEST.INP", "r", stdin);
+        freopen("TEST.OUT", "w", stdout);
     }
 }
 
-const int LIMN = 200005;
 const int mod = 1e9 + 7;
 int tc = 1;
 
@@ -53,61 +52,60 @@ int tc = 1;
 
 */
 
-int n;
-int a[LIMN];
-int pos[LIMN];
-bool check[LIMN];
-int nx[LIMN];
-int mn;
-int mx;
-int res;
-int u, v, l, r;
-int cur;
+int n, c;
+vector<int> x(105, 0);
+vector<int> y(105, 0);
+vector<ii> L(105, {0, 0});
+vector<ii> M(105, {0, 0});
+int l, r, mid, ans;
 
-int nxt(int x){
-    if(nx[x] == x)  return x;
-    return nx[x] = nxt(nx[x]);
+bool check(ll cnt){
+    ll C = c;
+    for(int i=1; i<=n; ++i){
+        ll need = 1ll * cnt * x[i] - y[i];
+        if(need <= 0)   continue;
+
+        ll chinhonhat = 2e18;
+
+        // Cách 1: Thử số lượng gói NHỎ từ 0 đến SL (tức L[i].fi)
+        for(ll small = 0; small <= L[i].fi; ++small){
+            ll rem = max(0ll, need - small * M[i].fi);
+            ll large = (rem + L[i].fi - 1) / L[i].fi; // Số gói lớn cần bù
+            chinhonhat = min(chinhonhat, small * M[i].se + large * L[i].se);
+        }
+
+        // Cách 2: Thử số lượng gói LỚN từ 0 đến SM (tức M[i].fi)
+        for(ll large = 0; large <= M[i].fi; ++large){
+            ll rem = max(0ll, need - large * L[i].fi);
+            ll small = (rem + M[i].fi - 1) / M[i].fi; // Số gói nhỏ cần bù
+            chinhonhat = min(chinhonhat, small * M[i].se + large * L[i].se);
+        }
+
+        C -= chinhonhat;
+        if(C < 0) return false;
+    }
+    return true;
 }
 
 void solve(){
-    cin >> n;
-
-    foru(i, 0, n - 1){
-        cin >> a[i];
-        pos[a[i]] = i;
-        nx[i] = i;
+    cin >> n >> c;
+    for(int i=1; i<=n; ++i){
+        cin >> x[i] >> y[i] >> M[i].fi >> M[i].se >> L[i].fi >> L[i].se;
     }
+
     
-    nx[n] = n;
-
-    mn = 1;
-    mx = n;
-    res = 0;
-
-    while(mn <= mx){
-        while(mn <= n && check[mn]) mn++;
-        while(mx >= 1 && check[mx]) mx--;
-
-        if(mn > mx) break;
-
-        u = pos[mn];
-        v = pos[mx];
-
-        l = min(u, v);
-        r = max(u, v);
-
-        cur = nxt(l);
-
-        while(cur <= r){
-            check[a[cur]] = 1;
-            nx[cur] = nxt(cur + 1);
-            cur = nxt(cur);
-        }
-
-        res++;
+    l = 1;
+    r = 1e9;
+    while(l <= r){
+        //cout << mid << '\n';
+        mid = l + (r - l) / 2;
+        if(check(mid)){
+            l = mid + 1;
+            ans = mid;
+        }else   r = mid - 1;
     }
 
-    cout << res << '\n';
+    cout << ans;
 }
 
 int main(){
