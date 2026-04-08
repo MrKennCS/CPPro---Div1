@@ -52,8 +52,49 @@ int tc = 1;
 
 */
 
-void solve(){
+int n, m;
+int res;
+int a[1005][1005];
+int hi[1005];
+int l[1005];
+int r[1005];
 
+void solve(){
+    cin >> n >> m;
+    
+
+    for(int i=1; i<=n; ++i){
+        for(int j=1; j<=m; ++j){
+            cin >> a[i][j];
+        }
+    }
+
+    for(int i=1; i<=n; ++i){
+        for(int j=1; j<=m; ++j){
+            if(a[i][j] == 0)    hi[j] = 0;
+            else                hi[j] += 1;
+        }
+        stack<int> st;
+        for(int j=1; j<=m; ++j){
+            while(!st.empty() && hi[st.top()] >= hi[j]) st.pop();
+            if(st.empty())  l[j] = 1;
+            else            l[j] = st.top() + 1;
+            st.push(j);
+        }
+        while(!st.empty())  st.pop();
+        for(int j=m; j>=1; --j){
+            while(!st.empty() && hi[st.top()] >= hi[j]) st.pop();
+            if(st.empty())  r[j] = m;
+            else            r[j] = st.top() - 1;
+            st.push(j);
+        }
+        for(int j=1; j<=m; ++j){
+            //cout << l[j] << " " << r[j] << " " << hi[j] << '\n';
+            res = max(res, (r[j] - l[j] + 1) * hi[j]);
+        }
+    }
+
+    cout << res;
 }
 
 int main(){

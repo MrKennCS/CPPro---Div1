@@ -56,36 +56,24 @@ int n;
 int a[100005];
 
 void solve(){
-    vector<int> st;
-    vector<int> res;
     
     cin >> n;
+
+    vector<int> st;
+    vector<int> res(n + 1, 0);
+
     for(int i=1; i<=n; ++i) cin >> a[i];
 
     for(int i=n; i>=1; --i){
+        while(!st.empty() && st.back() <= a[i])  st.pop_back();
 
-        // Lay het ta ca phan tu a[j] >= a[i] ra ngoai stack
-        while(!st.empty() && st.back() <= a[i]) st.pop_back();
-
-        /*
-        Khi nay, neu st rong
-        -> Tat ca phan tu ben phai cua a[i] deu >= a[j]
-        -> Khong tim duoc phan tu a[j] thoa a[i] < a[j] && i < j
-        -> Dap an la khong 
-
-        Nguoc lai neu st khong rong
-        -> Phan tu tren dau stack thoa:
-        1. Phan tu ben phai gan i nhat
-        2. Phan tu lon hon a[i]
-        */
-
-        if(st.empty())  res.pb(-1);
-        else            res.pb(st.back());
+        if(st.empty())  res[i] = -1;
+        else            res[i] = st.back();
 
         st.pb(a[i]);
     }
 
-    for(int i=sz(res)-1; i>=0; --i) cout << res[i] << " ";
+    for(int i=1; i<=n; ++i) cout << res[i] << " ";
     cout << '\n';
 }
 

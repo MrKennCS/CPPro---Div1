@@ -53,32 +53,15 @@ int tc = 1;
 */
 
 int n;
-int a[500005];
-ll res;
+int a[30005];
+int l[30005];
+int r[30005];
 
 void solve(){
     cin >> n;
     for(int i=1; i<=n; ++i) cin >> a[i];
 
-    stack<ii> st;  // Duy tri mot max stack
-    for(int i=1; i<=n; ++i){
-        int cnt = 1;
-        while(!st.empty() && st.top().fi <= a[i]){
-            res += st.top().se;
-
-            if(st.top().fi == a[i]){
-                cnt += st.top().se;
-            }
-
-            st.pop();
-        }
-
-        if(!st.empty()) res++;
-
-        st.push({a[i], cnt});
-    }
-
-    cout << res;
+    stack<int> st;
 }
 
 int main(){
