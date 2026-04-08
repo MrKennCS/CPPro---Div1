@@ -1,53 +1,106 @@
-#include<iostream>
-#include<stack>
-#define sz(a) (int)a.size()
+// #pragma GCC optimize("O3,unroll-loops")
+// #pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
+
+#include<bits/stdc++.h>
+
 using namespace std;
+using namespace std::chrono;
+
+#define ll long long
+#define ull unsigned long long
+#define ii pair<int, int>
+#define umap unordered_map
+#define uset unordered_set
+#define pqueue priority_queue
+
+#define sz(a) (int)a.size()
+#define getbit(x, y) (((x) >> (y)) & 1)
+#define turnon(x, y) ((x) | (1LL << y))
+#define turnof(x, y) ((x) ^ (1LL << y))
+#define foru(i, a, b)   for(int i=a; i<=b; ++i)
+#define ford(i, a, b)   for(int i=a; i>=b; --i)
+#define foruc(i, a, b, c)   for(int i=a; i<=b; i+=c)
+#define fordc(i, a, b, c)   for(int i=a; i>=b; i-=c)
+
+#define fi first
+#define se second
+#define pf push_front
+#define pb push_back
+#define popf pop_front
+#define popb pop_back
+#define lb lower_bound // >=
+#define ub upper_bound // >
+
+mt19937 rd(chrono::steady_clock::now().time_since_epoch().count());
+
+ll rand(ll l, ll r){
+    assert(l <= r);
+    return l + rd() % (r - l + 1);
+}
+
+void file(){
+    if(fopen("TEST.INP", "r")){
+        freopen("TEST.INP", "r", stdin);
+        freopen("TEST.OUT", "w", stdout);
+    }
+}
+
+const int mod = 1e9 + 7;
+int tc = 1;
+
+/*
+<<T4<R>>2d-
+
+TR42d
+
+*/
 
 string s;
-int n;
-stack<char> le;
-stack<char> ri;
-stack<char> res;
+vector<char> l;
+vector<char> r;
 
 void solve(){
     cin >> s;
-    n = sz(s);
 
-    for(int i=0; i<n; ++i){
+    for(int i=0; i<sz(s); ++i){
         if(s[i] == '<'){
-            if(!le.empty()){
-                ri.push(le.top());
-                le.pop();
+            if(sz(l) > 0){
+                r.pb(l.back());
+                l.pop_back();
             }
         }else if(s[i] == '>'){
-            if(!ri.empty()){
-                le.push(ri.top());
-                ri.pop();
+            if(sz(r) > 0){
+                l.pb(r.back());
+                r.pop_back();
             }
         }else if(s[i] == '-'){
-            if(!le.empty()) le.pop();
+            if(sz(l) > 0)   l.pop_back();
         }else{
-            le.push(s[i]);
+            l.pb(s[i]);
         }
     }
 
-    while(!le.empty()){
-        res.push(le.top());
-        le.pop();
-    }
-    while(!res.empty()){
-        cout << res.top();
-        res.pop();
-    }
-    while(!ri.empty()){
-        cout << ri.top();
-        ri.pop();
-    }
-
-
+    for(int i=0; i<sz(l); ++i)  cout << l[i];   //cout << '\n';
+    for(int i=sz(r)-1; i>=0; --i)   cout << r[i];
 }
 
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
-    solve();
+    file();
+
+    // INPUT
+
+    // END_INPUT
+
+    #ifndef ONLINE_JUDGE
+    auto start = high_resolution_clock::now();
+    #endif
+    
+    while(tc--)  solve();
+    
+    #ifndef ONLINE_JUDGE
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<milliseconds>(stop - start);
+    cerr << "\n[Time: " << duration.count() << " ms]\n"; 
+    #endif
 }

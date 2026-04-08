@@ -52,34 +52,21 @@ int tc = 1;
 
 */
 
-int k;
-string bandau;
-string s = "";
-vector<char> st;
+int n;
+string s;
+vector<int> id;
+ll res;
 
 void solve(){
-    cin >> k >> bandau;
-    for(int i=0; i<sz(bandau); ++i) if('0' <= bandau[i] && bandau[i] <= '9'){
-        s += bandau[i];
+    cin >> n >> s;
+    for(int i=0; i<n; ++i)  if(s[i] == 'T') id.pb(i);
+
+    for(int i=0; i<n/2; ++i){
+        // i * 2
+        res += abs(id[i] - i * 2);
     }
+    cout << res;
 
-    int drop = sz(s) - k;
-
-    for(int i=0; i<sz(s); ++i){
-        if(st.empty())  st.pb(s[i]);
-        else{
-            while(!st.empty() && drop > 0 && st.back() > s[i]){
-                st.pop_back();
-                drop--;
-            }
-            st.pb(s[i]);
-        }
-    }
-
-    // Bien drop BUOC = 0 thi moi in ra
-    while(drop > 0) st.pop_back(),  drop--;
-
-    for(int i=0; i<sz(st); ++i) cout << st[i];
 }
 
 int main(){
