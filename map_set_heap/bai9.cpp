@@ -52,10 +52,43 @@ int tc = 1;
 
 */
 
-
+int n;
+int a[1003];
+int r;
 
 void solve(){
+    cin >> n;
+    r = 0;
+    for(int i=1; i<=n; ++i){
+        cin >> a[i];
+        r = max(r, a[i]);
+    }
+    
+    vector<int> pos(r + 3, 0);
+    vector<int> gap(r + 3, 0);
+    vector<int> ans(n + 3, 2e9);
 
+    for(int i=1; i<=n; ++i){
+        int d = i - pos[a[i]];
+        gap[a[i]] = max(gap[a[i]], d);
+        pos[a[i]] = i;
+    }
+
+    for(int i=1; i<=n; ++i){
+        int d = n - pos[a[i]] + 1;
+        gap[a[i]] = max(gap[a[i]], d);
+        pos[a[i]] = n + 1;
+    }
+
+    for(int i=1; i<=n; ++i){
+        ans[gap[a[i]]] = min(ans[gap[a[i]]], a[i]);
+    }
+
+    for(int i=1; i<=n; ++i){
+        ans[i] = min(ans[i], ans[i - 1]);
+        cout << (ans[i] == 2e9 ? -1 : ans[i]) << " ";
+    }
+    cout << '\n';
 }
 
 int main(){
@@ -70,6 +103,7 @@ int main(){
     auto start = high_resolution_clock::now();
     #endif
     
+    cin >> tc;
     while(tc--)  solve();
     
     #ifndef ONLINE_JUDGE

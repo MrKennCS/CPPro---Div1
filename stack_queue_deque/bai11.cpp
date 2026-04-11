@@ -62,6 +62,33 @@ void solve(){
     for(int i=1; i<=n; ++i) cin >> a[i];
 
     stack<int> st;
+    for(int i=1; i<=n; ++i){
+        while(!st.empty() && a[st.top()] >= a[i])   st.pop();
+        if(st.empty())  l[i] = 1;
+        else            l[i] = st.top() + 1;
+        st.push(i);
+    }
+    while(!st.empty())  st.pop();
+    for(int i=n; i>=1; --i){
+        while(!st.empty() && a[st.top()] >= a[i])   st.pop();
+        if(st.empty())  r[i] = n;
+        else            r[i] = st.top() - 1;
+        st.push(i);
+    }
+
+    int res = 0;
+    ii id;
+    for(int i=1; i<=n; ++i){
+        //cout << i << " " << l[i] << " " << r[i] << " " << a[i] << '\n';
+        if((r[i] - l[i] + 1) * a[i] > res){
+            res = (r[i] - l[i] + 1) * a[i];
+            id.fi = l[i];
+            id.se = r[i];
+        }
+        //res = max(res, (r[i] - l[i] + 1) * a[i]);
+    }
+
+    cout << res << " " << id.fi << " " << id.se << '\n';
 }
 
 int main(){
@@ -75,7 +102,7 @@ int main(){
     #ifndef ONLINE_JUDGE
     auto start = high_resolution_clock::now();
     #endif
-    
+    cin >> tc;
     while(tc--)  solve();
     
     #ifndef ONLINE_JUDGE

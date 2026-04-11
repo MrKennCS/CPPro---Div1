@@ -74,7 +74,6 @@ void sub1(){
 }
 
 void sub2(){
-    //cout << "GAY\n";
     ll res = 0;
     int mn = 2e9;
     int mx = -2e9;
@@ -106,15 +105,14 @@ void sub3(){
     }
     while(!st.empty())  st.pop();
     for(int i=n; i>=1; --i){
-        while(!st.empty() && a[st.top()] > a[i])   st.pop();
+        while(!st.empty() && a[st.top()] > a[i])    st.pop();
         if(st.empty())  rmin[i] = n;
         else            rmin[i] = st.top() - 1;
         st.push(i);
     }
     while(!st.empty())  st.pop();
-
     for(int i=1; i<=n; ++i){
-        while(!st.empty() && a[st.top()] <= a[i])    st.pop();
+        while(!st.empty() && a[st.top()] <= a[i])   st.pop();
         if(st.empty())  lmax[i] = 1;
         else            lmax[i] = st.top() + 1;
         st.push(i);
@@ -153,7 +151,7 @@ int main(){
     file();
 
     // INPUT
-
+    
     // END_INPUT
 
     #ifndef ONLINE_JUDGE

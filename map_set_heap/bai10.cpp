@@ -1,68 +1,94 @@
-#include<iostream>
-#include<stack>
+// #pragma GCC optimize("O3,unroll-loops")
+// #pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
+
+#include<bits/stdc++.h>
 
 using namespace std;
+using namespace std::chrono;
 
-int n;
-int a[100009];
-stack<int> st;
-int lmax[100009], rmax[100009];
-int lmin[100009], rmin[100009];
-long long res;
+#define ll long long
+#define ull unsigned long long
+#define ii pair<int, int>
+#define umap unordered_map
+#define uset unordered_set
+#define pqueue priority_queue
 
-void solve(){
-    cin >> n;
-    for(int i=1; i<=n; ++i) cin >> a[i];
+#define sz(a) (int)a.size()
+#define getbit(x, y) (((x) >> (y)) & 1)
+#define turnon(x, y) ((x) | (1LL << y))
+#define turnof(x, y) ((x) ^ (1LL << y))
+#define foru(i, a, b)   for(int i=a; i<=b; ++i)
+#define ford(i, a, b)   for(int i=a; i>=b; --i)
+#define foruc(i, a, b, c)   for(int i=a; i<=b; i+=c)
+#define fordc(i, a, b, c)   for(int i=a; i>=b; i-=c)
 
-    for(int i=1; i<=n; ++i){
-        while(!st.empty() && a[st.top()] < a[i])   st.pop();
-        lmax[i] = (st.empty() ? 1 : st.top() + 1);
-        st.push(i);
-    }
-    while(!st.empty())  st.pop();
+#define fi first
+#define se second
+#define pf push_front
+#define pb push_back
+#define popf pop_front
+#define popb pop_back
+#define lb lower_bound // >=
+#define ub upper_bound // >
 
-    for(int i=n; i>=1; --i){
-        while(!st.empty() && a[st.top()] <= a[i])   st.pop();
-        rmax[i] = (st.empty() ? n : st.top() - 1);
-        st.push(i);
-    }
-    while(!st.empty())  st.pop();
+mt19937 rd(chrono::steady_clock::now().time_since_epoch().count());
 
-    for(int i=1; i<=n; ++i){
-        res += 1LL * (rmax[i] - i + 1) * (i - lmax[i] + 1) * a[i];
-    }
-
-    for(int i=1; i<=n; ++i){
-        while(!st.empty() && a[st.top()] > a[i])   st.pop();
-        lmin[i] = (st.empty() ? 1 : st.top() + 1);
-        st.push(i);
-    }
-    while(!st.empty())  st.pop();
-
-    for(int i=n; i>=1; --i){
-        while(!st.empty() && a[st.top()] >= a[i])   st.pop();
-        rmin[i] = (st.empty() ? n : st.top() - 1);
-        st.push(i);
-    }
-    while(!st.empty())  st.pop();
-
-    for(int i=1; i<=n; ++i){
-        res -= 1LL * (rmin[i] - i + 1) * (i - lmin[i] + 1) * a[i];
-    }
-
-    //for(int i=1; i<=n; ++i) cout << lmax[i] << " " << rmax[i] << '\n';
-    //for(int i=1; i<=n; ++i) cout << lmin[i] << " " << rmin[i] << '\n';
-
-    cout << res;
-
+ll rand(ll l, ll r){
+    assert(l <= r);
+    return l + rd() % (r - l + 1);
 }
 
+void file(){
+    if(fopen("TEST.INP", "r")){
+        freopen("TEST.INP", "r", stdin);
+        freopen("TEST.OUT", "w", stdout);
+    }
+}
+
+const int mod = 1e9 + 7;
+int tc = 1;
+
 /*
-4
-1 4 6 2
+
 */
+
+char ch;
+int val;
+multiset<int> st;
+vector<int> ans;
+void solve(){
+    while(cin >> ch){
+        if(ch == '+'){
+            cin >> val;
+            if(sz(st) < 15000)  st.insert(val);
+        }else{
+            if(sz(st) > 0)  st.erase(*st.rbegin());
+        }
+    }
+    for(multiset<int>::iterator it=st.begin(); it!=st.end(); ++it)  ans.pb(*it);
+
+    ans.erase(unique(ans.begin(), ans.end()), ans.end());
+    cout << sz(ans) << '\n';
+    for(int i=sz(ans)-1; i>=0; --i) cout << ans[i] << '\n';
+}
 
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
-    solve();
+    file();
+
+    // INPUT
+
+    // END_INPUT
+
+    #ifndef ONLINE_JUDGE
+    auto start = high_resolution_clock::now();
+    #endif
+    
+    while(tc--)  solve();
+    
+    #ifndef ONLINE_JUDGE
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<milliseconds>(stop - start);
+    cerr << "\n[Time: " << duration.count() << " ms]\n"; 
+    #endif
 }

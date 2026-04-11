@@ -52,66 +52,56 @@ int tc = 1;
 
 */
 
-int n, m;
-vector<ii> xe(50005, {0, 0});
-vector<ii> a;
-int l, r, mid, ans;
-
-bool check(int x){
-    a.clear();
-    // Khi nay ta xet x xe dau tien
-    for(int i=1; i<=x; ++i) a.pb(xe[i]);
-
-    sort(a.begin(), a.end(), [](const ii& a, const ii& b){
-        return (a.fi < b.fi);
-    });
-
-    // Ta di xet tung xe, do ta khong xet tuyen tinh
-    // *Mot lan xet co the nhieu xe nen ta dung while de quan ly cho tien
-
-    pqueue<int, vector<int>, greater<int>> ed;
-
-    int id = 0;
-    int cur = 1;
-
-    while(id < x || !ed.empty()){
-        if(ed.empty())  cur = max(cur, a[id].fi);
-
-        while(id < x && a[id].fi <= cur){
-            ed.push(a[id].se);
-            id++;
-        }
-
-        // Khi nay ta da lay het cac chi so gio ve Duoc sort tu be xuong lon
-        int mn = ed.top();
-        ed.pop();   
-
-        if(cur > n)     return false;
-        if(mn < cur)    return false;
-
-        cur++;
-    }
-
-    return true;
-}
+int n;
+int a[300005];
+ll pref[300005];
+ll suff[300005];
+ll sum;
+ll res = -2e18;
+pqueue<int> mx;
+pqueue<int, vector<int>, greater<int>> mn;
 
 void solve(){
-    cin >> n >> m;
-    for(int i=1; i<=m; ++i) cin >> xe[i].fi >> xe[i].se;
+    cin >> n;
+    for(int i=1; i<=3*n; ++i) cin >> a[i];
 
-    l = 1;
-    r = m;
-    while(l <= r){
-        mid = l + (r - l) / 2;
-        if(check(mid)){
-            l = mid + 1;
-            ans = mid;
-        }else   r = mid - 1;
+    sum = 0;
+    for(int i=1; i<=2*n; ++i){
+        sum += a[i];
+        mn.push(a[i]);
+
+        while(sz(mn) > n){
+            sum -= mn.top();
+            mn.pop();
+        }
+
+        if(sz(mn) == n) pref[i] = sum;
     }
 
-    cout << ans << '\n';
-    /*
-    */
+    //for(int i=1; i<=3*n; ++i)   cout << pref[i] << " "; cout << '\n';
+
+    sum = 0;
+    for(int i=3*n; i>=n+1; --i){
+        sum += a[i];
+        mx.push(a[i]);
+
+        while(sz(mx) > n){
+            sum -= mx.top();
+            mx.pop();
+        }
+
+        if(sz(mx) == n) suff[i] = sum;
+    }
+
+    //for(int i=1; i<=3*n; ++i)   cout << pref[i] << " "; cout << '\n';
+    //for(int i=1; i<=3*n; ++i)   cout << suff[i] << " "; cout << '\n';
+
+    for(int i=n; i<=2*n; ++i){
+        ll cur = pref[i] - suff[i + 1];
+        res = max(res, cur);
+    }
+
+    cout << res;
 }
 
 int main(){
@@ -125,8 +115,7 @@ int main(){
     #ifndef ONLINE_JUDGE
     auto start = high_resolution_clock::now();
     #endif
-
-    cin >> tc;
+    
     while(tc--)  solve();
     
     #ifndef ONLINE_JUDGE

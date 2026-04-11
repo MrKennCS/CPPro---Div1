@@ -16,7 +16,8 @@ using namespace std::chrono;
 #define sz(a) (int)a.size()
 #define getbit(x, y) (((x) >> (y)) & 1)
 #define turnon(x, y) ((x) | (1LL << y))
-#define turnof(x, y) ((x) ^ (1LL << y))
+#define turnof(x, y) ((x) & ~(1LL << y))
+#define daobit(x, y) ((x) ^ (1LL << y))
 #define foru(i, a, b)   for(int i=a; i<=b; ++i)
 #define ford(i, a, b)   for(int i=a; i>=b; --i)
 #define foruc(i, a, b, c)   for(int i=a; i<=b; i+=c)
@@ -52,66 +53,19 @@ int tc = 1;
 
 */
 
-int n, m;
-vector<ii> xe(50005, {0, 0});
-vector<ii> a;
-int l, r, mid, ans;
-
-bool check(int x){
-    a.clear();
-    // Khi nay ta xet x xe dau tien
-    for(int i=1; i<=x; ++i) a.pb(xe[i]);
-
-    sort(a.begin(), a.end(), [](const ii& a, const ii& b){
-        return (a.fi < b.fi);
-    });
-
-    // Ta di xet tung xe, do ta khong xet tuyen tinh
-    // *Mot lan xet co the nhieu xe nen ta dung while de quan ly cho tien
-
-    pqueue<int, vector<int>, greater<int>> ed;
-
-    int id = 0;
-    int cur = 1;
-
-    while(id < x || !ed.empty()){
-        if(ed.empty())  cur = max(cur, a[id].fi);
-
-        while(id < x && a[id].fi <= cur){
-            ed.push(a[id].se);
-            id++;
-        }
-
-        // Khi nay ta da lay het cac chi so gio ve Duoc sort tu be xuong lon
-        int mn = ed.top();
-        ed.pop();   
-
-        if(cur > n)     return false;
-        if(mn < cur)    return false;
-
-        cur++;
-    }
-
-    return true;
-}
+ll res = 1;
+int n;
+ll a[200005];
 
 void solve(){
-    cin >> n >> m;
-    for(int i=1; i<=m; ++i) cin >> xe[i].fi >> xe[i].se;
-
-    l = 1;
-    r = m;
-    while(l <= r){
-        mid = l + (r - l) / 2;
-        if(check(mid)){
-            l = mid + 1;
-            ans = mid;
-        }else   r = mid - 1;
+    cin >> n;
+    for(int i=1; i<=n; ++i){
+        cin >> a[i];
+        //cout << (a[i] & -a[i]) << '\n';
+        res = max(res, (a[i] & -a[i]));
     }
 
-    cout << ans << '\n';
-    /*
-    */
+    cout << res;
 }
 
 int main(){
@@ -125,8 +79,7 @@ int main(){
     #ifndef ONLINE_JUDGE
     auto start = high_resolution_clock::now();
     #endif
-
-    cin >> tc;
+    
     while(tc--)  solve();
     
     #ifndef ONLINE_JUDGE
