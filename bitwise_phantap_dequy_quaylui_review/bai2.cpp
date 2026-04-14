@@ -54,24 +54,33 @@ int tc = 1;
 */
 
 int n;
-int a[100005];
-int q;
-int l, r;
+int a[1000006];
+int Pow[20];
+vector<int> ans;
 
 void solve(){
     cin >> n;
-    for(int i=1; i<=n; ++i){
-        cin >> a[i];
-        a[i] = a[i - 1] ^ a[i];
+    for(int i=1; i<=n; ++i) cin >> a[i];
+    
+    Pow[0] = 1;
+    for(int i=1; i<=n; ++i) Pow[i] = Pow[i - 1] * 2;
+
+    for(int mask=1; mask<Pow[n]; ++mask){
+        //cout << "GAY\n";
+        int tmp = mask;
+        int sum = 0;
+        int BIT;
+        for(int i=0; i<n; ++i){
+            BIT = tmp % 2;
+            tmp /= 2;
+            if(BIT) sum += a[i + 1];
+        }
+        //cout << sum;
+        ans.pb(sum);
     }
 
-    cin >> q;
-    while(q--){
-        cin >> l >> r;
-        int ans = a[r] ^ a[l - 1];
-        cout << ans << '\n';
-    }
-
+    sort(ans.begin(), ans.end());
+    for(int i=0; i<sz(ans); ++i)    cout << ans[i] << " ";
 }
 
 int main(){

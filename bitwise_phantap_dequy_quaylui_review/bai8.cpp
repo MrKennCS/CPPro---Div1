@@ -53,12 +53,54 @@ int tc = 1;
 
 */
 
-int a;
+int n;
+ll x;
+int val;
+int Pow[50];
+vector<int> a, b;
+map<ll, int> cnt;
+ll res;
 
 void solve(){
-    cin >> a;
+    cin >> n >> x;
 
-    cout << (1LL << __builtin_popcountll(a)) << '\n';
+    Pow[0] = 1;
+    for(int i=1; i<=n; ++i){
+        cin >> val;
+        Pow[i] = Pow[i - 1] * 2;
+        if(i <= n / 2)  a.pb(val);
+        else            b.pb(val);
+    }
+
+    for(int mask=0; mask<Pow[sz(a)]; ++mask){
+        ll sum = 0;
+        int tmp = mask;
+        int BIT;
+        for(int i=0; i<sz(a); ++i){
+            BIT = tmp % 2;
+            tmp /= 2;
+
+            if(BIT) sum += a[i];
+        }
+        cnt[sum]++;
+        //cerr << sum << " " << cnt[sum] << '\n';
+    }
+
+    for(int mask=0; mask<Pow[sz(b)]; ++mask){
+        ll sum = 0;
+        int tmp = mask;
+        int BIT;
+        for(int i=0; i<sz(b); ++i){
+            BIT = tmp % 2;
+            tmp /= 2;
+
+            if(BIT) sum += b[i];
+        }
+        //cerr << x - sum << " " << cnt[x - sum] << '\n';
+        res += cnt[x - sum];
+    }
+
+    cout << res;
 }
 
 int main(){
@@ -73,7 +115,6 @@ int main(){
     auto start = high_resolution_clock::now();
     #endif
     
-    int tc;
     while(tc--)  solve();
     
     #ifndef ONLINE_JUDGE

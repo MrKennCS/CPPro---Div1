@@ -15,7 +15,7 @@ void solve(){
     res = 0;
     for(int bit=0; bit<32; ++bit){
         int cnt_0 = 0;
-        int cnt_1 = 0;
+        int cnt_1 = 0;  
         for(int i=1; i<=n; ++i){
             if(get_bit(a[i], bit) == 1) cnt_1++;
             else                        cnt_0++;

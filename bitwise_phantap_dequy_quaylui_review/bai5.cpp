@@ -53,12 +53,16 @@ int tc = 1;
 
 */
 
-int a;
+ll n;
 
 void solve(){
-    cin >> a;
-
-    cout << (1LL << __builtin_popcountll(a)) << '\n';
+    cin >> n;
+    
+    if(n % 4 == 0)      cout << n;
+    else if(n % 4 == 1) cout << 1;
+    else if(n % 4 == 2) cout << n + 1;
+    else                cout << 0;
+    cout << '\n';
 }
 
 int main(){
@@ -73,7 +77,7 @@ int main(){
     auto start = high_resolution_clock::now();
     #endif
     
-    int tc;
+    cin >> tc;
     while(tc--)  solve();
     
     #ifndef ONLINE_JUDGE

@@ -57,8 +57,8 @@ int a;
 
 void solve(){
     cin >> a;
-
-    cout << (1LL << __builtin_popcountll(a)) << '\n';
+    cout << (1 << __builtin_popcount(a)) << '\n';
+    
 }
 
 int main(){
@@ -73,7 +73,7 @@ int main(){
     auto start = high_resolution_clock::now();
     #endif
     
-    int tc;
+    cin >> tc;
     while(tc--)  solve();
     
     #ifndef ONLINE_JUDGE

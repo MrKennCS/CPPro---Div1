@@ -20,7 +20,7 @@ using namespace std::chrono;
 #define daobit(x, y) ((x) ^ (1LL << y))
 #define foru(i, a, b)   for(int i=a; i<=b; ++i)
 #define ford(i, a, b)   for(int i=a; i>=b; --i)
-#define foruc(i, a, b, c)   for(int i=a; i<=b; i+=c)
+#define foruc(i, a, b, c)   for(int i=a; i<=b; i+=c)X
 #define fordc(i, a, b, c)   for(int i=a; i>=b; i-=c)
 
 #define fi first
@@ -53,12 +53,58 @@ int tc = 1;
 
 */
 
-int a;
+string s;
+int st[1000004], top = 0;
+int n;
+
+int calc(char x){
+    if(x == 'C')    return 12;
+    if(x == 'H')    return 1;
+    if(x == 'O')    return 16;
+    return -1;
+}
+
+bool isChar(char x){
+    return (x == 'C' || x == 'H' || x == 'O');
+}
+
+bool isDigit(char x){
+    return ('0' <= x && x <= '9');
+}
 
 void solve(){
-    cin >> a;
+    cin >> s;
+    cout << s << '\n';
 
-    cout << (1LL << __builtin_popcountll(a)) << '\n';
+    n = sz(s);
+    s = " " + s;
+
+    for(int i=1; i<=n; ++i){
+        if(isChar(s[i]))    st[++top] = calc(s[i]);
+        else if(isDigit(s[i])){
+            int tmp = (s[i] - '0') * st[top];
+            top--;
+            st[++top] = tmp;
+        }else if(s[i] == '(')   st[++top] = -1;
+        else{
+            int sum = 0;
+            while(st[top] != -1){
+                sum += st[top];
+                top--;
+            }
+            top--;
+            st[++top] = sum;
+        }
+    }
+
+    int res = 0;
+    for(int i=0; i<top; ++i){
+        cout << st[i] << " ";
+        res += st[i];
+    }
+    cout << res;
+    
+    
 }
 
 int main(){
@@ -73,7 +119,6 @@ int main(){
     auto start = high_resolution_clock::now();
     #endif
     
-    int tc;
     while(tc--)  solve();
     
     #ifndef ONLINE_JUDGE

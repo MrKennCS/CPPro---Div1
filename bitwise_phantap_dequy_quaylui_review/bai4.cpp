@@ -53,19 +53,25 @@ int tc = 1;
 
 */
 
-ll res = 1;
 int n;
-ll a[200005];
+int a[100005];
 
 void solve(){
     cin >> n;
-    for(int i=1; i<=n; ++i){
-        cin >> a[i];
-        //cout << (a[i] & -a[i]) << '\n';
-        res = max(res, (a[i] & -a[i]));
-    }
+    for(int i=1; i<=n; ++i) cin >> a[i];
 
-    cout << res;
+    ll res = 0;
+
+    for(int i=0; i<32; ++i){
+        int cnt_0 = 0;
+        int cnt_1 = 0;
+        for(int j=1; j<=n; ++j){
+            if(getbit(a[j], i)) cnt_1 += 1;
+            else                cnt_0 += 1;
+        }
+        res += 1LL * cnt_1 * cnt_0 * (1LL << i);
+    }
+    cout << res << '\n';
 }
 
 int main(){
@@ -80,6 +86,7 @@ int main(){
     auto start = high_resolution_clock::now();
     #endif
     
+    cin >> tc;
     while(tc--)  solve();
     
     #ifndef ONLINE_JUDGE

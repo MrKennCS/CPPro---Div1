@@ -110,7 +110,7 @@ void sub2(){
 
 void solve(){
     cin >> n >> m >> k;
-    //if(n > m)   swap(n, m);
+    if(n > m)   swap(n, m);
 
     if(n <= 1000 && m <= 1000)  sub1();
     else                        sub2();

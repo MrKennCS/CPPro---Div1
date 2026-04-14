@@ -53,12 +53,65 @@ int tc = 1;
 
 */
 
-int a;
+struct vec{
+    int x = 0;
+    int y = 0;
+};
+
+int n;
+int u, v;
+vector<ii> a, b;
+map<ii, int> cnt;
+int Pow[40];
+ll res;
 
 void solve(){
-    cin >> a;
+    cin >> n;
 
-    cout << (1LL << __builtin_popcountll(a)) << '\n';
+    Pow[0] = 1;
+    for(int i=1; i<=n; ++i){
+        int x, y;   cin >> x >> y;
+        if(i <= n/2)    a.pb({x, y});
+        else            b.pb({x, y});
+        Pow[i] = Pow[i - 1] * 2;
+    }
+    cin >> u >> v;
+
+    for(int mask=0; mask<Pow[sz(a)]; ++mask){
+        ii sum = {0, 0};
+        int BIT;
+        int tmp = mask;
+        for(int i=0; i<sz(a); ++i){
+            BIT = tmp % 2;
+            tmp /= 2;
+
+            if(BIT){
+                sum.fi += a[i].fi;
+                sum.se += a[i].se;
+            }
+        }
+        cnt[sum]++;
+    }
+
+    for(int mask=0; mask<Pow[sz(b)]; ++mask){
+        ii sum = {0, 0};
+        int BIT;
+        int tmp = mask;
+        for(int i=0; i<sz(b); ++i){
+            BIT = tmp % 2;
+            tmp /= 2;
+
+            if(BIT){
+                sum.fi += b[i].fi;
+                sum.se += b[i].se;
+            }
+        }
+        res += cnt[{u - sum.fi, v - sum.se}];
+    }
+
+    cout << res;
+
+
 }
 
 int main(){
@@ -73,7 +126,6 @@ int main(){
     auto start = high_resolution_clock::now();
     #endif
     
-    int tc;
     while(tc--)  solve();
     
     #ifndef ONLINE_JUDGE

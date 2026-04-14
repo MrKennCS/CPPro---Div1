@@ -16,7 +16,8 @@ using namespace std::chrono;
 #define sz(a) (int)a.size()
 #define getbit(x, y) (((x) >> (y)) & 1)
 #define turnon(x, y) ((x) | (1LL << y))
-#define turnof(x, y) ((x) ^ (1LL << y))
+#define turnof(x, y) ((x) & ~(1LL << y))
+#define daobit(x, y) ((x) ^ (1LL << y))
 #define foru(i, a, b)   for(int i=a; i<=b; ++i)
 #define ford(i, a, b)   for(int i=a; i>=b; --i)
 #define foruc(i, a, b, c)   for(int i=a; i<=b; i+=c)
@@ -53,15 +54,12 @@ int tc = 1;
 */
 
 int n;
+int res = 0;
 
 void solve(){
     cin >> n;
 
-    for(int i=0; i<30; ++i){
-        if(getbit(n, i) == 1){
-            cout << i << " ";
-        }
-    }
+    cout << __builtin_popcountll(n);
 }
 
 int main(){
