@@ -53,17 +53,16 @@ int tc = 1;
 
 */
 
-int n;
-ll x;
+int n, x;
 int val;
 int Pow[50];
 vector<int> a, b;
-map<ll, int> cnt;
+map<int, int> cnt;
 ll res;
 
 void solve(){
     cin >> n >> x;
-
+    
     Pow[0] = 1;
     for(int i=1; i<=n; ++i){
         cin >> val;
@@ -73,34 +72,29 @@ void solve(){
     }
 
     for(int mask=0; mask<Pow[sz(a)]; ++mask){
-        ll sum = 0;
         int tmp = mask;
-        int BIT;
+        int sum = 0;
         for(int i=0; i<sz(a); ++i){
-            BIT = tmp % 2;
+            if(tmp & 1) sum += a[i];
             tmp /= 2;
-
-            if(BIT) sum += a[i];
         }
         cnt[sum]++;
-        //cerr << sum << " " << cnt[sum] << '\n';
+        //cout << sum << " " << cnt[sum] << '\n';
     }
 
     for(int mask=0; mask<Pow[sz(b)]; ++mask){
-        ll sum = 0;
         int tmp = mask;
-        int BIT;
+        int sum = 0;
         for(int i=0; i<sz(b); ++i){
-            BIT = tmp % 2;
+            if(tmp & 1) sum += b[i];
             tmp /= 2;
-
-            if(BIT) sum += b[i];
         }
-        //cerr << x - sum << " " << cnt[x - sum] << '\n';
         res += cnt[x - sum];
     }
 
     cout << res;
+
+
 }
 
 int main(){

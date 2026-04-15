@@ -1,5 +1,5 @@
-// #pragma GCC optimize("O3,unroll-loops")
-// #pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
+#pragma GCC optimize("O3,unroll-loops")
+#pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
 
 #include<bits/stdc++.h>
 
@@ -54,49 +54,47 @@ int tc = 1;
 */
 
 int n;
-int val;
-map<int, int> cnt;
 vector<int> a, b;
+umap<int, int> mp;
 int Pow[30];
-int res = 0;
+int res;
 
 void solve(){
     cin >> n;
     
     Pow[0] = 1;
     for(int i=1; i<=n; ++i){
-        cin >> val;
+        int val;    cin >> val;
         Pow[i] = Pow[i - 1] * 3;
         if(i <= n / 2)  a.pb(val);
         else            b.pb(val);
     }
 
     for(int mask=0; mask<Pow[sz(a)]; ++mask){
+        int tmp = mask;
         int suma = 0;
         int sumb = 0;
-        int tmp = mask;
         for(int i=0; i<sz(a); ++i){
-            if(tmp % 3 == 0)    continue;
-            else if(tmp % 3 == 1)   suma += a[i];
-            else                    sumb += a[i];
+            if(tmp % 3 == 1)        suma += a[i];
+            else if(tmp % 3 == 2)   sumb += a[i];
             tmp /= 3;
         }
-        cnt[suma - sumb] = max(cnt[suma - sumb], suma);
+        //cout << suma << " " << sumb << '\n';
         if(suma == sumb)    res = max(res, suma);
+        mp[suma - sumb] = max(mp[suma - sumb], suma);
     }
 
     for(int mask=0; mask<Pow[sz(b)]; ++mask){
+        int tmp = mask;
         int suma = 0;
         int sumb = 0;
-        int tmp = mask;
         for(int i=0; i<sz(b); ++i){
-            if(tmp % 3 == 0)    continue;
-            else if(tmp % 3 == 1)   suma += b[i];
-            else                    sumb += b[i];
+            if(tmp % 3 == 1)        suma += b[i];
+            else if(tmp % 3 == 2)   sumb += b[i];
             tmp /= 3;
         }
-        res = max(res, cnt[sumb - suma]);
-        if(sumb == suma)    res = max(res, sumb);
+        if(suma == sumb)    res = max(res, suma);
+        if(mp[sumb - suma]) res = max(res, mp[sumb - suma] + suma);
     }
 
     cout << res;

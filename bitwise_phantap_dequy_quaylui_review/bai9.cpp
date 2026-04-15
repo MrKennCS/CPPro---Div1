@@ -53,15 +53,10 @@ int tc = 1;
 
 */
 
-struct vec{
-    int x = 0;
-    int y = 0;
-};
-
 int n;
 int u, v;
-vector<ii> a, b;
 map<ii, int> cnt;
+vector<ii> a, b;
 int Pow[40];
 ll res;
 
@@ -70,48 +65,40 @@ void solve(){
 
     Pow[0] = 1;
     for(int i=1; i<=n; ++i){
-        int x, y;   cin >> x >> y;
-        if(i <= n/2)    a.pb({x, y});
-        else            b.pb({x, y});
+        ii val; cin >> val.fi >> val.se;
         Pow[i] = Pow[i - 1] * 2;
+        if(i <= n / 2)  a.pb(val);
+        else            b.pb(val);
     }
     cin >> u >> v;
 
     for(int mask=0; mask<Pow[sz(a)]; ++mask){
-        ii sum = {0, 0};
-        int BIT;
         int tmp = mask;
+        ii sum = {0, 0};
         for(int i=0; i<sz(a); ++i){
-            BIT = tmp % 2;
-            tmp /= 2;
-
-            if(BIT){
+            if(tmp & 1){
                 sum.fi += a[i].fi;
                 sum.se += a[i].se;
             }
+            tmp /= 2;
         }
         cnt[sum]++;
     }
 
     for(int mask=0; mask<Pow[sz(b)]; ++mask){
-        ii sum = {0, 0};
-        int BIT;
         int tmp = mask;
+        ii sum = {0, 0};
         for(int i=0; i<sz(b); ++i){
-            BIT = tmp % 2;
-            tmp /= 2;
-
-            if(BIT){
+            if(tmp & 1){
                 sum.fi += b[i].fi;
                 sum.se += b[i].se;
             }
+            tmp /= 2;
         }
         res += cnt[{u - sum.fi, v - sum.se}];
     }
 
     cout << res;
-
-
 }
 
 int main(){
