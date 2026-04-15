@@ -52,40 +52,18 @@ int tc = 1;
 
 */
 
-int n, m;
-ll Pow[15];
-int cnt[1000006];
-ll res;
+int n, k;
 
-ll palin(int num, int l){
-    ll ans = num;
-    int temp = (l & 1 ? (num / 10) : num);
-    for(int i=0; i<l/2; ++i){
-        ans = ans * 10 + temp % 10;
-        temp /= 10;
-    }
-    return ans;
+int trau(int n, int k){
+    if(n < 0 || k < 0)  return 0;
+    if(k == 0)  return 1;
+
+    return (trau(n - 1, k) % mod + trau(n - 1, k - 1) % mod) % mod;
 }
 
 void solve(){
-    cin >> n >> m;
-
-    Pow[0] = 1;
-    for(int i=1; i<=10; ++i)    Pow[i] = Pow[i - 1] * 10;
-
-    int l = n / 2;
-    int h = (l + 1) / 2;
-
-    for(int i=Pow[h - 1]; i<=Pow[h] - 1; ++i){
-        ll num = palin(i, l);
-        cnt[(num % m * Pow[l]) % m]++;
-    }
-    for(int i=0; i<=Pow[h]-1; ++i){
-        ll num = palin(i, l);
-        res += cnt[(m - num % m + m) % m];
-    }
-
-    cout << res;
+    cin >> n >> k;
+    cout << trau(n, k);
 }
 
 int main(){

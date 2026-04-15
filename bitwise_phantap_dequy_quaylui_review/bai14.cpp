@@ -52,40 +52,15 @@ int tc = 1;
 
 */
 
-int n, m;
-ll Pow[15];
-int cnt[1000006];
-ll res;
+ll a, b;
 
-ll palin(int num, int l){
-    ll ans = num;
-    int temp = (l & 1 ? (num / 10) : num);
-    for(int i=0; i<l/2; ++i){
-        ans = ans * 10 + temp % 10;
-        temp /= 10;
-    }
-    return ans;
+ll gcd(ll a, ll b){
+    return (b == 0 ? a : gcd(b, a % b));
 }
 
 void solve(){
-    cin >> n >> m;
-
-    Pow[0] = 1;
-    for(int i=1; i<=10; ++i)    Pow[i] = Pow[i - 1] * 10;
-
-    int l = n / 2;
-    int h = (l + 1) / 2;
-
-    for(int i=Pow[h - 1]; i<=Pow[h] - 1; ++i){
-        ll num = palin(i, l);
-        cnt[(num % m * Pow[l]) % m]++;
-    }
-    for(int i=0; i<=Pow[h]-1; ++i){
-        ll num = palin(i, l);
-        res += cnt[(m - num % m + m) % m];
-    }
-
-    cout << res;
+    cin >> a >> b;
+    cout << gcd(a, b);
 }
 
 int main(){
