@@ -52,8 +52,35 @@ int tc = 1;
 
 */
 
-void solve(){
+int n;
+int a[30];
+bool check = false;
+set<int> st;
 
+void solve(){
+    cin >> n;
+    for(int i=1; i<=n; ++i) cin >> a[i];
+
+    for(int mask=0; mask<(1<<n); ++mask){
+        ll sum1 = 0;
+        ll sum2 = 0;
+        for(int i=0; i<n; ++i){
+            if(getbit(mask, i)) sum2 += a[i + 1];
+            else                sum1 += a[i + 1];
+        }
+        if(sum1 == sum2){
+            ull cur = 0;
+            for(int i=n-1; i>=0; --i){
+                cur = cur * 10 + (getbit(mask, i) ? 2 : 1);
+            }
+            st.insert(cur);
+        }
+    }
+
+    if(st.empty()) cout << -1;
+    else{
+        for(set<int>::iterator it=st.begin(); it!=st.end(); ++it)   cout << *it << '\n';
+    }
 }
 
 int main(){

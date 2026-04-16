@@ -32,7 +32,7 @@ using namespace std::chrono;
 #define lb lower_bound // >=
 #define ub upper_bound // >
 
-mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count() ^ random_device{}());
+mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count() ^ (ll)(new char));
 
 ll randInt(ll l, ll r){
     return uniform_int_distribution<ll>(l, r)(rng);
@@ -52,8 +52,32 @@ int tc = 1;
 
 */
 
-void solve(){
+vector<int> state;
+int n, k;
 
+void gen(int pos){
+    if(pos == k + 1)    return ;
+    int st = (state.empty() ? 1 : state.back() + 1);
+    for(int i=st; i<=n; ++i){
+        state.pb(i);
+
+        if(sz(state) == k){
+            cout << "{";
+            for(int i=0; i<k; ++i){
+                if(i == k - 1)  cout << state[i];
+                else            cout << state[i] << ", ";
+            }
+            cout << "}\n";
+        }else   gen(pos + 1);
+
+        state.popb();
+    }
+}
+
+void solve(){
+    cin >> n >> k;
+
+    gen(1);
 }
 
 int main(){

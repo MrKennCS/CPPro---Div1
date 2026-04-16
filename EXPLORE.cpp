@@ -32,7 +32,7 @@ using namespace std::chrono;
 #define lb lower_bound // >=
 #define ub upper_bound // >
 
-mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count() ^ (ll)(new char));
+mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count() ^ random_device{}());
 
 ll randInt(ll l, ll r){
     return uniform_int_distribution<ll>(l, r)(rng);
@@ -52,30 +52,25 @@ int tc = 1;
 
 */
 
-ll mul(ll a, ll b, ll mod){
-    ll ans = 0;
-    while(b){
-        if(b & 1)   ans = (ans + a) % mod;
-        a = (a + a) % mod;
-        b /= 2;
-    }
-    return ans;
-}
-
-ll pow(ll a, ll b, ll mod){
-    ll ans = 1;
-    while(b){
-        if(b & 1)   ans = mul(ans, a, mod);
-        a = mul(a, a, mod);
-        b /= 2;
-    }
-    return ans;
-}
-
-bool
+int n;
+int a[30];
 
 void solve(){
+    cin >> n;
+    for(int i=1; i<=n; ++i) cin >> a[i];
 
+    for(int mask=0; mask<(1<<n); ++mask){
+        int sum1 = 0;
+        int sum2 = 0;
+        for(int i=0; i<n; ++i){
+            if(getbit(mask, i)) sum1 += a[i + 1];
+            else                sum2 += a[i + 1];
+        }
+        if(sum1 == sum2){
+            for(int i=n-1; i>=0; --i)   cout << (getbit(mask, i) ? 1 : 2);
+            cout << '\n';
+        }
+    }
 }
 
 int main(){
@@ -86,6 +81,7 @@ int main(){
     auto start = high_resolution_clock::now();
     #endif
     
+    //cin >> tc;
     while(tc--)  solve();
     
     #ifndef ONLINE_JUDGE
