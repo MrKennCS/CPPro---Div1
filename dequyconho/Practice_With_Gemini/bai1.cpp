@@ -58,6 +58,7 @@ string s;
 int dp[105][55][202];
 
 int trau(int i, int cnt, int pos){
+    //cout << "GAY\n";
     if(cnt > k) return 0;
     if(i > n){
         if(cnt == k)    return abs(pos);
@@ -67,8 +68,11 @@ int trau(int i, int cnt, int pos){
     int &res = dp[i][cnt][pos + offset];
     if(res != -1)   return res;
 
-    if(s[i] == 'T') res = max(trau(i + 1, cnt, pos + 1), trau(i + 1, cnt + 1, pos - 1));
-    else            res = max(trau(i + 1, cnt, pos - 1), trau(i + 1, cnt + 1, pos + 1));
+    if(s[i] == 'T'){
+        res = max(trau(i + 1, cnt, pos - 1), trau(i + 1, cnt + 1, pos + 1));
+    }else{
+        res = max(trau(i + 1, cnt, pos + 1), trau(i + 1, cnt + 1, pos - 1));
+    }
 
     return res;
 }
