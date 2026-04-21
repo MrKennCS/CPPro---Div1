@@ -1,30 +1,67 @@
-#include<iostream>
-#include<cstring>
+// #pragma GCC optimize("O3,unroll-loops")
+// #pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
+
+#include<bits/stdc++.h>
 
 using namespace std;
+using namespace std::chrono;
 
-int n;
-int dp[1000009];
-const int mod = 1e9 + 7;
+#define ll long long
+#define ull unsigned long long
+#define ii pair<int, int>
+#define umap unordered_map
+#define uset unordered_set
+#define pqueue priority_queue
 
-void add(int &x, int y){
-    x += y;
-    if(x >= mod) x -= mod;
+#define sz(a) (int)a.size()
+#define getbit(x, y) (((x) >> (y)) & 1)
+#define turnon(x, y) ((x) |= (1LL << y))
+#define turnof(x, y) ((x) &= ~(1LL << y))
+#define daobit(x, y) ((x) ^= (1LL << y))
+#define foru(i, a, b)   for(int i=a; i<=b; ++i)
+#define ford(i, a, b)   for(int i=a; i>=b; --i)
+#define foruc(i, a, b, c)   for(int i=a; i<=b; i+=c)
+#define fordc(i, a, b, c)   for(int i=a; i>=b; i-=c)
+
+#define fi first
+#define se second
+#define pf push_front
+#define pb push_back
+#define popf pop_front
+#define popb pop_back
+#define lb lower_bound // >=
+#define ub upper_bound // >
+
+mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count() ^ random_device{}());
+
+ll randInt(ll l, ll r){
+    return uniform_int_distribution<ll>(l, r)(rng);
 }
 
-int trau(int sum){
-    if(dp[sum] != -1)   return dp[sum];
-    if(sum == 0 || sum == 1 || sum == 2 || sum == 3 || sum == 4 || sum == 5)    return dp[sum];
+void file(){
+    if(fopen("TEST.INP", "r")){
+        freopen("TEST.INP", "r", stdin);
+        freopen("TEST.OUT", "w", stdout);
+    }
+}
 
-    int &res = dp[sum];
-    res = 0;
+const int mod = 1e9 + 7;
+int tc = 1;
 
-    add(res, trau(sum - 1));
-    add(res, trau(sum - 2));
-    add(res, trau(sum - 3));
-    add(res, trau(sum - 4));
-    add(res, trau(sum - 5));
-    add(res, trau(sum - 6));
+/*
+
+*/
+
+int n;
+int dp[1000006];
+
+int trau(int i){
+    if(i == 0)  return 1;
+    if(i <= 5)  return (1 << (i - 1));
+    if(dp[i] != 0)  return dp[i];
+
+    int &res = dp[i];
+    for(int j=1; j<=6; ++j) res = (res % mod + trau(i - j) % mod) % mod;
 
     return res;
 }
@@ -32,62 +69,45 @@ int trau(int sum){
 void solve(){
     cin >> n;
 
-    dp[0] = 1;
-    dp[1] = 1;
-    dp[2] = 2;
-    dp[3] = 4;
-    dp[4] = 8;
-    dp[5] = 16;
+    if(n == 0)  cout << 1;
+    else if(n <= 5) cout << (1 << (n - 1));
+    else{
+        memset(dp, 0, sizeof(dp));
+        dp[0] = 1;
+        for(int i=1; i<=5; ++i) dp[i] = (1 << (i - 1));
 
-    for(int i=6; i<=n; ++i){
-        //dp[i] = dp[i-1] % mod;
-        add(dp[i], dp[i-1]);
-        add(dp[i], dp[i-2]);
-        add(dp[i], dp[i-3]);
-        add(dp[i], dp[i-4]);
-        add(dp[i], dp[i-5]);
-        add(dp[i], dp[i-6]);
+        for(int i=6; i<=n; ++i){
+            dp[i] += dp[i - 1]; dp[i] %= mod;
+            dp[i] += dp[i - 2]; dp[i] %= mod;
+            dp[i] += dp[i - 3]; dp[i] %= mod;
+            dp[i] += dp[i - 4]; dp[i] %= mod;
+            dp[i] += dp[i - 5]; dp[i] %= mod;
+            dp[i] += dp[i - 6]; dp[i] %= mod;
+        }
 
-        //cout << i << " " << dp[i] << '\n';
+        cout << dp[n];
     }
 
-    cout << dp[n];
-    /*
-    De bai yeu cau: Tim so cach gieo xuc xac lien tuc co tong bang n
 
-->  Nhan xet: Bai toan gieo xuc xac lien tuc co tong bang n phu thuoc vao 6 bai toan con la
-    i - 1; i - 2; i - 3; i - 4; i - 5; i - 6
-
-    Goi dp[i] la so cach de gieo xuc xac lien tuc co tong bang i
-
-    BASE:
-    dp[0] = 0;
-    dp[1] = 1
-    dp[2] = 2
-    dp[3] = 4
-    dp[4] = 8
-    dp[5] = 16
-
-    dp[i] = dp[i-1] + dp[i-2] + dp[i-3] + dp[i-4] + dp[i-5] + dp[i-6], voi moi i >= 6
-    */
+    
 }
 
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
-    solve();
+    file();
 
-    /*
-    cin >> n;
-
-    memset(dp, -1, sizeof(dp));
-
-    dp[0] = 1;
-    dp[1] = 1;
-    dp[2] = 2;
-    dp[3] = 4;
-    dp[4] = 8;
-    dp[5] = 16;
-
-    cout << trau(n);
-    */
+    #ifndef ONLINE_JUDGE
+    auto start = high_resolution_clock::now();
+    #endif
+    
+    //cin >> tc;
+    while(tc--)  solve();
+    
+    #ifndef ONLINE_JUDGE
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<milliseconds>(stop - start);
+    cerr << "\n[Time: " << duration.count() << " ms]\n"; 
+    #endif
 }
+
+// RATE ?? (?/10)

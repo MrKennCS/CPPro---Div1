@@ -1,80 +1,113 @@
-#include<iostream>
-#include<cstring>
+// #pragma GCC optimize("O3,unroll-loops")
+// #pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
+
+#include<bits/stdc++.h>
 
 using namespace std;
+using namespace std::chrono;
+
+#define ll long long
+#define ull unsigned long long
+#define ii pair<int, int>
+#define umap unordered_map
+#define uset unordered_set
+#define pqueue priority_queue
+
+#define sz(a) (int)a.size()
+#define getbit(x, y) (((x) >> (y)) & 1)
+#define turnon(x, y) ((x) |= (1LL << y))
+#define turnof(x, y) ((x) &= ~(1LL << y))
+#define daobit(x, y) ((x) ^= (1LL << y))
+#define foru(i, a, b)   for(int i=a; i<=b; ++i)
+#define ford(i, a, b)   for(int i=a; i>=b; --i)
+#define foruc(i, a, b, c)   for(int i=a; i<=b; i+=c)
+#define fordc(i, a, b, c)   for(int i=a; i>=b; i-=c)
+
+#define fi first
+#define se second
+#define pf push_front
+#define pb push_back
+#define popf pop_front
+#define popb pop_back
+#define lb lower_bound // >=
+#define ub upper_bound // >
+
+mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count() ^ random_device{}());
+
+ll randInt(ll l, ll r){
+    return uniform_int_distribution<ll>(l, r)(rng);
+}
+
+void file(){
+    if(fopen("TEST.INP", "r")){
+        freopen("TEST.INP", "r", stdin);
+        freopen("TEST.OUT", "w", stdout);
+    }
+}
+
+const int mod = 1e9 + 7;
+int tc = 1;
+
+/*
+
+*/
 
 int n;
-int dp[1000009];
+int res;
+int dp[1000006];
 
-int trau(int sum){
-    if(dp[sum] != -1)   return dp[sum];
+int max_digit(int n){
+    int ans = 0;
+    while(n){
+        ans = max(ans, n % 10);
+        n /= 10;
+    }
+    return ans;
+}
 
-    int &res = dp[sum];
+int calc(int i){
+    if(i == 0)      return 1;
+    if(dp[i] != 0)  return dp[i];
+
+    int &res = dp[i];
     res = 0;
 
-    int tmp = sum;
-    int num = 0;
-    while(tmp){
-        num = max(num, tmp % 10);
-        tmp /= 10;
-    }
-
-    res = trau(sum - num) + 1;
+    res = calc(i - max_digit(i)) + 1;
 
     return res;
 }
 
 void solve(){
-    /*
-    Bai toan yeu cau:
-    Tim so cach tru so n (voi so tru la mot chu so bat ky cua n) ve bang khong ngan nhat
-
-    Nhan xet: Ta can tru so n mot luong la nhieu nhat de bien so n ve thanh 0
-    Trong 10 chu so tu 0 -> 9
-    Ta uu tien chon nhung chu so co gia tri cao nhat cua n de tru
-    
-    
-->  Voi moi n, ta tru di mot luong la max(x1, x2, x3, ..., xi) (xn la chu so thu i cua so n)
-
-    Goi dp[i] la so lan tru it nhat de bien i thanh 0
-
-    Voi moi i, ta tim chu so lon nhat trong i roi tiep tuc voi bai toan i - xi (xi la chu so lon nhat trong i)
-
-    BASE:
-    dp[0] = 1;
-    dp[1] = 1;
-    dp[2] = 1;
-    ...
-    dp[8] = 1;
-    dp[9] = 1;
-    */
     cin >> n;
 
-    //TH BASE
-    for(int i=0; i<=9; ++i) dp[i] = 1;
-
-    for(int i=10; i<=n; ++i){
-        int num = 0;
-        int tmp = i;
-        while(tmp){
-            num = max(num, tmp%10);
-            tmp /= 10;
-        }
-        dp[i] = dp[i-num] + 1;
+    /*
+    while(n){
+        n -= max_digit(n);
+        res++;
     }
 
-    cout << dp[n];
+    cout << res;
+    */
+
+    cout << calc(n) - 1;
 }
 
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
-    //solve();
+    file();
 
-    cin >> n;
-
-    memset(dp, -1, sizeof(dp));
-
-    for(int i=0; i<=9; ++i) dp[i] = 1;
+    #ifndef ONLINE_JUDGE
+    auto start = high_resolution_clock::now();
+    #endif
     
-    cout << trau(n);
+    //cin >> tc;
+    while(tc--)  solve();
+    
+    #ifndef ONLINE_JUDGE
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<milliseconds>(stop - start);
+    cerr << "\n[Time: " << duration.count() << " ms]\n"; 
+    #endif
 }
+
+// RATE ?? (?/10)
