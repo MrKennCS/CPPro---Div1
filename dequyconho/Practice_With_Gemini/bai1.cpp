@@ -45,52 +45,42 @@ void file(){
     }
 }
 
-const int offset = 50;
+const int offset = 100;
 const int mod = 1e9 + 7;
 int tc = 1;
 
 /*
-
+Link submisstion: https://codeforces.com/problemset/problem/132/C
 */
 
-int n;
+int n, k;
 string s;
-int ans;
-int dp[303][606][303];
+int dp[105][55][202];
 
-void add(int &x, int y){
-    x += y;
-    if(x >= mod)    x -= mod;
-}
-
-int trau(int i, int pos, int mn, int mx){
-    if(mn < 0){
-        mx++;
-        pos++;
-    }
+int trau(int i, int cnt, int pos){
+    if(cnt > k) return 0;
     if(i > n){
-        return (mx - mn);
+        if(cnt == k)    return abs(pos);
+        else            return 0;
     }
 
-    int &res = dp[i][pos][mx];
+    int &res = dp[i][cnt][pos + offset];
     if(res != -1)   return res;
-    res = 0;
-    
-    if(s[i] == 'R') add(res, trau(i + 1, pos + 1, mn, max(mx, pos + 1)));
-    else            add(res, trau(i + 1, pos - 1, min(mn, pos - 1), mx));
-    add(res, trau(i + 1, pos, mn, mx));
+
+    if(s[i] == 'T') res = max(trau(i + 1, cnt, pos + 1), trau(i + 1, cnt + 1, pos - 1));
+    else            res = max(trau(i + 1, cnt, pos - 1), trau(i + 1, cnt + 1, pos + 1));
 
     return res;
 }
 
 void solve(){
-    cin >> s;
+    cin >> s >> k;
     n = sz(s);
     s = " " + s;
 
     memset(dp, -1, sizeof(dp));
-    
-    cout << trau(1, 0, 0, 0);
+
+    cout << trau(1, 0, 0);
 }
 
 int main(){
