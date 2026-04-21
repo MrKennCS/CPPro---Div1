@@ -52,31 +52,31 @@ int tc = 1;
 
 */
 
+bool col[10];
+bool chinh[20];
+bool phu[20];
 int a[10][10];
-int res;
+ll res;
 
-void in(int x, int y){
-    for(int i=1; i<=8; ++i){
-        a[x][i] = 0;
-        a[i][y] = 0;
-    }
-    for(int i=x, j=y; i<=8 && j<=8; ++i, ++j)   a[i][j] = 0;
-    for(int i=x, j=y; i<=8 && j<=8; --i, --j)   a[i][j] = 0;
-    for(int i=x, j=y; i<=8 && j<=8; --i, ++j)   a[i][j] = 0;
-    for(int i=x, j=y; i<=8 && j<=8; ++i, --j)   a[i][j] = 0;
-}
-
-void gen(int x){
-    if(x == 9){
+void gen(int row){
+    if(row == 9){
         res++;
         return ;
     }
 
     for(int i=1; i<=8; ++i){
-        for(int j=1; j<=8; ++j){
-            if(!a[i][j])    continue;
+        if(a[row][i] == 0)  continue;
 
+        if(!col[i] && !chinh[row - i + 8] && !phu[row + i]){
+            col[i] = true;
+            chinh[row - i + 8] = true;
+            phu[row + i] = true;
 
+            gen(row + 1);
+
+            col[i] = false;
+            chinh[row - i + 8] = false;
+            phu[row + i] = false;
         }
     }
 }
@@ -84,14 +84,15 @@ void gen(int x){
 void solve(){
     for(int i=1; i<=8; ++i){
         for(int j=1; j<=8; ++j){
-            char tmp;   cin >> tmp;
-            a[i][j] = (tmp == '.');
+            char val;   cin >> val;
+            a[i][j] = (val == '.');
         }
     }
 
     gen(1);
 
     cout << res;
+
 }
 
 int main(){
@@ -111,3 +112,5 @@ int main(){
     cerr << "\n[Time: " << duration.count() << " ms]\n"; 
     #endif
 }
+
+// RATE ?? (?/10)

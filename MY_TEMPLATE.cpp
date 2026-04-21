@@ -73,3 +73,5 @@ int main(){
     cerr << "\n[Time: " << duration.count() << " ms]\n"; 
     #endif
 }
+
+// RATE ?? (?/10)

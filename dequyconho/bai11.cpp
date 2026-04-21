@@ -45,7 +45,7 @@ void file(){
     }
 }
 
-const int offset = 50;
+const int offset = 300;
 const int mod = 1e9 + 7;
 int tc = 1;
 
@@ -55,7 +55,6 @@ int tc = 1;
 
 int n;
 string s;
-int ans;
 int dp[303][606][303];
 
 void add(int &x, int y){
@@ -63,22 +62,19 @@ void add(int &x, int y){
     if(x >= mod)    x -= mod;
 }
 
-int trau(int i, int pos, int mn, int mx){
-    if(mn < 0){
-        mx++;
-        pos++;
-    }
-    if(i > n){
-        return (mx - mn);
-    }
-
-    int &res = dp[i][pos][mx];
+int trau(int i, int pos, int mx){
+    if(i > n)   return mx;
+    
+    int &res = dp[i][pos + offset][mx];
     if(res != -1)   return res;
     res = 0;
-    
-    if(s[i] == 'R') add(res, trau(i + 1, pos + 1, mn, max(mx, pos + 1)));
-    else            add(res, trau(i + 1, pos - 1, min(mn, pos - 1), mx));
-    add(res, trau(i + 1, pos, mn, mx));
+
+    if(s[i] == 'R') add(res, trau(i + 1, pos + 1, max(mx, pos + 1)));
+    else{
+        if(pos - 1 < 0) add(res, trau(i + 1, 0, mx + 1));
+        else            add(res, trau(i + 1, pos - 1, mx));
+    }
+    add(res, trau(i + 1, pos, mx));
 
     return res;
 }
@@ -89,8 +85,8 @@ void solve(){
     s = " " + s;
 
     memset(dp, -1, sizeof(dp));
-    
-    cout << trau(1, 0, 0, 0);
+
+    cout << trau(1, 0, 0);
 }
 
 int main(){
