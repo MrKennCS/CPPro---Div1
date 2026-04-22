@@ -2,19 +2,42 @@
 #define ll long long
 using namespace std;
 
-ll randInt(ll l, ll r){
-    ll res = 0;
-    for(int i=0; i<4; ++i)  res = (res << 15) ^ (rand() & ((1 << 15) - 1));
-    return l + rand() % (r - l + 1);
+mt19937_64 rng(chrono::steady_clock::now().time_since_epoch().count());
+
+ll Rand(ll l, ll r){
+    return uniform_int_distribution<ll>(l, r)(rng);
+}
+
+int n;
+
+void init(){
+    cin >> n;
+}
+
+namespace sub1{
+    bool check(){
+        return (n <= 10);
+    }
+
+    void solve(){
+        cout << Rand(1, 100);
+    }
+}
+
+namespace sub2{
+    bool check(){
+        return (n <= 100);
+    }
+    void solve(){
+        cout << Rand(101, 1000);
+    }
 }
 
 int main(){
-    freopen("bai1.INP", "w", stdout);
-    srand(time(nullptr));
+    ios_base::sync_with_stdio(false);   cin.tie(0);
 
-    int a = randInt(1, 100);
-    int b = randInt(1, 100);
+    init();
 
-    cout << a << " " << b;
-    cerr << "INPUT: " << a << " " << b;
+    if(sub1::check())   return sub1::solve(), 0;
+    if(sub2::check())   return sub2::solve(), 0;
 }
