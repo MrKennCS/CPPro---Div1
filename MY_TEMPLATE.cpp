@@ -53,12 +53,12 @@ int tc = 1;
 */
 
 void solve(){
-
+    cout << "GAY\n";
 }
 
 int main(){
     ios_base::sync_with_stdio(false);   cin.tie(0);
-    file();
+    //file();
 
     #ifndef ONLINE_JUDGE
     auto start = high_resolution_clock::now();

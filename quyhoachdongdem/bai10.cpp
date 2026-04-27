@@ -26,8 +26,6 @@ void solve(){
         dp[i] += dp[i - 1];
     }
 
-
-    //cout << (1LL << n) << '\n';
     cout << (1LL<<n) - dp[n ];
 }
 
